@@ -78,13 +78,12 @@
     </header>
 
     <!-- Main Content -->
-    <!-- min-h-0 é crucial aqui para permitir que os filhos tenham scroll interno -->
     <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-4 min-h-0 overflow-hidden">
 
         <!-- Coluna da Esquerda (Formulários) -->
         <div class="lg:col-span-4 flex flex-col gap-3 h-full min-h-0 overflow-y-auto custom-scrollbar pr-1">
             
-            <!-- Card de Sorteio (Movi para cima para acesso rápido) -->
+            <!-- Card de Sorteio -->
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 shrink-0">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-sm font-bold text-gray-700 uppercase tracking-wide">Sortear</h2>
@@ -96,10 +95,32 @@
                 
                 <form id="draw-teams-form">
                     <button type="submit" class="w-full bg-green-600 text-white py-2.5 px-4 rounded-lg text-sm font-bold hover:bg-green-700 active:bg-green-800 transition-all shadow-sm flex justify-center items-center gap-2 transform hover:-translate-y-0.5">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path></svg>
                         GERAR TIMES
                     </button>
                 </form>
+            </div>
+
+            <!-- Legenda de Pesos -->
+            <div class="bg-blue-50 border border-blue-100 p-3 rounded-xl shrink-0">
+                <h3 class="text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-2 flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Pesos do Balanceamento
+                </h3>
+                <div class="flex justify-between text-[10px] font-medium text-blue-600/80">
+                    <div class="flex flex-col">
+                        <span class="text-blue-800 font-bold text-xs">40%</span>
+                        <span>Físico</span>
+                    </div>
+                    <div class="flex flex-col border-l border-blue-200 pl-3">
+                        <span class="text-blue-800 font-bold text-xs">35%</span>
+                        <span>Habil.</span>
+                    </div>
+                    <div class="flex flex-col border-l border-blue-200 pl-3">
+                        <span class="text-blue-800 font-bold text-xs">25%</span>
+                        <span>Defesa</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Card de Cadastro -->
@@ -153,7 +174,6 @@
         </div>
 
         <!-- Coluna da Direita (Lista de Jogadores) -->
-        <!-- Flex-col e min-h-0 permitem que o container ocupe a altura restante sem estourar -->
         <div class="lg:col-span-8 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col min-h-0 h-full overflow-hidden">
             <div class="p-3 border-b border-gray-100 flex justify-between items-center bg-gray-50/80 shrink-0">
                 <div class="flex items-center gap-2">
@@ -168,7 +188,6 @@
                 </div>
             </div>
             
-            <!-- Lista com scroll interno independente -->
             <div class="flex-1 overflow-y-auto custom-scrollbar p-3 bg-white relative">
                 <div id="empty-list-message" class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 pointer-events-none">
                     <svg class="w-12 h-12 mb-2 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
@@ -186,7 +205,6 @@
 
     <!-- Modal de Resultados -->
     <div id="results-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm bg-gray-900/40">
-        <!-- max-h-[95vh] garante que o modal não estoure a tela verticalmente -->
         <div class="bg-white w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden transform transition-all max-h-[95vh] h-full flex flex-col border border-gray-200">
             <!-- Header Modal -->
             <div class="flex justify-between items-center px-5 py-3 border-b bg-gray-50/80 shrink-0">
@@ -215,7 +233,6 @@
                 </div>
             </div>
             
-            <!-- Container dos Times (Scrollável) -->
             <div id="teams-container" class="p-4 overflow-y-auto overflow-x-hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow bg-gray-50 custom-scrollbar">
                 <!-- Times serão injetados aqui -->
             </div>
@@ -252,6 +269,13 @@
             const tabSingle = document.getElementById('tab-single');
             const tabBulk = document.getElementById('tab-bulk');
 
+            // --- Configuração de Pesos ---
+            const WEIGHTS = {
+                fisico: 0.40,
+                habilidade: 0.35,
+                defesa: 0.25
+            };
+
             // --- Estado da Aplicação ---
             let state = {
                 players: []
@@ -261,6 +285,12 @@
             const DB_KEY = 'sorteio_times_players';
 
             // --- Funções Auxiliares ---
+            function calculateOverall(attr) {
+                return (attr.fisico * WEIGHTS.fisico) + 
+                       (attr.habilidade * WEIGHTS.habilidade) + 
+                       (attr.defesa * WEIGHTS.defesa);
+            }
+
             function loadPlayersFromDB() {
                 const playersFromDB = localStorage.getItem(DB_KEY);
                 state.players = playersFromDB ? JSON.parse(playersFromDB) : [];
@@ -307,7 +337,7 @@
                 const sortedPlayers = [...state.players].sort((a, b) => a.name.localeCompare(b.name));
 
                 sortedPlayers.forEach(player => {
-                    const overall = (player.attributes.fisico + player.attributes.habilidade + player.attributes.defesa) / 3;
+                    const overall = calculateOverall(player.attributes);
 
                     const playerEl = document.createElement('div');
                     playerEl.className = 'flex items-center justify-between p-2 pl-3 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-all group hover:border-blue-200';
@@ -331,7 +361,7 @@
                 });
             }
 
-            // --- Lógica Sorteio (Correção Resortear) ---
+            // --- Lógica Sorteio ---
             function handleDrawTeams(e) {
                 if(e) e.preventDefault();
 
@@ -344,43 +374,33 @@
                 if (isNaN(numTeams) || numTeams < 2) return alert('Times inválidos.');
                 if (presentPlayerIds.length < numTeams) return alert('Jogadores insuficientes.');
 
-                // Mapeia jogadores
                 const playersToDraw = state.players
                     .filter(player => presentPlayerIds.includes(player.id))
                     .map(player => {
-                        const overall = (player.attributes.fisico + player.attributes.habilidade + player.attributes.defesa) / 3;
+                        const overall = calculateOverall(player.attributes);
                         return { ...player, overall };
                     });
 
-                // CORREÇÃO: Adiciona aleatoriedade ao Resortear
-                // 1. Adiciona um "jitter" (ruído) minúsculo à nota para quebrar empates de forma aleatória
-                //    Isso faz com que jogadores iguais troquem de lugar.
                 playersToDraw.forEach(p => {
                     p.tempSortValue = p.overall + (Math.random() * 0.05); 
                 });
 
-                // 2. Ordena pela nota com ruído
                 playersToDraw.sort((a, b) => b.tempSortValue - a.tempSortValue);
 
-                // Inicializa times
                 let teams = Array.from({ length: numTeams }, () => []);
                 
-                // Helper totais (usa o overall real, não o temporário)
                 const getTeamStats = (team) => {
                     if (team.length === 0) return { overall: 0 };
                     return team.reduce((acc, p) => ({ overall: acc.overall + p.overall }), { overall: 0 });
                 };
 
-                // Algoritmo Guloso Balanceado
                 for (const player of playersToDraw) {
                     let bestTeamIndex = -1;
                     let lowestScore = Infinity;
 
-                    // Encontra o time mais fraco/vazio para colocar o próximo craque
                     for (let i = 0; i < teams.length; i++) {
                         const stats = getTeamStats(teams[i]);
                         let score = stats.overall;
-                        // Penalidade alta para times com mais jogadores (garante x jogadores em cada time antes de por x+1)
                         score += (teams[i].length * 1000); 
 
                         if (score < lowestScore) {
@@ -391,7 +411,6 @@
                     teams[bestTeamIndex].push(player);
                 }
 
-                // Salva estado e renderiza
                 currentTeamsState = teams;
                 renderResultsModal();
             }
@@ -418,7 +437,6 @@
             function generateShareText() {
                 let text = `⚽ *Sorteio de Times* ⚽\n\n`;
                 currentTeamsState.forEach((team, index) => {
-                    // Ordenação visual por nota real
                     const sortedTeam = [...team].sort((a, b) => b.overall - a.overall);
                     const stats = calculateTeamAverages(sortedTeam);
                     const icon = index % 2 === 0 ? '🔵' : '🔴';
@@ -438,7 +456,6 @@
                 shareTextarea.value = shareText;
 
                 currentTeamsState.forEach((team, index) => {
-                    // Garante que visualmente sempre está ordenado
                     team.sort((a, b) => b.overall - a.overall);
                     const stats = calculateTeamAverages(team);
                     
@@ -479,13 +496,14 @@
                         li.dataset.originTeam = index;
 
                         li.innerHTML = `
-                            <div class="flex items-center gap-2 overflow-hidden">
+                            <div class="flex items-center gap-2 overflow-hidden flex-1">
                                 <div class="w-1 h-5 bg-gray-200 rounded-full cursor-move hover:bg-gray-400 transition-colors"></div>
-                                <div class="truncate">
-                                    <span class="text-gray-800 font-semibold text-xs block truncate">${player.name}</span>
+                                <div class="truncate flex-1">
+                                    <span class="text-gray-800 font-semibold text-xs block truncate leading-tight">${player.name}</span>
+                                    <span class="text-[9px] text-gray-400 font-mono tracking-tighter block leading-none mt-0.5">F:${player.attributes.fisico} H:${player.attributes.habilidade} D:${player.attributes.defesa}</span>
                                 </div>
                             </div>
-                            <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded ml-2">${player.overall.toFixed(1)}</span>
+                            <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded ml-2 shrink-0">${player.overall.toFixed(1)}</span>
                         `;
                         li.addEventListener('dragstart', handleDragStart);
                         li.addEventListener('dragend', handleDragEnd);
