@@ -1,0 +1,9 @@
+adm: seleciona os membros da rodada e libera pra votar
+cold start: físico(40), habilidade(30), defesa(30) => media dos votos computados; atualiza a cada 10 jogos?
+toda rodada cada membro vota, a nota(0-100) será a média ponderada dos ultimos 10 jogos onde os jogos mais recentes valem mais;
+
+sorteio: balanceamento do time com base em atributos, ajuste com drop & drag, txt pra mandar no zap
+
+cartinha do fifa com animação basica; 
+cada jogador upa a própria foto em 3 versões
+
