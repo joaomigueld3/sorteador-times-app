@@ -64,50 +64,50 @@ Gerado pelo Sorteador de Times 🚀
 
 
 Lista (Nome, Fis, Hab, Def)
-Must, 9,10,8
-Sundown, 10,10,8
-Mattias, 10,10,8
-Cheldon, 9,9,10
-Pernambuco, 10,10,8
-Rafael Coelho, 9,8,7
-Lucas Guedes, 9,8,7
-Caio Almeida, 8,8,9
-Miguel Guerra, 7,6,9
-Heverton, 8,8,8
-Rennar 8,8,8
-Emanuel, 9,8,8
-Diogo, 9,7,7
-Sales, 8,8,8
-Patrick, 8,8,6
-Juninho, 7,8,6
-Luquinhas, 7,8,6
-Ighor Honorato, 6,9,9
-Petros, 6,6,10
-João Miguel, 6,6,6
-Jeff Pai, 6,7,6
-Barbosa, 5,7,7
-Vitor Honorato, 5,8,5
-Irgão, 5,8,5
-Mateus Souza, 5,4,4
-
-
-Must, 8,10,8, ATA
+Must, 9,10,8, ATA
 Sundown, 10,10,8, ATA+ZAG
-Rafael Coelho, 9,9,7, ATA
-Caio Almeida, 8,8,9, ZAG
+Mattias, 10,10,8, ATA+ZAG
+Cheldon, 9,9,10, ZAG
+Pernambuco, 10,10,8, ATA
+Rafael Coelho, 9,8,7, ATA
+Lucas Guedes, 9,9,9, ATA+ZAG
+Caio Almeida, 8,7,9, ZAG
+Miguel Guerra, 7,6,9, ZAG
+Heverton, 8,8,8, ZAG
+Rennar, 8,8,8, ZAG
+Emanuel, 9,7,8, ATA+ZAG
+Diogo, 9,6,7, ATA
+Sales, 9,8,8, ATA+ZAG
+Patrick, 8,8,6, ZAG
+Juninho, 7,8,6, ATA
+Luquinhas, 7,8,6, ATA
+Ighor Honorato, 6,9,9, ZAG
+Petros, 6,6,10, ZAG
+João Miguel, 6,6,6, ATA
+Jeff Pai, 6,7,6, ZAG
+Barbosa, 5,6,7, ZAG
+Vitor Honorato, 5,8,6, ATA
+Irgão, 3,7,6, ATA
+Mateus Souza, 5,4,4, ZAG
+
+
+Must, 8,10,8, ATA -> 9,10,8
+Sundown, 10,10,8, ATA+ZAG
+Rafael Coelho, 9,9,7, ATA -> 9,8,7
+Caio Almeida, 8,8,9, ZAG -> 8,7,9
 Miguel Guerra, 7,6,9, ZAG
 Heverton, 8,8,8, ATA+ZAG
 Emanuel, 9,7,8, ATA+ZAG
-Diogo, 9,7,7, ATA
-Juninho, 7,8,6, ATA
+Diogo, 9,7,7, ATA -> 9,6,7
+Juninho, 7,8,6, ATA -> 7,8,7
 Luquinhas, 7,7,5, ATA
 Ighor Honorato, 6,9,9, ATA+ZAG
 Petros, 6,6,10, ZAG
 João Miguel, 6,6,6, ATA
-Vitor Honorato, 5,8,5, ATA
-Irgão, 5,8,5, ATA
+Vitor Honorato, 5,8,5, ATA -> 5,8,6
+Irgão, 5,8,5, ATA -> 3,7,6
 Benjamin, 6,7,7, ZAG
 Lucas Monteiro, 6,7,6, ATA+ZAG
-Augusto, 10,9,9, ATA+ZAG
+Augusto, 10,9,9, ATA+ZAG -> 9,8,8
 Candelo, 6,6,6, ZAG
 Rodrigo Cavalcanti, 7,9,8, ATA+ZAG
