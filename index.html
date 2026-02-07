@@ -12,7 +12,7 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; font-size: 12px; }
         
         /* Tema Off-White */
         .bg-off-white { background-color: #f8fafc; }
@@ -32,13 +32,13 @@
         /* Modos de visualização */
         .view-compact .player-details { display: none; }
         .view-compact .role-emoji { font-size: 1.1rem !important; }
-        .view-compact li { padding-top: 0.3rem !padding-bottom: 0.3rem; }
+        .view-compact li { padding-top: 0.3rem; padding-bottom: 0.3rem; }
 
         /* Aumento de 20% no emoji de ATA/ZAG */
         .role-emoji-large { font-size: 1.2em; line-height: 1; display: inline-block; vertical-align: middle; }
     </style>
 </head>
-<body class="bg-off-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 h-screen w-screen flex flex-col overflow-hidden transition-colors duration-300 text-sm">
+<body class="bg-off-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 h-screen w-screen flex flex-col overflow-hidden transition-colors duration-300">
 
     <!-- Navbar -->
     <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 h-14 shrink-0 flex items-center justify-between shadow-sm z-30">
@@ -52,39 +52,39 @@
             <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-400">
                 <svg id="theme-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
             </button>
-            <button id="clear-all-btn" class="text-[10px] font-bold text-red-500 uppercase hover:underline">Limpar</button>
+            <button id="clear-all-btn" class="text-[12px] font-bold text-red-500 uppercase hover:underline">Limpar</button>
         </div>
     </header>
 
     <main class="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden p-3 gap-3">
         
         <!-- Painel de Controle -->
-        <aside class="w-full lg:w-80 flex flex-col gap-3 shrink-0 overflow-y-auto custom-scrollbar pr-1 pb-4">
+        <aside class="w-full lg:w-80 flex flex-col gap-3 shrink-0 overflow-y-auto custom-scrollbar pr-1 pb-4 text-[12px]">
             
             <!-- Configurações de Pesos -->
             <section class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-4">
                 <div>
-                    <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 italic">Pesos do Balanceamento (%)</h2>
+                    <h2 class="text-[12px] font-black text-slate-400 uppercase tracking-widest mb-3 italic">Pesos do Balanceamento (%)</h2>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-bold text-orange-500 uppercase ml-1">Físico</label>
-                            <input type="number" id="w-fisico" value="40" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-xs font-black focus:ring-2 focus:ring-orange-500 dark:text-white">
+                            <label class="text-[12px] font-bold text-orange-500 uppercase ml-1">Físico</label>
+                            <input type="number" id="w-fisico" value="40" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-[12px] font-black focus:ring-2 focus:ring-orange-500 dark:text-white">
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-bold text-blue-500 uppercase ml-1">Hab.</label>
-                            <input type="number" id="w-habil" value="35" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-xs font-black focus:ring-2 focus:ring-blue-500 dark:text-white">
+                            <label class="text-[12px] font-bold text-blue-500 uppercase ml-1">Hab.</label>
+                            <input type="number" id="w-habil" value="35" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-[12px] font-black focus:ring-2 focus:ring-blue-500 dark:text-white">
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-bold text-emerald-500 uppercase ml-1">Def.</label>
-                            <input type="number" id="w-defesa" value="25" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-xs font-black focus:ring-2 focus:ring-emerald-500 dark:text-white">
+                            <label class="text-[12px] font-bold text-emerald-500 uppercase ml-1">Def.</label>
+                            <input type="number" id="w-defesa" value="25" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-[12px] font-black focus:ring-2 focus:ring-emerald-500 dark:text-white">
                         </div>
                     </div>
                 </div>
 
                 <div class="border-t dark:border-slate-800 pt-3">
                     <div class="flex items-center justify-between mb-2">
-                        <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Aleatoriedade</h2>
-                        <span id="random-val" class="text-[10px] font-bold text-blue-600">10%</span>
+                        <h2 class="text-[12px] font-black text-slate-400 uppercase tracking-widest">Aleatoriedade</h2>
+                        <span id="random-val" class="text-[12px] font-bold text-blue-600">10%</span>
                     </div>
                     <input type="range" id="random-factor" min="0" max="100" value="10" class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-600">
                 </div>
@@ -93,13 +93,24 @@
             <!-- Sorteio -->
             <section class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-3">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic text-opacity-80">Configuração</h2>
-                    <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-lg">
-                        <label class="text-[10px] font-bold">Times:</label>
-                        <input type="number" id="num-teams" value="2" min="2" class="w-8 bg-transparent border-none text-center font-black focus:ring-0 p-0 dark:text-white">
-                    </div>
+                    <h2 class="text-[12px] font-black text-slate-400 uppercase tracking-widest italic text-opacity-80">Modo de Sorteio</h2>
+                    <select id="draw-mode" class="text-[12px] font-bold bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-1 focus:ring-0 dark:text-white">
+                        <option value="teams">Nº DE TIMES</option>
+                        <option value="players">JOG. POR TIME</option>
+                    </select>
                 </div>
-                <button id="draw-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-3 rounded-xl shadow-lg shadow-blue-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
+                
+                <div id="teams-input-wrap" class="flex items-center justify-between bg-slate-50 dark:bg-slate-800 px-3 py-2 rounded-xl">
+                    <label class="text-[12px] font-bold text-slate-500 uppercase">Qtd de Times:</label>
+                    <input type="number" id="num-teams" value="2" min="2" class="w-10 bg-transparent border-none text-center font-black focus:ring-0 p-0 dark:text-white text-[12px]">
+                </div>
+
+                <div id="players-input-wrap" class="hidden flex items-center justify-between bg-slate-50 dark:bg-slate-800 px-3 py-2 rounded-xl">
+                    <label class="text-[12px] font-bold text-slate-500 uppercase">Jog. por Time:</label>
+                    <input type="number" id="players-per-team" value="5" min="2" class="w-10 bg-transparent border-none text-center font-black focus:ring-0 p-0 dark:text-white text-[12px]">
+                </div>
+
+                <button id="draw-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-3 rounded-xl shadow-lg shadow-blue-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2 text-[12px] uppercase tracking-widest">
                     Gerar Times
                 </button>
             </section>
@@ -107,36 +118,36 @@
             <!-- Cadastro (Com Scroll Interno) -->
             <section class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-3 max-h-[420px] overflow-y-auto custom-scrollbar">
                 <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl shrink-0">
-                    <button id="tab-single" class="flex-1 py-1.5 text-[10px] font-black rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 transition-all uppercase tracking-tighter">Individual</button>
-                    <button id="tab-bulk" class="flex-1 py-1.5 text-[10px] font-black rounded-lg text-slate-500 transition-all uppercase tracking-tighter">Lote</button>
+                    <button id="tab-single" class="flex-1 py-1.5 text-[12px] font-black rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 transition-all uppercase">Individual</button>
+                    <button id="tab-bulk" class="flex-1 py-1.5 text-[12px] font-black rounded-lg text-slate-500 transition-all uppercase">Lote</button>
                 </div>
 
                 <form id="form-single" class="flex flex-col gap-3">
-                    <input type="text" id="p-name" placeholder="NOME DO JOGADOR" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white uppercase font-black tracking-tight" required>
+                    <input type="text" id="p-name" placeholder="NOME DO JOGADOR" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-[12px] focus:ring-2 focus:ring-blue-500 dark:text-white uppercase font-black tracking-tight" required>
                     
                     <div class="grid grid-cols-3 gap-2">
-                        <input type="number" id="p-fisico" placeholder="FIS" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-sm font-black focus:ring-2 focus:ring-orange-500 dark:text-white" required>
-                        <input type="number" id="p-habil" placeholder="HAB" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-sm font-black focus:ring-2 focus:ring-blue-500 dark:text-white" required>
-                        <input type="number" id="p-defesa" placeholder="DEF" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-sm font-black focus:ring-2 focus:ring-emerald-500 dark:text-white" required>
+                        <input type="number" id="p-fisico" placeholder="FIS" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-[12px] font-black focus:ring-2 focus:ring-orange-500 dark:text-white" required>
+                        <input type="number" id="p-habil" placeholder="HAB" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-[12px] font-black focus:ring-2 focus:ring-blue-500 dark:text-white" required>
+                        <input type="number" id="p-defesa" placeholder="DEF" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-[12px] font-black focus:ring-2 focus:ring-emerald-500 dark:text-white" required>
                     </div>
 
                     <div class="flex gap-2 p-1">
                         <label class="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-transparent hover:border-slate-200">
                             <input type="checkbox" id="p-role-atk" class="rounded text-blue-600 h-4 w-4">
-                            <span class="text-[10px] font-black uppercase tracking-tight">ATA</span>
+                            <span class="text-[12px] font-black uppercase tracking-tight">ATA</span>
                         </label>
                         <label class="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-transparent hover:border-slate-200">
                             <input type="checkbox" id="p-role-def" class="rounded text-blue-600 h-4 w-4">
-                            <span class="text-[10px] font-black uppercase tracking-tight">ZAG</span>
+                            <span class="text-[12px] font-black uppercase tracking-tight">ZAG</span>
                         </label>
                     </div>
 
-                    <button type="submit" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-[0.98]">Adicionar</button>
+                    <button type="submit" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-black text-[12px] uppercase tracking-widest shadow-lg active:scale-[0.98]">Adicionar</button>
                 </form>
 
                 <form id="form-bulk" class="flex flex-col gap-3 hidden">
-                    <textarea id="bulk-input" rows="5" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-[10px] font-mono dark:text-white resize-none" placeholder="NOME, NOTA, ATA&#10;NOME, F, H, D, ZAG"></textarea>
-                    <button type="submit" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest">Importar Lista</button>
+                    <textarea id="bulk-input" rows="5" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-[12px] font-mono dark:text-white resize-none" placeholder="NOME, NOTA, ATA&#10;NOME, F, H, D, ZAG"></textarea>
+                    <button type="submit" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-black text-[12px] uppercase tracking-widest">Importar Lista</button>
                 </form>
             </section>
         </aside>
@@ -145,10 +156,10 @@
         <section class="flex-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-0 overflow-hidden">
             <div class="p-4 border-b dark:border-slate-800 flex items-center justify-between bg-slate-50/30 dark:bg-slate-800/20 shrink-0">
                 <div class="flex items-center gap-2">
-                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Banco de Jogadores</span>
-                    <span id="player-count" class="bg-blue-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md">0</span>
+                    <span class="text-[12px] font-black uppercase tracking-widest text-slate-400 italic">Banco de Jogadores</span>
+                    <span id="player-count" class="bg-blue-600 text-white text-[12px] font-black px-2.5 py-0.5 rounded-full shadow-md">0</span>
                 </div>
-                <label class="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase cursor-pointer hover:text-blue-600">
+                <label class="flex items-center gap-2 text-[12px] font-black text-slate-500 uppercase cursor-pointer hover:text-blue-600">
                     <input type="checkbox" id="select-all" checked class="rounded dark:bg-slate-800 border-slate-300 h-4 w-4"> Todos
                 </label>
             </div>
@@ -166,12 +177,12 @@
             <!-- Modal Header -->
             <div class="p-4 border-b dark:border-slate-800 flex items-center justify-between shrink-0 bg-white dark:bg-slate-900 z-10 shadow-sm">
                 <div class="flex items-center gap-4">
-                    <div class="hidden sm:block bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 p-2 rounded-2xl">
+                    <div class="hidden sm:block bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 p-2.5 rounded-2xl">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-black tracking-tight uppercase italic leading-none text-slate-800 dark:text-slate-100">Times Definidos</h2>
-                        <p class="text-[9px] sm:text-xs font-black text-slate-400 uppercase mt-1 tracking-wider opacity-60">Arraste para ajustar manualmente</p>
+                        <p class="text-[12px] font-black text-slate-400 uppercase mt-1 tracking-wider opacity-60">Arraste para ajustar manualmente</p>
                     </div>
                 </div>
                 
@@ -180,18 +191,18 @@
                     <div class="relative group">
                         <button id="view-options-btn" class="flex items-center gap-2 p-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-slate-600 dark:text-slate-300 border border-transparent">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                            <span class="hidden sm:inline text-[10px] font-black uppercase tracking-widest">Vista</span>
+                            <span class="hidden sm:inline text-[12px] font-black uppercase tracking-widest">Vista</span>
                         </button>
                         <div id="view-menu" class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl shadow-2xl z-50 overflow-hidden">
-                            <button data-view="default" class="w-full text-left px-4 py-3 text-[10px] font-black uppercase hover:bg-slate-50 dark:hover:bg-slate-700 border-b dark:border-slate-700 transition-colors text-slate-700 dark:text-slate-200">Padrão</button>
-                            <button data-view="compact" class="w-full text-left px-4 py-3 text-[10px] font-black uppercase hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-slate-700 dark:text-slate-200">Compacta</button>
+                            <button data-view="default" class="w-full text-left px-4 py-3 text-[12px] font-black uppercase hover:bg-slate-50 dark:hover:bg-slate-700 border-b dark:border-slate-700 transition-colors text-slate-700 dark:text-slate-200">Padrão</button>
+                            <button data-view="compact" class="w-full text-left px-4 py-3 text-[12px] font-black uppercase hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-slate-700 dark:text-slate-200">Compacta</button>
                         </div>
                     </div>
 
                     <button id="modal-reshuffle" title="Sortear Novamente" class="p-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-slate-600 dark:text-slate-300">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                     </button>
-                    <button id="modal-whatsapp" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-xl font-black text-[10px] sm:text-xs flex items-center gap-2 shadow-lg shadow-green-500/20 transition-all uppercase tracking-widest active:scale-95">
+                    <button id="modal-whatsapp" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-xl font-black text-[12px] flex items-center gap-2 shadow-lg shadow-green-500/20 transition-all uppercase tracking-widest active:scale-95">
                         WhatsApp
                     </button>
                     <button id="modal-close" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all">
@@ -207,7 +218,7 @@
 
             <!-- Footer Copy Area -->
             <div class="p-3 bg-white dark:bg-slate-900 border-t dark:border-slate-800 shrink-0">
-                <textarea id="copy-area" readonly class="w-full h-16 bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-[10px] font-mono text-slate-500 focus:ring-0 resize-none"></textarea>
+                <textarea id="copy-area" readonly class="w-full h-16 bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-[12px] font-mono text-slate-500 focus:ring-0 resize-none"></textarea>
             </div>
         </div>
     </div>
@@ -227,6 +238,11 @@
                 teamsGrid: document.getElementById('teams-grid'),
                 copyArea: document.getElementById('copy-area'),
                 drawBtn: document.getElementById('draw-btn'),
+                drawMode: document.getElementById('draw-mode'),
+                teamsWrap: document.getElementById('teams-input-wrap'),
+                playersWrap: document.getElementById('players-input-wrap'),
+                numTeamsInput: document.getElementById('num-teams'),
+                playersPerTeamInput: document.getElementById('players-per-team'),
                 wFisico: document.getElementById('w-fisico'),
                 wHabil: document.getElementById('w-habil'),
                 wDefesa: document.getElementById('w-defesa'),
@@ -238,7 +254,9 @@
                 viewMenu: document.getElementById('view-menu')
             };
 
-            let players = JSON.parse(localStorage.getItem('players_pro_v16') || '[]');
+            const DB_KEY = 'players_pro_v16';
+            // Carrega jogadores e garante que o estado inicial está correto
+            let players = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
             let currentTeams = [];
             let currentViewMode = 'default';
 
@@ -253,7 +271,7 @@
                 return (attr.fisico * w.fis) + (attr.habilidade * w.hab) + (attr.defesa * w.def);
             };
 
-            const save = () => localStorage.setItem('players_pro_v16', JSON.stringify(players));
+            const save = () => localStorage.setItem(DB_KEY, JSON.stringify(players));
 
             const renderPlayers = () => {
                 if (!elements.list) return;
@@ -270,12 +288,12 @@
                         <div class="flex items-center gap-2 overflow-hidden flex-1">
                             <input type="checkbox" data-id="${p.id}" checked class="player-check rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-900 border-slate-300 dark:border-slate-700 h-4 w-4 cursor-pointer">
                             <div class="truncate">
-                                <p class="text-[11px] font-black truncate flex items-center gap-1 text-slate-800 dark:text-slate-100 uppercase leading-none">
-                                    ${p.name} ${rolesStr ? `<span class="text-[8px] px-1 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-slate-500 font-black tracking-tighter">${rolesStr}</span>` : ''}
+                                <p class="text-[12px] font-black truncate flex items-center gap-1 text-slate-800 dark:text-slate-100 uppercase leading-none">
+                                    ${p.name} ${rolesStr ? `<span class="text-[12px] px-1 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-slate-500 font-black tracking-tighter">${rolesStr}</span>` : ''}
                                 </p>
                                 <div class="flex items-center gap-1.5 mt-0.5">
-                                    <span class="text-[9px] font-black px-1.5 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-md">${ovr.toFixed(1)}</span>
-                                    <div class="flex gap-1.5 text-[8px] font-black uppercase text-opacity-100">
+                                    <span class="text-[12px] font-black px-1.5 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-md">${ovr.toFixed(1)}</span>
+                                    <div class="flex gap-1.5 text-[12px] font-black uppercase text-opacity-100">
                                         <span class="text-orange-500">F:${p.attributes.fisico}</span>
                                         <span class="text-blue-600">H:${p.attributes.habilidade}</span>
                                         <span class="text-emerald-600">D:${p.attributes.defesa}</span>
@@ -294,7 +312,19 @@
             const handleDraw = () => {
                 const selectedIds = Array.from(document.querySelectorAll('.player-check:checked')).map(cb => cb.dataset.id);
                 if (selectedIds.length < 2) return alert('Selecione no mínimo 2 jogadores.');
-                const numTeams = parseInt(document.getElementById('num-teams').value) || 2;
+                
+                const totalSelected = selectedIds.length;
+                let numTeams;
+
+                if (elements.drawMode.value === 'teams') {
+                    numTeams = parseInt(elements.numTeamsInput.value) || 2;
+                } else {
+                    const pPerTeam = parseInt(elements.playersPerTeamInput.value) || 5;
+                    numTeams = Math.max(2, Math.ceil(totalSelected / pPerTeam));
+                }
+
+                if (totalSelected < numTeams) return alert('Jogadores insuficientes para essa quantidade de times.');
+
                 const rFactor = parseFloat(elements.randomFactor.value) / 10;
                 const activePlayers = players.filter(p => selectedIds.includes(p.id))
                     .map(p => ({ ...p, currentOvr: calcOverall(p.attributes), sortVal: calcOverall(p.attributes) + (Math.random() * rFactor) }));
@@ -315,6 +345,7 @@
                         })[0].push(p);
                     });
                 };
+
                 distribute(attackers); distribute(defenders); distribute(versatile);
                 currentTeams = teams;
                 renderModal();
@@ -340,18 +371,18 @@
                     card.innerHTML = `
                         <div class="p-3 bg-slate-50 dark:bg-slate-800/50 border-b dark:border-slate-800 flex flex-col gap-1 shrink-0">
                             <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider">Time ${tIdx+1}</span>
-                                <span class="text-[10px] font-black bg-blue-600 text-white px-2 py-1 rounded-lg border border-blue-500">MÉDIA: ${getAvg(team).toFixed(1)}</span>
+                                <span class="text-[12px] font-black uppercase text-slate-500 tracking-wider">Time ${tIdx+1}</span>
+                                <span class="text-[12px] font-black bg-blue-600 text-white px-2 py-1 rounded-lg border border-blue-500">NOT: ${getAvg(team).toFixed(1)}</span>
                             </div>
-                            <div class="flex justify-between px-1 text-[8px] font-black uppercase tracking-tighter italic">
-                                <span class="text-orange-600">F:${fAvg}</span>
+                            <div class="flex justify-between px-1 text-[12px] font-black uppercase tracking-tighter italic">
+                                <span class="text-orange-500">F:${fAvg}</span>
                                 <span class="text-blue-600">H:${hAvg}</span>
                                 <span class="text-emerald-600">D:${dAvg}</span>
                             </div>
                         </div>
                         <ul class="team-drop-zone p-2 flex-1 space-y-1.5 min-h-0 overflow-y-auto custom-scrollbar" data-idx="${tIdx}"></ul>
                         <div class="p-2 bg-slate-50/20 border-t dark:border-slate-800 flex justify-center shrink-0">
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">${team.length} ATLETAS</span>
+                            <span class="text-[12px] font-black text-slate-400 uppercase tracking-widest">${team.length} ATLETAS</span>
                         </div>
                     `;
 
@@ -381,13 +412,13 @@
                                 <p class="text-[12px] font-black truncate flex items-center gap-1.5 leading-none text-slate-800 dark:text-slate-100 uppercase">
                                     ${p.name} <span class="role-emoji role-emoji-large block" title="${rolesIcons.includes('⚔️') ? 'ATA' : 'ZAG'}">${rolesIcons}</span>
                                 </p>
-                                <div class="player-details flex gap-2 text-[9px] font-black mt-1 pt-0.5 border-t dark:border-slate-700/50 uppercase leading-none">
+                                <div class="player-details flex gap-2 text-[12px] font-black mt-1 pt-0.5 border-t dark:border-slate-700/50 uppercase leading-none">
                                     <span class="text-orange-500">F:${p.attributes.fisico}</span> 
                                     <span class="text-blue-600">H:${p.attributes.habilidade}</span> 
                                     <span class="text-emerald-600">D:${p.attributes.defesa}</span>
                                 </div>
                             </div>
-                            <span class="text-[11px] font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-lg border border-blue-100 dark:border-blue-800/50 shrink-0 ml-1.5 shadow-sm">${pOverall.toFixed(1)}</span>
+                            <span class="text-[12px] font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-lg border border-blue-100 dark:border-blue-800/50 shrink-0 ml-1.5 shadow-sm">${pOverall.toFixed(1)}</span>
                         `;
                         li.addEventListener('dragstart', e => {
                             e.dataTransfer.setData('text/plain', p.id);
@@ -417,6 +448,12 @@
             };
 
             // --- Handlers UI ---
+            elements.drawMode.onchange = () => {
+                const isTeams = elements.drawMode.value === 'teams';
+                elements.teamsWrap.classList.toggle('hidden', !isTeams);
+                elements.playersWrap.classList.toggle('hidden', isTeams);
+            };
+
             elements.viewOptionsBtn.onclick = (e) => { e.stopPropagation(); elements.viewMenu.classList.toggle('hidden'); };
             document.addEventListener('click', () => elements.viewMenu.classList.add('hidden'));
             elements.viewMenu.querySelectorAll('button').forEach(btn => {
@@ -425,14 +462,14 @@
 
             elements.tabSingle.onclick = () => {
                 elements.formSingle.classList.remove('hidden'); elements.formBulk.classList.add('hidden');
-                elements.tabSingle.className = "flex-1 py-1.5 text-[10px] font-black rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 uppercase tracking-tighter";
-                elements.tabBulk.className = "flex-1 py-1.5 text-[10px] font-black rounded-lg text-slate-500 uppercase tracking-tighter";
+                elements.tabSingle.className = "flex-1 py-1.5 text-[12px] font-black rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 uppercase tracking-tighter";
+                elements.tabBulk.className = "flex-1 py-1.5 text-[12px] font-black rounded-lg text-slate-500 uppercase tracking-tighter";
             };
 
             elements.tabBulk.onclick = () => {
                 elements.formBulk.classList.remove('hidden'); elements.formSingle.classList.add('hidden');
-                elements.tabBulk.className = "flex-1 py-1.5 text-[10px] font-black rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 uppercase tracking-tighter";
-                elements.tabSingle.className = "flex-1 py-1.5 text-[10px] font-black rounded-lg text-slate-500 uppercase tracking-tighter";
+                elements.tabBulk.className = "flex-1 py-1.5 text-[12px] font-black rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 uppercase tracking-tighter";
+                elements.tabSingle.className = "flex-1 py-1.5 text-[12px] font-black rounded-lg text-slate-500 uppercase tracking-tighter";
             };
 
             elements.formSingle.onsubmit = (e) => {
@@ -513,6 +550,7 @@
                 document.getElementById('theme-icon').innerHTML = '<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />';
             }
 
+            // Removida chamada redundante de loadPlayersFromDB() para evitar ReferenceError
             renderPlayers();
         });
     </script>

@@ -14,7 +14,11 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; }
         
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        /* Tema Off-White */
+        .bg-off-white { background-color: #f8fafc; }
+        .dark .bg-off-white { background-color: #0f172a; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
@@ -24,9 +28,17 @@
 
         .draggable-player.dragging { opacity: 0.5; transform: scale(0.95); }
         .team-drop-zone.drag-over { background-color: rgba(59, 130, 246, 0.1); border: 2px dashed #3b82f6; }
+        
+        /* Modos de visualização */
+        .view-compact .player-details { display: none; }
+        .view-compact .role-emoji { font-size: 1.1rem !important; }
+        .view-compact li { padding-top: 0.3rem !padding-bottom: 0.3rem; }
+
+        /* Aumento de 20% no emoji de ATA/ZAG */
+        .role-emoji-large { font-size: 1.2em; line-height: 1; display: inline-block; vertical-align: middle; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 h-screen w-screen flex flex-col overflow-hidden transition-colors duration-300 text-sm">
+<body class="bg-off-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 h-screen w-screen flex flex-col overflow-hidden transition-colors duration-300 text-sm">
 
     <!-- Navbar -->
     <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 h-14 shrink-0 flex items-center justify-between shadow-sm z-30">
@@ -34,37 +46,37 @@
             <div class="bg-blue-600 text-white p-1.5 rounded-lg shadow-lg shadow-blue-500/20">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
             </div>
-            <h1 class="text-base font-black tracking-tighter uppercase italic">Sorteio <span class="text-blue-600">Pro</span></h1>
+            <h1 class="text-base font-black tracking-tighter uppercase italic text-slate-800 dark:text-slate-100">Sorteio <span class="text-blue-600">Pro</span></h1>
         </div>
         <div class="flex items-center gap-2">
-            <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-400">
                 <svg id="theme-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
             </button>
-            <button id="clear-all-btn" class="text-[10px] font-bold text-red-500 uppercase hover:underline">Limpar Banco</button>
+            <button id="clear-all-btn" class="text-[10px] font-bold text-red-500 uppercase hover:underline">Limpar</button>
         </div>
     </header>
 
     <main class="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden p-3 gap-3">
         
-        <!-- Painel de Controle (Esquerda) -->
-        <aside class="w-full lg:w-80 flex flex-col gap-3 shrink-0 overflow-y-auto custom-scrollbar">
+        <!-- Painel de Controle -->
+        <aside class="w-full lg:w-80 flex flex-col gap-3 shrink-0 overflow-y-auto custom-scrollbar pr-1 pb-4">
             
-            <!-- Configurações -->
-            <section class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-4 text-xs">
+            <!-- Configurações de Pesos -->
+            <section class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-4">
                 <div>
-                    <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Pesos (%)</h2>
+                    <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 italic">Pesos do Balanceamento (%)</h2>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-bold text-orange-500 uppercase">Fis</label>
-                            <input type="number" id="w-fisico" value="40" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-xs font-bold focus:ring-2 focus:ring-orange-500 dark:text-white">
+                            <label class="text-[9px] font-bold text-orange-500 uppercase ml-1">Físico</label>
+                            <input type="number" id="w-fisico" value="40" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-xs font-black focus:ring-2 focus:ring-orange-500 dark:text-white">
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-bold text-blue-500 uppercase">Hab</label>
-                            <input type="number" id="w-habil" value="35" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-xs font-bold focus:ring-2 focus:ring-blue-500 dark:text-white">
+                            <label class="text-[9px] font-bold text-blue-500 uppercase ml-1">Hab.</label>
+                            <input type="number" id="w-habil" value="35" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-xs font-black focus:ring-2 focus:ring-blue-500 dark:text-white">
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-bold text-emerald-500 uppercase">Def</label>
-                            <input type="number" id="w-defesa" value="25" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-xs font-bold focus:ring-2 focus:ring-emerald-500 dark:text-white">
+                            <label class="text-[9px] font-bold text-emerald-500 uppercase ml-1">Def.</label>
+                            <input type="number" id="w-defesa" value="25" class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg p-2 text-center text-xs font-black focus:ring-2 focus:ring-emerald-500 dark:text-white">
                         </div>
                     </div>
                 </div>
@@ -81,60 +93,50 @@
             <!-- Sorteio -->
             <section class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-3">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sorteio</h2>
+                    <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic text-opacity-80">Configuração</h2>
                     <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-lg">
                         <label class="text-[10px] font-bold">Times:</label>
-                        <input type="number" id="num-teams" value="2" min="2" class="w-8 bg-transparent border-none text-center font-bold focus:ring-0 p-0 dark:text-white">
+                        <input type="number" id="num-teams" value="2" min="2" class="w-8 bg-transparent border-none text-center font-black focus:ring-0 p-0 dark:text-white">
                     </div>
                 </div>
-                <button id="draw-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2 text-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a2 2 0 00-1.96 1.414l-.503 1.508a2 2 0 01-1.185 1.184l-1.508.503a2 2 0 00-1.414 1.96l.477 2.387a2 2 0 00.547 1.022l1.428 1.428a2 2 0 002.828 0l1.428-1.428a2 2 0 00.547-1.022l.477-2.387a2 2 0 00-1.414-1.96l-1.508-.503a2 2 0 01-1.184-1.185l-.503 1.508a2 2 0 001.96 1.414l2.387-.477a2 2 0 001.022-.547l1.428-1.428a2 2 0 000-2.828l-1.428-1.428z"></path></svg>
-                    SORTEAR
+                <button id="draw-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-3 rounded-xl shadow-lg shadow-blue-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
+                    Gerar Times
                 </button>
             </section>
 
-            <!-- Cadastro -->
-            <section class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-3">
-                <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-                    <button id="tab-single" class="flex-1 py-1.5 text-[10px] font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400">INDIVIDUAL</button>
-                    <button id="tab-bulk" class="flex-1 py-1.5 text-[10px] font-bold rounded-lg text-slate-500">LOTE</button>
+            <!-- Cadastro (Com Scroll Interno) -->
+            <section class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-3 max-h-[420px] overflow-y-auto custom-scrollbar">
+                <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl shrink-0">
+                    <button id="tab-single" class="flex-1 py-1.5 text-[10px] font-black rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 transition-all uppercase tracking-tighter">Individual</button>
+                    <button id="tab-bulk" class="flex-1 py-1.5 text-[10px] font-black rounded-lg text-slate-500 transition-all uppercase tracking-tighter">Lote</button>
                 </div>
 
                 <form id="form-single" class="flex flex-col gap-3">
-                    <input type="text" id="p-name" placeholder="Nome do Jogador" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white" required>
+                    <input type="text" id="p-name" placeholder="NOME DO JOGADOR" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white uppercase font-black tracking-tight" required>
                     
                     <div class="grid grid-cols-3 gap-2">
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-bold text-orange-500 uppercase ml-1">Físico</label>
-                            <input type="number" id="p-fisico" placeholder="0" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-sm font-bold focus:ring-2 focus:ring-orange-500 dark:text-white" required>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-bold text-blue-500 uppercase ml-1">Habil.</label>
-                            <input type="number" id="p-habil" placeholder="0" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-sm font-bold focus:ring-2 focus:ring-blue-500 dark:text-white" required>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-bold text-emerald-500 uppercase ml-1">Defesa</label>
-                            <input type="number" id="p-defesa" placeholder="0" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-sm font-bold focus:ring-2 focus:ring-emerald-500 dark:text-white" required>
-                        </div>
+                        <input type="number" id="p-fisico" placeholder="FIS" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-sm font-black focus:ring-2 focus:ring-orange-500 dark:text-white" required>
+                        <input type="number" id="p-habil" placeholder="HAB" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-sm font-black focus:ring-2 focus:ring-blue-500 dark:text-white" required>
+                        <input type="number" id="p-defesa" placeholder="DEF" min="0" max="10" step="0.5" class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-center text-sm font-black focus:ring-2 focus:ring-emerald-500 dark:text-white" required>
                     </div>
 
                     <div class="flex gap-2 p-1">
-                        <label class="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <label class="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-transparent hover:border-slate-200">
                             <input type="checkbox" id="p-role-atk" class="rounded text-blue-600 h-4 w-4">
-                            <span class="text-[10px] font-bold uppercase tracking-tight">⚔️ ATA</span>
+                            <span class="text-[10px] font-black uppercase tracking-tight">ATA</span>
                         </label>
-                        <label class="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <label class="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-transparent hover:border-slate-200">
                             <input type="checkbox" id="p-role-def" class="rounded text-blue-600 h-4 w-4">
-                            <span class="text-[10px] font-bold uppercase tracking-tight">🛡️ ZAG</span>
+                            <span class="text-[10px] font-black uppercase tracking-tight">ZAG</span>
                         </label>
                     </div>
 
-                    <button type="submit" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Adicionar</button>
+                    <button type="submit" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-[0.98]">Adicionar</button>
                 </form>
 
                 <form id="form-bulk" class="flex flex-col gap-3 hidden">
-                    <textarea id="bulk-input" rows="5" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-xs font-mono dark:text-white" placeholder="Ex: Neymar, 9, ATA&#10;Ex: Ramos, 8, 6, 10, ZAG"></textarea>
-                    <button type="submit" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Importar Lista</button>
+                    <textarea id="bulk-input" rows="5" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-[10px] font-mono dark:text-white resize-none" placeholder="NOME, NOTA, ATA&#10;NOME, F, H, D, ZAG"></textarea>
+                    <button type="submit" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest">Importar Lista</button>
                 </form>
             </section>
         </aside>
@@ -143,56 +145,69 @@
         <section class="flex-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-0 overflow-hidden">
             <div class="p-4 border-b dark:border-slate-800 flex items-center justify-between bg-slate-50/30 dark:bg-slate-800/20 shrink-0">
                 <div class="flex items-center gap-2">
-                    <span class="text-xs font-black uppercase tracking-widest text-slate-400">Banco de Jogadores</span>
-                    <span id="player-count" class="bg-blue-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Banco de Jogadores</span>
+                    <span id="player-count" class="bg-blue-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md">0</span>
                 </div>
-                <label class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase cursor-pointer hover:text-blue-600">
-                    <input type="checkbox" id="select-all" checked class="rounded dark:bg-slate-800 border-slate-300 h-4 w-4"> Todos Presentes
+                <label class="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase cursor-pointer hover:text-blue-600">
+                    <input type="checkbox" id="select-all" checked class="rounded dark:bg-slate-800 border-slate-300 h-4 w-4"> Todos
                 </label>
             </div>
             
-            <div id="player-list" class="flex-1 overflow-y-auto custom-scrollbar p-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 content-start">
+            <div id="player-list" class="flex-1 overflow-y-auto custom-scrollbar p-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 content-start">
                 <!-- JS -->
             </div>
         </section>
     </main>
 
-    <!-- Modal Resultados (TAMANHO AUMENTADO) -->
-    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 hidden bg-slate-950/70 backdrop-blur-sm transition-all duration-300">
-        <div class="bg-white dark:bg-slate-900 w-[98vw] h-[96vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 dark:border-slate-800">
+    <!-- Modal Resultados -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-2 hidden bg-slate-950/80 backdrop-blur-md transition-all duration-300">
+        <div id="modal-content" class="bg-off-white dark:bg-slate-900 w-[98vw] h-[98vh] rounded-none sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 dark:border-slate-800">
             
             <!-- Modal Header -->
-            <div class="p-5 border-b dark:border-slate-800 flex items-center justify-between shrink-0 bg-slate-50/50 dark:bg-slate-800/30">
+            <div class="p-4 border-b dark:border-slate-800 flex items-center justify-between shrink-0 bg-white dark:bg-slate-900 z-10 shadow-sm">
                 <div class="flex items-center gap-4">
-                    <div class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 p-3 rounded-2xl">
+                    <div class="hidden sm:block bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 p-2 rounded-2xl">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-black tracking-tight uppercase italic leading-none">Times Definidos</h2>
-                        <p class="text-xs font-bold text-slate-400 uppercase mt-1">Clique e arraste para ajustar o balanceamento manualmente</p>
+                        <h2 class="text-xl sm:text-2xl font-black tracking-tight uppercase italic leading-none text-slate-800 dark:text-slate-100">Times Definidos</h2>
+                        <p class="text-[9px] sm:text-xs font-black text-slate-400 uppercase mt-1 tracking-wider opacity-60">Arraste para ajustar manualmente</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button id="modal-reshuffle" title="Sortear Novamente" class="p-3 bg-slate-100 dark:bg-slate-800 rounded-2xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-slate-600 dark:text-slate-300">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                
+                <div class="flex items-center gap-2">
+                    <!-- Opções de Vista -->
+                    <div class="relative group">
+                        <button id="view-options-btn" class="flex items-center gap-2 p-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-slate-600 dark:text-slate-300 border border-transparent">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                            <span class="hidden sm:inline text-[10px] font-black uppercase tracking-widest">Vista</span>
+                        </button>
+                        <div id="view-menu" class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                            <button data-view="default" class="w-full text-left px-4 py-3 text-[10px] font-black uppercase hover:bg-slate-50 dark:hover:bg-slate-700 border-b dark:border-slate-700 transition-colors text-slate-700 dark:text-slate-200">Padrão</button>
+                            <button data-view="compact" class="w-full text-left px-4 py-3 text-[10px] font-black uppercase hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-slate-700 dark:text-slate-200">Compacta</button>
+                        </div>
+                    </div>
+
+                    <button id="modal-reshuffle" title="Sortear Novamente" class="p-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-slate-600 dark:text-slate-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                     </button>
-                    <button id="modal-whatsapp" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 shadow-xl shadow-green-500/20 transition-all transform active:scale-95 uppercase tracking-widest">
-                        Copiar WhatsApp
+                    <button id="modal-whatsapp" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-xl font-black text-[10px] sm:text-xs flex items-center gap-2 shadow-lg shadow-green-500/20 transition-all uppercase tracking-widest active:scale-95">
+                        WhatsApp
                     </button>
-                    <button id="modal-close" class="p-3 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all">
+                    <button id="modal-close" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
             </div>
 
-            <!-- Modal Content (GRID DINÂMICA) -->
-            <div id="teams-grid" class="flex-1 p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 overflow-y-auto custom-scrollbar bg-slate-50 dark:bg-slate-950/40">
+            <!-- Grid de Times -->
+            <div id="teams-grid" class="flex-1 p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto custom-scrollbar">
                 <!-- Times via JS -->
             </div>
 
-            <!-- Copy Text Area -->
-            <div class="p-4 bg-white dark:bg-slate-900 border-t dark:border-slate-800 shrink-0">
-                <textarea id="copy-area" readonly class="w-full h-20 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl p-4 text-xs font-mono text-slate-500 focus:ring-0 resize-none"></textarea>
+            <!-- Footer Copy Area -->
+            <div class="p-3 bg-white dark:bg-slate-900 border-t dark:border-slate-800 shrink-0">
+                <textarea id="copy-area" readonly class="w-full h-16 bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-[10px] font-mono text-slate-500 focus:ring-0 resize-none"></textarea>
             </div>
         </div>
     </div>
@@ -208,6 +223,7 @@
                 tabSingle: document.getElementById('tab-single'),
                 tabBulk: document.getElementById('tab-bulk'),
                 modal: document.getElementById('modal'),
+                modalContent: document.getElementById('modal-content'),
                 teamsGrid: document.getElementById('teams-grid'),
                 copyArea: document.getElementById('copy-area'),
                 drawBtn: document.getElementById('draw-btn'),
@@ -217,13 +233,15 @@
                 themeBtn: document.getElementById('theme-toggle'),
                 clearBtn: document.getElementById('clear-all-btn'),
                 randomFactor: document.getElementById('random-factor'),
-                randomVal: document.getElementById('random-val')
+                randomVal: document.getElementById('random-val'),
+                viewOptionsBtn: document.getElementById('view-options-btn'),
+                viewMenu: document.getElementById('view-menu')
             };
 
-            let players = JSON.parse(localStorage.getItem('players_pro_v4') || '[]');
+            let players = JSON.parse(localStorage.getItem('players_pro_v16') || '[]');
             let currentTeams = [];
+            let currentViewMode = 'default';
 
-            // --- Lógica ---
             const getWeights = () => ({
                 fis: (parseFloat(elements.wFisico.value) || 0) / 100,
                 hab: (parseFloat(elements.wHabil.value) || 0) / 100,
@@ -235,7 +253,7 @@
                 return (attr.fisico * w.fis) + (attr.habilidade * w.hab) + (attr.defesa * w.def);
             };
 
-            const save = () => localStorage.setItem('players_pro_v4', JSON.stringify(players));
+            const save = () => localStorage.setItem('players_pro_v16', JSON.stringify(players));
 
             const renderPlayers = () => {
                 if (!elements.list) return;
@@ -247,24 +265,26 @@
                     const rolesStr = (p.roles || []).map(r => r === 'atk' ? 'ATA' : 'ZAG').join('+');
                     
                     const card = document.createElement('div');
-                    card.className = "bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center justify-between group shadow-sm transition-all hover:border-blue-300 dark:hover:border-blue-800 hover:shadow-md";
+                    card.className = "bg-white dark:bg-slate-800 p-2 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center justify-between group shadow-sm transition-all hover:border-blue-300 dark:hover:border-blue-800";
                     card.innerHTML = `
-                        <div class="flex items-center gap-3 overflow-hidden flex-1">
-                            <input type="checkbox" data-id="${p.id}" checked class="player-check rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-900 border-slate-300 dark:border-slate-700 h-5 w-5 cursor-pointer">
+                        <div class="flex items-center gap-2 overflow-hidden flex-1">
+                            <input type="checkbox" data-id="${p.id}" checked class="player-check rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-900 border-slate-300 dark:border-slate-700 h-4 w-4 cursor-pointer">
                             <div class="truncate">
-                                <p class="text-sm font-bold truncate flex items-center gap-1">${p.name} ${rolesStr ? `<span class="text-[9px] px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-500 font-black">${rolesStr}</span>` : ''}</p>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-[10px] font-black px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-lg border border-blue-100 dark:border-blue-800/50">${ovr.toFixed(1)}</span>
-                                    <div class="flex gap-2 text-[10px] font-bold">
-                                        <span class="text-orange-500 tracking-tighter"><span class="opacity-50">F:</span>${p.attributes.fisico}</span>
-                                        <span class="text-blue-500 tracking-tighter"><span class="opacity-50">H:</span>${p.attributes.habilidade}</span>
-                                        <span class="text-emerald-500 tracking-tighter"><span class="opacity-50">D:</span>${p.attributes.defesa}</span>
+                                <p class="text-[11px] font-black truncate flex items-center gap-1 text-slate-800 dark:text-slate-100 uppercase leading-none">
+                                    ${p.name} ${rolesStr ? `<span class="text-[8px] px-1 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-slate-500 font-black tracking-tighter">${rolesStr}</span>` : ''}
+                                </p>
+                                <div class="flex items-center gap-1.5 mt-0.5">
+                                    <span class="text-[9px] font-black px-1.5 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-md">${ovr.toFixed(1)}</span>
+                                    <div class="flex gap-1.5 text-[8px] font-black uppercase text-opacity-100">
+                                        <span class="text-orange-500">F:${p.attributes.fisico}</span>
+                                        <span class="text-blue-600">H:${p.attributes.habilidade}</span>
+                                        <span class="text-emerald-600">D:${p.attributes.defesa}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button class="delete-p p-2 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl" data-id="${p.id}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        <button class="delete-p p-1.5 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all rounded-lg" data-id="${p.id}">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     `;
                     elements.list.appendChild(card);
@@ -273,18 +293,16 @@
 
             const handleDraw = () => {
                 const selectedIds = Array.from(document.querySelectorAll('.player-check:checked')).map(cb => cb.dataset.id);
-                if (selectedIds.length < 2) return alert('Selecione pelo menos 2 jogadores presentes.');
-
+                if (selectedIds.length < 2) return alert('Selecione no mínimo 2 jogadores.');
                 const numTeams = parseInt(document.getElementById('num-teams').value) || 2;
                 const rFactor = parseFloat(elements.randomFactor.value) / 10;
-
                 const activePlayers = players.filter(p => selectedIds.includes(p.id))
                     .map(p => ({ ...p, currentOvr: calcOverall(p.attributes), sortVal: calcOverall(p.attributes) + (Math.random() * rFactor) }));
-
+                
                 const attackers = activePlayers.filter(p => p.roles && p.roles.includes('atk') && !p.roles.includes('def'));
                 const defenders = activePlayers.filter(p => p.roles && p.roles.includes('def') && !p.roles.includes('atk'));
                 const versatile = activePlayers.filter(p => !attackers.includes(p) && !defenders.includes(p));
-
+                
                 const teams = Array.from({ length: numTeams }, () => []);
                 const distribute = (list) => {
                     list.sort((a,b) => b.sortVal - a.sortVal);
@@ -297,7 +315,6 @@
                         })[0].push(p);
                     });
                 };
-
                 distribute(attackers); distribute(defenders); distribute(versatile);
                 currentTeams = teams;
                 renderModal();
@@ -306,20 +323,35 @@
             const renderModal = () => {
                 if (!elements.teamsGrid) return;
                 elements.teamsGrid.innerHTML = '';
+                elements.modalContent.className = elements.modalContent.className.replace(/view-\w+/g, '').trim();
+                elements.modalContent.classList.add(`view-${currentViewMode}`);
                 
-                const getAvg = (t) => t.reduce((s,p) => s + calcOverall(p.attributes), 0) / (t.length || 1);
+                const getAvg = (t) => t.length > 0 ? t.reduce((s,p) => s + calcOverall(p.attributes), 0) / t.length : 0;
+                const getAttrAvg = (t, attr) => t.length > 0 ? t.reduce((s,p) => s + p.attributes[attr], 0) / t.length : 0;
 
                 currentTeams.forEach((team, tIdx) => {
                     const card = document.createElement('div');
-                    card.className = "bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-3xl overflow-hidden flex flex-col h-full shadow-lg transition-all hover:shadow-xl";
+                    card.className = "team-card bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-3xl overflow-hidden flex flex-col h-[480px] shadow-sm";
+                    
+                    const fAvg = getAttrAvg(team, 'fisico').toFixed(1);
+                    const hAvg = getAttrAvg(team, 'habilidade').toFixed(1);
+                    const dAvg = getAttrAvg(team, 'defesa').toFixed(1);
+
                     card.innerHTML = `
-                        <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-b dark:border-slate-800 flex justify-between items-center shrink-0">
-                            <span class="text-xs font-black uppercase text-slate-500 tracking-wider">Time ${tIdx+1}</span>
-                            <span class="text-xs font-black bg-blue-100 dark:bg-blue-900/40 text-blue-600 px-3 py-1 rounded-xl border border-blue-200 dark:border-blue-800 shadow-sm">MÉDIA: ${getAvg(team).toFixed(1)}</span>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-800/50 border-b dark:border-slate-800 flex flex-col gap-1 shrink-0">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider">Time ${tIdx+1}</span>
+                                <span class="text-[10px] font-black bg-blue-600 text-white px-2 py-1 rounded-lg border border-blue-500">MÉDIA: ${getAvg(team).toFixed(1)}</span>
+                            </div>
+                            <div class="flex justify-between px-1 text-[8px] font-black uppercase tracking-tighter italic">
+                                <span class="text-orange-600">F:${fAvg}</span>
+                                <span class="text-blue-600">H:${hAvg}</span>
+                                <span class="text-emerald-600">D:${dAvg}</span>
+                            </div>
                         </div>
-                        <ul class="team-drop-zone p-3 flex-1 space-y-2 min-h-[160px]" data-idx="${tIdx}"></ul>
-                        <div class="p-3 bg-slate-50/30 border-t dark:border-slate-800 flex justify-center">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${team.length} JOGADORES</span>
+                        <ul class="team-drop-zone p-2 flex-1 space-y-1.5 min-h-0 overflow-y-auto custom-scrollbar" data-idx="${tIdx}"></ul>
+                        <div class="p-2 bg-slate-50/20 border-t dark:border-slate-800 flex justify-center shrink-0">
+                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">${team.length} ATLETAS</span>
                         </div>
                     `;
 
@@ -340,19 +372,22 @@
 
                     team.sort((a,b) => calcOverall(b.attributes) - calcOverall(a.attributes)).forEach(p => {
                         const rolesIcons = (p.roles || []).map(r => r === 'atk' ? '⚔️' : '🛡️').join('');
+                        const pOverall = calcOverall(p.attributes);
                         const li = document.createElement('li');
                         li.draggable = true;
-                        li.className = "bg-white dark:bg-slate-800 border dark:border-slate-700 p-3 rounded-2xl flex items-center justify-between shadow-sm cursor-grab active:cursor-grabbing hover:border-blue-200 dark:hover:border-blue-900 transition-all";
+                        li.className = "bg-white dark:bg-slate-800 border dark:border-slate-700 p-2 rounded-xl flex items-center justify-between shadow-sm cursor-grab active:cursor-grabbing hover:border-blue-200 dark:hover:border-blue-800 transition-all active:scale-[0.98]";
                         li.innerHTML = `
                             <div class="overflow-hidden flex-1">
-                                <p class="text-sm font-bold truncate flex items-center gap-1">${p.name} <span class="text-[10px] opacity-70">${rolesIcons}</span></p>
-                                <div class="flex gap-3 text-[11px] font-bold mt-1.5 border-t dark:border-slate-700/50 pt-1">
-                                    <span class="text-orange-500"><span class="opacity-40 uppercase text-[9px] mr-0.5">F:</span>${p.attributes.fisico}</span> 
-                                    <span class="text-blue-500"><span class="opacity-40 uppercase text-[9px] mr-0.5">H:</span>${p.attributes.habilidade}</span> 
-                                    <span class="text-emerald-500"><span class="opacity-40 uppercase text-[9px] mr-0.5">D:</span>${p.attributes.defesa}</span>
+                                <p class="text-[12px] font-black truncate flex items-center gap-1.5 leading-none text-slate-800 dark:text-slate-100 uppercase">
+                                    ${p.name} <span class="role-emoji role-emoji-large block" title="${rolesIcons.includes('⚔️') ? 'ATA' : 'ZAG'}">${rolesIcons}</span>
+                                </p>
+                                <div class="player-details flex gap-2 text-[9px] font-black mt-1 pt-0.5 border-t dark:border-slate-700/50 uppercase leading-none">
+                                    <span class="text-orange-500">F:${p.attributes.fisico}</span> 
+                                    <span class="text-blue-600">H:${p.attributes.habilidade}</span> 
+                                    <span class="text-emerald-600">D:${p.attributes.defesa}</span>
                                 </div>
                             </div>
-                            <span class="text-xs font-black text-blue-600 dark:text-blue-400 ml-3 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-lg shrink-0">${calcOverall(p.attributes).toFixed(1)}</span>
+                            <span class="text-[11px] font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-lg border border-blue-100 dark:border-blue-800/50 shrink-0 ml-1.5 shadow-sm">${pOverall.toFixed(1)}</span>
                         `;
                         li.addEventListener('dragstart', e => {
                             e.dataTransfer.setData('text/plain', p.id);
@@ -362,16 +397,18 @@
                         li.addEventListener('dragend', () => li.classList.remove('dragging'));
                         list.appendChild(li);
                     });
+
                     elements.teamsGrid.appendChild(card);
                 });
 
-                // Update copy area
+                // Atualizar área de cópia
                 let shareText = `⚽ *SORTEIO DE TIMES PRO* ⚽\n\n`;
                 currentTeams.forEach((t, i) => {
-                    shareText += `${i % 2 === 0 ? '🔵' : '🔴'} *TIME ${i + 1}* (Média: ${getAvg(t).toFixed(1)})\n`;
+                    const avg = t.length > 0 ? t.reduce((s,p) => s + calcOverall(p.attributes), 0) / t.length : 0;
+                    shareText += `${i % 2 === 0 ? '🔵' : '🔴'} *TIME ${i + 1}* (Média: ${avg.toFixed(1)})\n`;
                     t.sort((a,b) => calcOverall(b.attributes) - calcOverall(a.attributes)).forEach(p => {
                         const rs = (p.roles || []).map(r => r === 'atk' ? 'ATA' : 'ZAG').join('+');
-                        shareText += `▫️ ${p.name} ${rs ? `[${rs}]` : ''} (${calcOverall(p.attributes).toFixed(1)}) [F:${p.attributes.fisico} H:${p.attributes.habilidade} D:${p.attributes.defesa}]\n`;
+                        shareText += `▫️ ${p.name.toUpperCase()} ${rs ? `[${rs}]` : ''} (${calcOverall(p.attributes).toFixed(1)}) [F:${p.attributes.fisico} H:${p.attributes.habilidade} D:${p.attributes.defesa}]\n`;
                     });
                     shareText += `\n`;
                 });
@@ -379,16 +416,23 @@
                 elements.modal.classList.remove('hidden');
             };
 
-            // --- Eventos ---
+            // --- Handlers UI ---
+            elements.viewOptionsBtn.onclick = (e) => { e.stopPropagation(); elements.viewMenu.classList.toggle('hidden'); };
+            document.addEventListener('click', () => elements.viewMenu.classList.add('hidden'));
+            elements.viewMenu.querySelectorAll('button').forEach(btn => {
+                btn.onclick = () => { currentViewMode = btn.dataset.view; renderModal(); };
+            });
+
             elements.tabSingle.onclick = () => {
                 elements.formSingle.classList.remove('hidden'); elements.formBulk.classList.add('hidden');
-                elements.tabSingle.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 transition-all";
-                elements.tabBulk.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg text-slate-500 transition-all";
+                elements.tabSingle.className = "flex-1 py-1.5 text-[10px] font-black rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 uppercase tracking-tighter";
+                elements.tabBulk.className = "flex-1 py-1.5 text-[10px] font-black rounded-lg text-slate-500 uppercase tracking-tighter";
             };
+
             elements.tabBulk.onclick = () => {
                 elements.formBulk.classList.remove('hidden'); elements.formSingle.classList.add('hidden');
-                elements.tabBulk.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 transition-all";
-                elements.tabSingle.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg text-slate-500 transition-all";
+                elements.tabBulk.className = "flex-1 py-1.5 text-[10px] font-black rounded-lg bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400 uppercase tracking-tighter";
+                elements.tabSingle.className = "flex-1 py-1.5 text-[10px] font-black rounded-lg text-slate-500 uppercase tracking-tighter";
             };
 
             elements.formSingle.onsubmit = (e) => {
@@ -411,22 +455,21 @@
 
             elements.formBulk.onsubmit = (e) => {
                 e.preventDefault();
-                const lines = document.getElementById('bulk-input').value.split('\n');
-                lines.forEach(l => {
+                const text = document.getElementById('bulk-input').value.trim();
+                if (!text) return;
+                text.split('\n').forEach(l => {
                     const p = l.split(/[;,]/).map(x => x.trim());
                     if (p.length >= 2) {
                         const name = p[0];
                         const r = [];
                         let f, h, d, lastPart;
-                        
-                        if (p.length >= 4) { // Nome, Fis, Hab, Def, Função
+                        if (p.length >= 4) {
                             f = parseFloat(p[1]); h = parseFloat(p[2]); d = parseFloat(p[3]);
                             lastPart = p[4] || "";
-                        } else { // Nome, Nota, Função
+                        } else {
                             f = h = d = parseFloat(p[1]);
                             lastPart = p[2] || "";
                         }
-
                         if (!isNaN(f)) {
                             if (lastPart.toUpperCase().includes('ATA')) r.push('atk');
                             if (lastPart.toUpperCase().includes('ZAG')) r.push('def');
@@ -459,15 +502,15 @@
             elements.themeBtn.onclick = () => {
                 document.documentElement.classList.toggle('dark');
                 const isDark = document.documentElement.classList.contains('dark');
-                localStorage.setItem('theme_v4', isDark ? 'dark' : 'light');
+                localStorage.setItem('theme_v16', isDark ? 'dark' : 'light');
                 document.getElementById('theme-icon').innerHTML = isDark ? 
                     '<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />' :
                     '<path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />';
             };
 
-            if (localStorage.getItem('theme_v4') === 'dark') {
+            if (localStorage.getItem('theme_v16') === 'dark') {
                 document.documentElement.classList.add('dark');
-                elements.themeBtn.click(); document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').innerHTML = '<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />';
             }
 
             renderPlayers();
@@ -475,4 +518,3 @@
     </script>
 </body>
 </html>
-
