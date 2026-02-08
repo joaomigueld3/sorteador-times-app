@@ -1,39 +1,44 @@
 "use client";
-import { Player } from "../data/mocks";
-import { Trophy, TrendingUp, TrendingDown } from "lucide-react";
+import { Player, calculateOverall } from "../data/mocks";
+import { Trophy } from "lucide-react";
 
 export default function RankingList({ players }: { players: Player[] }) {
-  // Ordenar por média geral (Overall) decrescente
-  const sortedPlayers = [...players].sort((a, b) => {
-    const avgA = (a.currentStats.fisico + a.currentStats.habilidade + a.currentStats.defesa) / 3;
-    const avgB = (b.currentStats.fisico + b.currentStats.habilidade + b.currentStats.defesa) / 3;
-    return avgB - avgA;
-  });
+  const sortedPlayers = [...players].sort((a, b) => 
+    calculateOverall(b.currentStats) - calculateOverall(a.currentStats)
+  );
 
   return (
-    <div className="space-y-2 pb-20">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 animate-[fadeIn_0.3s_ease-in-out]">
       {sortedPlayers.map((player, index) => {
-        const overall = Math.round((player.currentStats.fisico + player.currentStats.habilidade + player.currentStats.defesa) / 3);
-        
+        const overall = calculateOverall(player.currentStats);
         return (
-          <div key={player.id} className="flex items-center bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
-            <div className="w-8 text-center font-bold text-gray-400 text-sm">#{index + 1}</div>
+          <div 
+            key={player.id} 
+            className="flex items-center p-3 rounded-lg border shadow-sm relative overflow-hidden"
+            style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)' }}
+          >
+            {/* Medalha/Posição */}
+            <div className={`w-8 font-black text-xl italic z-10 ${index < 3 ? 'text-[var(--accent)]' : 'text-[var(--text-secondary)] opacity-50'}`}>
+              #{index + 1}
+            </div>
             
-            <div className="flex-1 ml-2">
-              <div className="font-bold text-gray-800 text-sm">{player.name}</div>
-              <div className="text-xs text-gray-500 flex gap-2">
+            <div className="flex-1 ml-2 z-10">
+              <div className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{player.name}</div>
+              <div className="text-[10px] opacity-70 flex gap-2" style={{ color: 'var(--text-secondary)' }}>
                 <span>F: {player.currentStats.fisico}</span>
                 <span>H: {player.currentStats.habilidade}</span>
                 <span>D: {player.currentStats.defesa}</span>
               </div>
             </div>
 
-            <div className="flex flex-col items-end">
-               <div className={`text-lg font-bold ${overall >= 80 ? 'text-green-600' : overall < 60 ? 'text-red-500' : 'text-yellow-600'}`}>
-                 {overall}
-               </div>
-               <span className="text-[10px] text-gray-400">GERAL</span>
+            <div className="text-xl font-black z-10" style={{ color: 'var(--accent)' }}>
+               {overall}
             </div>
+
+            {/* Efeito de Destaque para Top 3 */}
+            {index < 3 && (
+              <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[var(--accent)] to-transparent opacity-10 pointer-events-none"/>
+            )}
           </div>
         );
       })}

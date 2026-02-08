@@ -1,91 +1,131 @@
 "use client";
 
-import { useState } from "react";
-import { MOCK_PLAYERS, Player, PlayerAttributes } from "../data/mocks";
+import { useState, useEffect } from "react";
+import { MOCK_PLAYERS, PlayerAttributes, calculateOverall } from "../data/mocks";
 import VotingCard from "../components/VotingCard";
+import RankingList from "../components/RankingList";
 import LoginModal from "../components/LoginModal";
-import { Trophy, LogOut } from "lucide-react";
+import { Sun, Moon, LogOut, CheckCircle2 } from "lucide-react";
 
 export default function Home() {
-  // Estado do usuário logado
-  const [currentUser, setCurrentUser] = useState<Player | null>(null);
+  // Tema padrão agora é 'dark' (Cyber Green)
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState<'vote' | 'ranking'>('vote');
   const [votes, setVotes] = useState<Record<string, PlayerAttributes>>({});
+
+  useEffect(() => {
+    // Se theme for 'dark', remove atributo (usa :root). Se for 'light', seta atributo.
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
   const handleVoteChange = (playerId: string, newStats: PlayerAttributes) => {
     setVotes((prev) => ({ ...prev, [playerId]: newStats }));
   };
 
-  const handleSubmit = () => {
-    const payload = {
-      voterId: currentUser?.id,
-      votes: votes,
-      timestamp: new Date().toISOString()
-    };
-    console.log("Enviando Payload Seguro:", payload);
-    alert(`Obrigado, ${currentUser?.name}! Seus votos foram computados.`);
-    // Aqui você redirecionaria ou limparia o estado
-  };
+  // ORDENAÇÃO DECRESCENTE POR NOTA ATUAL
+  const sortedPlayersForVoting = [...MOCK_PLAYERS].sort((a, b) => 
+    calculateOverall(b.currentStats) - calculateOverall(a.currentStats)
+  );
 
-  // Se não estiver logado, mostra o modal
   if (!currentUser) {
-    return <LoginModal onLogin={setCurrentUser} />;
+    return <LoginModal onLogin={setCurrentUser} toggleTheme={toggleTheme} currentTheme={theme} />;
   }
 
   return (
-    <main className="min-h-screen bg-dark-900 text-gray-100 font-sans selection:bg-neon-400 selection:text-black">
-      {/* HEADER */}
-      <header className="bg-dark-800/80 backdrop-blur-md p-4 sticky top-0 z-30 border-b border-dark-700">
-        <div className="max-w-md mx-auto flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-black text-white italic tracking-tighter flex items-center gap-2">
-              SORTEIO<span className="text-neon-400">PRO</span>
-            </h1>
-            <p className="text-[10px] text-gray-400 font-medium">
-              Votando como: <span className="text-neon-400">{currentUser.name}</span>
-            </p>
+    <main className="min-h-screen pb-24 transition-colors duration-300">
+      
+      {/* HEADER NAVBAR */}
+      <header className="sticky top-0 z-30 px-4 py-3 shadow-sm backdrop-blur-md border-b"
+        style={{ backgroundColor: 'var(--bg-header)', borderColor: 'var(--border)' }}>
+        
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
+          <h1 className="text-lg font-black italic tracking-tighter text-white">
+            Perronhas<span style={{ color: 'var(--accent)' }}>Rebirth</span>
+          </h1>
+
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-white/10 transition-colors text-white"
+            >
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+            </button>
+            
+            <button 
+              onClick={() => setCurrentUser(null)}
+              className="p-2 rounded-full hover:bg-red-500/20 text-white/80 hover:text-red-200"
+            >
+              <LogOut size={20} />
+            </button>
           </div>
-          <button 
-            onClick={() => setCurrentUser(null)}
-            className="p-2 bg-dark-700 rounded-full text-gray-400 hover:text-white hover:bg-red-500/20 hover:text-red-400 transition-all"
+        </div>
+        
+        <div className="max-w-md mx-auto mt-2 flex p-1 rounded-lg bg-black/10">
+          <button
+            onClick={() => setActiveTab('vote')}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${activeTab === 'vote' ? 'shadow-sm' : 'opacity-60 hover:opacity-100'}`}
+            style={{ 
+              backgroundColor: activeTab === 'vote' ? 'var(--bg-card)' : 'transparent',
+              color: activeTab === 'vote' ? 'var(--accent-text)' : 'white'
+            }}
           >
-            <LogOut size={16} />
+            VOTAÇÃO
+          </button>
+          <button
+            onClick={() => setActiveTab('ranking')}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${activeTab === 'ranking' ? 'shadow-sm' : 'opacity-60 hover:opacity-100'}`}
+            style={{ 
+              backgroundColor: activeTab === 'ranking' ? 'var(--bg-card)' : 'transparent',
+              color: activeTab === 'ranking' ? 'var(--accent-text)' : 'white'
+            }}
+          >
+            RANKING TOP
           </button>
         </div>
       </header>
 
-      {/* LISTA DE VOTAÇÃO */}
-      <div className="p-4 pb-32 max-w-md mx-auto">
-        <div className="bg-neon-400/5 border border-neon-400/20 rounded-lg p-3 mb-6 flex gap-3 items-center">
-            <Trophy className="text-neon-400 shrink-0" size={20} />
-            <p className="text-xs text-gray-300">
-              As notas são calculadas automaticamente: 
-              <span className="text-neon-400 font-bold ml-1">Físico 40%</span> • 
-              <span className="text-neon-400 font-bold ml-1">Hab. 35%</span> • 
-              <span className="text-neon-400 font-bold ml-1">Def. 25%</span>
-            </p>
-        </div>
-
-        {MOCK_PLAYERS.map((player) => (
-          <VotingCard 
-            key={player.id} 
-            player={player} 
-            onVoteChange={handleVoteChange}
-            isSelf={currentUser.id === player.id}
-          />
-        ))}
+      {/* CONTEÚDO PRINCIPAL */}
+      <div className="p-4 max-w-5xl mx-auto animate-[fadeIn_0.5s_ease]">
+        {activeTab === 'vote' ? (
+          <>
+            <div className="mb-4 text-xs text-center opacity-70" style={{ color: 'var(--text-secondary)' }}>
+              Jogadores ordenados por ranking atual. Ajuste quem mudou de nível.
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {sortedPlayersForVoting.map((player) => (
+                <VotingCard 
+                  key={player.id} 
+                  player={player} 
+                  onVoteChange={handleVoteChange}
+                  isSelf={currentUser.id === player.id}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          <RankingList players={MOCK_PLAYERS} />
+        )}
       </div>
 
-      {/* BOTÃO FLUTUANTE */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-dark-900 to-transparent z-20">
-        <div className="max-w-md mx-auto">
+      {activeTab === 'vote' && (
+        <div className="fixed bottom-6 left-0 right-0 px-4 flex justify-center z-20 pointer-events-none">
           <button
-            onClick={handleSubmit}
-            className="w-full bg-neon-400 text-dark-900 py-4 rounded-xl font-black text-lg shadow-[0_0_20px_rgba(204,255,0,0.3)] hover:shadow-[0_0_30px_rgba(204,255,0,0.5)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
+            onClick={() => alert('Votos salvos!')}
+            className="pointer-events-auto shadow-lg hover:scale-105 active:scale-95 transition-transform px-8 py-3 rounded-full font-bold flex items-center gap-2"
+            style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-text)' }}
           >
-            Confirmar Votação
+            <CheckCircle2 size={18} /> CONFIRMAR RODADA
           </button>
         </div>
-      </div>
+      )}
     </main>
   );
 }
