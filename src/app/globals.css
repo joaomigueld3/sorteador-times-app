@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-fade-in: fadeIn 0.3s ease-in-out;
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* DEFINIÇÃO DE TEMAS */
+:root {
+  /* TEMA PADRÃO: CYBER GREEN (Antigo Dark) */
+  --bg-page: #022c22; /* green-950 */
+  --bg-card: #064e3b; /* green-900 */
+  --bg-header: #065f46; /* emerald-800 */
+  --text-primary: #ecfccb; /* lime-100 */
+  --text-secondary: #a7f3d0; /* emerald-200 */
+  --accent: #bef264; /* lime-300 (Neon) */
+  --accent-text: #022c22; /* Texto preto no botão neon */
+  --border: #047857; /* emerald-700 */
+  --slider-track: #022c22;
+}
+
+[data-theme="light"] {
+  /* TEMA NOVO: ESPORTES DA SORTE (Azul/Branco/Amarelo) */
+  --bg-page: #f0f9ff; /* sky-50 */
+  --bg-card: #ffffff;
+  --bg-header: #0284c7; /* sky-600 */
+  --text-primary: #0c4a6e; /* sky-900 */
+  --text-secondary: #64748b; /* slate-500 */
+  --accent: #fbbf24; /* amber-400 (Amarelo Apostas) */
+  --accent-text: #0c4a6e; /* Texto azul no botão amarelo */
+  --border: #bae6fd; /* sky-200 */
+  --slider-track: #e2e8f0;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* Slider Customizado */
+  input[type=range] {
+    @apply appearance-none bg-transparent;
+  }
+  
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 9999px;
+    background: var(--accent);
+    cursor: pointer;
+    margin-top: -6px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.3);
+  }
+  
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: var(--slider-track);
+    border-radius: 9999px;
+  }
+}
