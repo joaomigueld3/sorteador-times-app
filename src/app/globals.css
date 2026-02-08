@@ -1,26 +1,42 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* AQUI DEFINIMOS O TEMA NO NOVO FORMATO V4 */
+@theme {
+  --color-neon-400: #CCFF00;
+  --color-neon-500: #B3E600;
+  --color-neon-600: #8DB300;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-dark-900: #0F1115;
+  --color-dark-800: #181B21;
+  --color-dark-700: #22262F;
+  --color-dark-600: #2C3039;
+  
+  --animate-fade-in: fadeIn 0.3s ease-in-out;
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Estilos Globais */
+@layer base {
+  body {
+    background-color: var(--color-dark-900);
+    color: white;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Reset dos Sliders */
+  input[type=range] {
+    @apply appearance-none bg-transparent;
+  }
+  
+  input[type=range]::-webkit-slider-thumb {
+    @apply appearance-none w-4 h-4 rounded-full bg-neon-400 cursor-pointer -mt-1;
+  }
+  
+  input[type=range]::-webkit-slider-runnable-track {
+    @apply w-full h-2 bg-dark-700 rounded-lg;
+  }
 }
