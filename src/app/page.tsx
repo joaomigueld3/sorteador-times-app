@@ -1,21 +1,37 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MOCK_PLAYERS, PlayerAttributes, calculateOverall } from "../data/mocks";
+import { api } from "../services/api"; // Importando a API real
 import VotingCard from "../components/VotingCard";
 import RankingList from "../components/RankingList";
 import LoginModal from "../components/LoginModal";
 import { Sun, Moon, LogOut, CheckCircle2 } from "lucide-react";
+// Função auxiliar simples para calcular média (substituindo o mock)
+const calculateOverall = (stats: any) => {
+  if (!stats) return 0;
+  return Math.round((stats.fisico * 0.4) + (stats.habilidade * 0.35) + (stats.defesa * 0.25));
+};
 
 export default function Home() {
-  // Tema padrão agora é 'dark' (Cyber Green)
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  
+  // ESTADOS REAIS
+  const [players, setPlayers] = useState<any[]>([]); // Lista do Backend
+  const [currentUser, setCurrentUser] = useState<any>(null); // Usuário Logado
+  const [activeMatchId, setActiveMatchId] = useState<string | null>(null); // Rodada
+  
   const [activeTab, setActiveTab] = useState<'vote' | 'ranking'>('vote');
-  const [votes, setVotes] = useState<Record<string, PlayerAttributes>>({});
+  const [votes, setVotes] = useState<Record<string, any>>({});
 
+  // 1. Carrega jogadores ao iniciar
   useEffect(() => {
-    // Se theme for 'dark', remove atributo (usa :root). Se for 'light', seta atributo.
+    api.getPlayers().then(data => {
+      if (Array.isArray(data)) {
+        setPlayers(data);
+      }
+    });
+
+    // Configura tema
     if (theme === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
     } else {
@@ -25,17 +41,51 @@ export default function Home() {
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
-  const handleVoteChange = (playerId: string, newStats: PlayerAttributes) => {
+  // Callback chamado pelo LoginModal quando o login dá certo no Back
+  const handleLoginSuccess = (user: any, matchId: string) => {
+    setCurrentUser(user);
+    setActiveMatchId(matchId);
+  };
+
+  const handleVoteChange = (playerId: string, newStats: any) => {
     setVotes((prev) => ({ ...prev, [playerId]: newStats }));
   };
 
-  // ORDENAÇÃO DECRESCENTE POR NOTA ATUAL
-  const sortedPlayersForVoting = [...MOCK_PLAYERS].sort((a, b) => 
+  // Envia votos para o Backend
+  const confirmRound = async () => {
+    if (!currentUser || !activeMatchId) {
+      alert("Erro: Nenhuma rodada ativa encontrada.");
+      return;
+    }
+
+    if (Object.keys(votes).length === 0) {
+      alert("Você não alterou nenhuma nota.");
+      return;
+    }
+
+    try {
+      await api.submitVote(currentUser._id, activeMatchId, votes);
+      alert(`Sucesso! Seus votos foram computados na rodada.`);
+    } catch (error) {
+      alert("Erro ao enviar votos. Tente novamente.");
+    }
+  };
+
+  // Ordena players para exibição
+  const sortedPlayersForVoting = [...players].sort((a, b) => 
     calculateOverall(b.currentStats) - calculateOverall(a.currentStats)
   );
 
+  // Se não estiver logado, mostra Modal passando a lista de jogadores carregada
   if (!currentUser) {
-    return <LoginModal onLogin={setCurrentUser} toggleTheme={toggleTheme} currentTheme={theme} />;
+    return (
+      <LoginModal 
+        players={players} 
+        onLogin={handleLoginSuccess} 
+        toggleTheme={toggleTheme} 
+        currentTheme={theme} 
+      />
+    );
   }
 
   return (
@@ -59,7 +109,7 @@ export default function Home() {
             </button>
             
             <button 
-              onClick={() => setCurrentUser(null)}
+              onClick={() => { setCurrentUser(null); setActiveMatchId(null); }}
               className="p-2 rounded-full hover:bg-red-500/20 text-white/80 hover:text-red-200"
             >
               <LogOut size={20} />
@@ -96,29 +146,29 @@ export default function Home() {
         {activeTab === 'vote' ? (
           <>
             <div className="mb-4 text-xs text-center opacity-70" style={{ color: 'var(--text-secondary)' }}>
-              Jogadores ordenados por ranking atual. Ajuste quem mudou de nível.
+              Rodada Ativa. Seu voto é atualizado em tempo real.
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {sortedPlayersForVoting.map((player) => (
                 <VotingCard 
-                  key={player.id} 
-                  player={player} 
+                  key={player._id}  // MongoDB usa _id
+                  player={{...player, id: player._id}} // Adaptador rápido se o VotingCard usa .id
                   onVoteChange={handleVoteChange}
-                  isSelf={currentUser.id === player.id}
+                  isSelf={currentUser._id === player._id}
                 />
               ))}
             </div>
           </>
         ) : (
-          <RankingList players={MOCK_PLAYERS} />
+          <RankingList players={players.map(p => ({...p, id: p._id}))} />
         )}
       </div>
 
       {activeTab === 'vote' && (
         <div className="fixed bottom-6 left-0 right-0 px-4 flex justify-center z-20 pointer-events-none">
           <button
-            onClick={() => alert('Votos salvos!')}
+            onClick={confirmRound}
             className="pointer-events-auto shadow-lg hover:scale-105 active:scale-95 transition-transform px-8 py-3 rounded-full font-bold flex items-center gap-2"
             style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-text)' }}
           >
