@@ -15,6 +15,7 @@ interface CompactRowProps {
   label: string;
   icon: React.ReactNode;
   val: number;
+  color: string;
   onChange: (value: number) => void;
 }
 
@@ -105,18 +106,21 @@ export default function VotingCard({ player, onVoteChange, isSelf }: VotingCardP
           <CompactRow 
             label="FIS (40%)" 
             icon={<Activity size={14}/>} 
+            color="var(--attr-fis)"
             val={stats.fisico} 
             onChange={(v: number) => handleUpdate({...stats, fisico: v})} 
           />
           <CompactRow 
             label="HAB (35%)" 
             icon={<Zap size={14}/>} 
+            color="var(--attr-hab)"
             val={stats.habilidade} 
             onChange={(v: number) => handleUpdate({...stats, habilidade: v})} 
           />
           <CompactRow 
             label="DEF (25%)" 
             icon={<Shield size={14}/>} 
+            color="var(--attr-def)"
             val={stats.defesa} 
             onChange={(v: number) => handleUpdate({...stats, defesa: v})} 
           />
@@ -127,9 +131,9 @@ export default function VotingCard({ player, onVoteChange, isSelf }: VotingCardP
 }
 
 // Componente auxiliar tipado corretamente
-const CompactRow = ({ label, icon, val, onChange }: CompactRowProps) => (
+const CompactRow = ({ label, icon, val, color, onChange }: CompactRowProps) => (
   <div className="flex items-center gap-3 text-xs">
-    <div className="flex items-center gap-2 w-24 shrink-0" style={{ color: 'var(--text-secondary)' }}>
+    <div className="flex items-center gap-2 w-24 shrink-0" style={{ color }}>
       {icon} <span className="font-medium">{label}</span>
     </div>
     <input

@@ -25,9 +25,9 @@ export default function RankingList({ players }: { players: Player[] }) {
             <div className="flex-1 ml-2 z-10">
               <div className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{player.name}</div>
               <div className="text-[10px] opacity-70 flex gap-2" style={{ color: 'var(--text-secondary)' }}>
-                <span>F: {player.currentStats.fisico}</span>
-                <span>H: {player.currentStats.habilidade}</span>
-                <span>D: {player.currentStats.defesa}</span>
+                <span style={{ color: 'var(--attr-fis)' }}>F: {player.currentStats.fisico}</span>
+                <span style={{ color: 'var(--attr-hab)' }}>H: {player.currentStats.habilidade}</span>
+                <span style={{ color: 'var(--attr-def)' }}>D: {player.currentStats.defesa}</span>
               </div>
             </div>
 

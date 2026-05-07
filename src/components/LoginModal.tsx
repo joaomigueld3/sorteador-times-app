@@ -1,16 +1,17 @@
 "use client";
 import { useState } from "react";
-import { api } from "../services/api"; // Importando a API
+import { api, getErrorMessage } from "../services/api"; // Importando a API
 import { Lock, User, CheckCircle2, Sun, Moon } from "lucide-react";
 
 interface LoginModalProps {
   players: any[]; // Recebe a lista do Backend
-  onLogin: (player: any, matchId: string) => void; // Agora retorna também o MatchID
+  onLogin: (player: any, matchId: string | null) => void; // Agora retorna também o MatchID
   toggleTheme: () => void;
   currentTheme: 'light' | 'dark';
+  backendError?: string;
 }
 
-export default function LoginModal({ players, onLogin, toggleTheme, currentTheme }: LoginModalProps) {
+export default function LoginModal({ players, onLogin, toggleTheme, currentTheme, backendError }: LoginModalProps) {
   const [selectedPlayerId, setSelectedPlayerId] = useState<string>("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
@@ -33,7 +34,7 @@ export default function LoginModal({ players, onLogin, toggleTheme, currentTheme
         onLogin(response.player, response.activeMatchId);
       }
     } catch (err) {
-      setError("Erro de conexão com o servidor.");
+      setError(getErrorMessage(err, "Erro de conexao com o servidor."));
     } finally {
       setLoading(false);
     }
@@ -63,6 +64,12 @@ export default function LoginModal({ players, onLogin, toggleTheme, currentTheme
         </div>
 
         <div className="p-6 space-y-4">
+          {backendError && (
+            <p className="text-red-300 text-xs text-center font-semibold rounded-lg border px-3 py-2"
+              style={{ borderColor: '#fca5a5', backgroundColor: 'rgba(127, 29, 29, 0.35)' }}>
+              {backendError}
+            </p>
+          )}
           <div className="space-y-1">
             <label className="text-xs ml-1 opacity-70" style={{ color: 'var(--text-secondary)' }}>Selecione seu nome</label>
             <select
