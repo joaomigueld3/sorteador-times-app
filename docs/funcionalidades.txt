@@ -29,3 +29,7 @@ no front, é fundamental que: quando o jogador for votar as notas estejam pré-p
 vamos começar com o front, use React ou Next, faça um mock simulando conexão com backend; 
 
 votação se os times da última rodada foram equilibrados
+
+front end: copiar com notas, e sem notas
+
+fazer a lista de presentes com IA dentro do próprio site (https://gemini.google.com/share/cf019c974047)

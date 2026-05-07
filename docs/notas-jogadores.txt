@@ -1,0 +1,24 @@
+Must (I. Fellows), 9,10,8, ATA
+Sundown, 10,10,8, ATA+ZAG
+Pernambuco, 10,10,8, ATA
+Cheldon, 9,9,10, ATA+ZAG
+Lucas Guedes, 9,9,8, ATA+ZAG
+Sales, 8,9,8, ATA+ZAG
+Rafael Coelho, 8,8,7, ATA
+
+Ighor Honorato, 6,9,9, ATA+ZAG
+Caio Almeida, 9,8,9, ZAG
+Emanuel, 9,7,8, ATA+ZAG
+Heverton, 8,8,8, ZAG
+Rennar, 7,8,8, ZAG
+Diogo, 9,6,7, ATA
+Juninho, 7,8,6, ATA
+Silas, 7,7,7, ZAG
+Miguel Guerra, 7,6,9, ZAG
+Petros, 6,6,10, ZAG
+
+Luquinhas, 7,7,5, ATA
+João Miguel, 6,6,6, ATA
+Jeff Pai, 6,7,6, ZAG
+Victor Hugo, 5,7,7, ATA
+Mateus Souza, 5,5,5, ZAG

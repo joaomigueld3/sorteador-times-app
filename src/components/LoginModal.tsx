@@ -1,27 +1,42 @@
 "use client";
 import { useState } from "react";
-import { MOCK_PLAYERS, Player } from "../data/mocks";
+import { api, getErrorMessage } from "../services/api"; // Importando a API
 import { Lock, User, CheckCircle2, Sun, Moon } from "lucide-react";
 
 interface LoginModalProps {
-  onLogin: (player: Player) => void;
+  players: any[]; // Recebe a lista do Backend
+  onLogin: (player: any, matchId: string | null) => void; // Agora retorna também o MatchID
   toggleTheme: () => void;
   currentTheme: 'light' | 'dark';
+  backendError?: string;
 }
 
-export default function LoginModal({ onLogin, toggleTheme, currentTheme }: LoginModalProps) {
+export default function LoginModal({ players, onLogin, toggleTheme, currentTheme, backendError }: LoginModalProps) {
   const [selectedPlayerId, setSelectedPlayerId] = useState<string>("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    const player = MOCK_PLAYERS.find(p => p.id === selectedPlayerId);
-    if (!player) return;
+  const handleLogin = async () => {
+    if (!selectedPlayerId || pin.length < 4) return;
+    
+    setLoading(true);
+    setError("");
 
-    if (player.pin === pin) {
-      onLogin(player);
-    } else {
-      setError("PIN incorreto (Use 1234)");
+    try {
+      // Chama o Backend para validar
+      const response = await api.login(selectedPlayerId, pin);
+
+      if (response.error) {
+        setError(response.error);
+      } else {
+        // Sucesso! Passa o user e a rodada ativa
+        onLogin(response.player, response.activeMatchId);
+      }
+    } catch (err) {
+      setError(getErrorMessage(err, "Erro de conexao com o servidor."));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -30,7 +45,6 @@ export default function LoginModal({ onLogin, toggleTheme, currentTheme }: Login
       <div className="w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden relative"
            style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)', borderWidth: '1px' }}>
         
-        {/* Botão de Tema no Login */}
         <button 
           onClick={toggleTheme}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-black/10 transition-colors z-10"
@@ -39,7 +53,6 @@ export default function LoginModal({ onLogin, toggleTheme, currentTheme }: Login
           {currentTheme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
         </button>
 
-        {/* Header do Modal */}
         <div className="p-6 text-center relative" style={{ backgroundColor: 'var(--bg-header)' }}>
           <div className="mx-auto w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-3">
             <User className="text-white w-6 h-6" />
@@ -51,6 +64,12 @@ export default function LoginModal({ onLogin, toggleTheme, currentTheme }: Login
         </div>
 
         <div className="p-6 space-y-4">
+          {backendError && (
+            <p className="text-red-300 text-xs text-center font-semibold rounded-lg border px-3 py-2"
+              style={{ borderColor: '#fca5a5', backgroundColor: 'rgba(127, 29, 29, 0.35)' }}>
+              {backendError}
+            </p>
+          )}
           <div className="space-y-1">
             <label className="text-xs ml-1 opacity-70" style={{ color: 'var(--text-secondary)' }}>Selecione seu nome</label>
             <select
@@ -59,13 +78,14 @@ export default function LoginModal({ onLogin, toggleTheme, currentTheme }: Login
               className="w-full p-3 rounded-xl border outline-none appearance-none font-bold"
               style={{ 
                 backgroundColor: 'var(--bg-page)', 
-                borderColor: 'var(--border)',
-                color: 'var(--text-primary)'
+                borderColor: 'var(--border)', 
+                color: 'var(--text-primary)' 
               }}
             >
               <option value="">-- Selecione --</option>
-              {MOCK_PLAYERS.map(p => (
-                <option key={p.id} value={p.id}>{p.name}</option>
+              {/* Agora usa a lista real vinda das props */}
+              {players.map(p => (
+                <option key={p._id} value={p._id}>{p.name}</option>
               ))}
             </select>
           </div>
@@ -82,8 +102,8 @@ export default function LoginModal({ onLogin, toggleTheme, currentTheme }: Login
                 className="w-full p-3 rounded-xl border outline-none tracking-widest text-center font-mono"
                 style={{ 
                     backgroundColor: 'var(--bg-page)', 
-                    borderColor: 'var(--border)',
-                    color: 'var(--text-primary)'
+                    borderColor: 'var(--border)', 
+                    color: 'var(--text-primary)' 
                   }}
               />
               <Lock className="absolute left-3 top-3.5 w-4 h-4 opacity-50" style={{ color: 'var(--text-secondary)' }} />
@@ -94,11 +114,11 @@ export default function LoginModal({ onLogin, toggleTheme, currentTheme }: Login
 
           <button
             onClick={handleLogin}
-            disabled={!selectedPlayerId || pin.length < 4}
+            disabled={loading || !selectedPlayerId || pin.length < 4}
             className="w-full font-bold py-3.5 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg"
             style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-text)' }}
           >
-            Entrar e Votar <CheckCircle2 size={18} />
+            {loading ? "Verificando..." : "Entrar e Votar"} {!loading && <CheckCircle2 size={18} />}
           </button>
         </div>
       </div>
