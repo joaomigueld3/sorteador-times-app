@@ -3,6 +3,14 @@ import { Player, calculateOverall } from "../data/mocks";
 import { Trophy } from "lucide-react";
 
 export default function RankingList({ players }: { players: Player[] }) {
+  const ratingColor = (value: number) => {
+    if (value < 50) return "#ef4444";
+    if (value < 60) return "#f97316";
+    if (value < 70) return "#eab308";
+    if (value < 80) return "#22c55e";
+    if (value < 90) return "#38bdf8";
+    return "#a78bfa";
+  };
   const sortedPlayers = [...players].sort((a, b) => 
     calculateOverall(b.currentStats) - calculateOverall(a.currentStats)
   );
@@ -31,7 +39,7 @@ export default function RankingList({ players }: { players: Player[] }) {
               </div>
             </div>
 
-            <div className="text-xl font-black z-10" style={{ color: 'var(--accent)' }}>
+            <div className="text-xl font-black z-10" style={{ color: ratingColor(overall) }}>
                {overall}
             </div>
 

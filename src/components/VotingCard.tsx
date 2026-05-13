@@ -25,6 +25,14 @@ export default function VotingCard({ player, onVoteChange, isSelf }: VotingCardP
   
   // Recalcula o overall visualmente
   const currentOverall = calculateOverall(stats);
+  const ratingColor = (value: number) => {
+    if (value < 50) return "#ef4444";
+    if (value < 60) return "#f97316";
+    if (value < 70) return "#eab308";
+    if (value < 80) return "#22c55e";
+    if (value < 90) return "#38bdf8";
+    return "#a78bfa";
+  };
 
   const handleUpdate = (newStats: PlayerAttributes) => {
     setStats(newStats);
@@ -40,7 +48,7 @@ export default function VotingCard({ player, onVoteChange, isSelf }: VotingCardP
 
   return (
     <div 
-      className={`rounded-lg border transition-all duration-200 overflow-hidden shadow-sm mb-3
+      className={`rounded-lg border transition-all duration-200 overflow-hidden shadow-sm
       ${isSelf ? 'ring-2 ring-[var(--accent)]' : ''}`}
       style={{ 
         backgroundColor: 'var(--bg-card)', 
@@ -71,24 +79,37 @@ export default function VotingCard({ player, onVoteChange, isSelf }: VotingCardP
                 ))}
               </div>
             </div>
-            <span className="font-bold text-lg leading-none" style={{ color: 'var(--accent)' }}>
+            <span className="font-bold text-lg leading-none" style={{ color: ratingColor(currentOverall) }}>
               {currentOverall}
             </span>
           </div>
           
           {/* Slider Principal */}
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={currentOverall}
-            onChange={(e) => {
-              const val = Number(e.target.value);
-              // Atualiza todos juntos no modo simplificado
-              handleUpdate({ fisico: val, habilidade: val, defesa: val });
-            }}
-            className="w-full block"
-          />
+          <div className="flex items-center gap-2">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={currentOverall}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                handleUpdate({ fisico: val, habilidade: val, defesa: val });
+              }}
+              className="w-full block"
+            />
+            <input
+              type="number"
+              min="0"
+              max="100"
+              value={currentOverall}
+              onChange={(e) => {
+                const val = Math.max(0, Math.min(100, Number(e.target.value) || 0));
+                handleUpdate({ fisico: val, habilidade: val, defesa: val });
+              }}
+              className="w-14 rounded border px-1.5 py-0.5 text-[11px]"
+              style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-page)', color: 'var(--text-primary)' }}
+            />
+          </div>
         </div>
 
         <button 
@@ -143,6 +164,15 @@ const CompactRow = ({ label, icon, val, color, onChange }: CompactRowProps) => (
       value={val}
       onChange={(e) => onChange(Number(e.target.value))}
       className="flex-1"
+    />
+    <input
+      type="number"
+      min="0"
+      max="100"
+      value={val}
+      onChange={(e) => onChange(Math.max(0, Math.min(100, Number(e.target.value) || 0)))}
+      className="w-14 rounded border px-1.5 py-0.5 text-[11px]"
+      style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-page)', color: 'var(--text-primary)' }}
     />
     <span className="w-8 text-right font-bold" style={{ color: 'var(--text-primary)' }}>{val}</span>
   </div>
