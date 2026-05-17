@@ -9,9 +9,11 @@ interface LoginModalProps {
   toggleTheme: () => void;
   currentTheme: 'light' | 'dark';
   backendError?: string;
+  offlineMode?: boolean;
+  onBack?: () => void;
 }
 
-export default function LoginModal({ players, onLogin, toggleTheme, currentTheme, backendError }: LoginModalProps) {
+export default function LoginModal({ players, onLogin, toggleTheme, currentTheme, backendError, offlineMode, onBack }: LoginModalProps) {
   const [selectedPlayerId, setSelectedPlayerId] = useState<string>("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
@@ -24,6 +26,20 @@ export default function LoginModal({ players, onLogin, toggleTheme, currentTheme
     setError("");
 
     try {
+      if (offlineMode) {
+        const selected = players.find((p) => (p._id || p.id) === selectedPlayerId);
+        if (!selected) {
+          setError("Jogador nao encontrado.");
+          return;
+        }
+        if (String(selected.pin || "1234") !== pin) {
+          setError("PIN invalido.");
+          return;
+        }
+        onLogin(selected, null);
+        return;
+      }
+
       // Chama o Backend para validar
       const response = await api.login(selectedPlayerId, pin);
 
@@ -64,6 +80,15 @@ export default function LoginModal({ players, onLogin, toggleTheme, currentTheme
         </div>
 
         <div className="p-6 space-y-4">
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="w-full rounded-lg py-2 text-xs font-bold border"
+              style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+            >
+              Voltar ao inicio
+            </button>
+          )}
           {backendError && (
             <p className="text-red-300 text-xs text-center font-semibold rounded-lg border px-3 py-2"
               style={{ borderColor: '#fca5a5', backgroundColor: 'rgba(127, 29, 29, 0.35)' }}>
@@ -85,7 +110,7 @@ export default function LoginModal({ players, onLogin, toggleTheme, currentTheme
               <option value="">-- Selecione --</option>
               {/* Agora usa a lista real vinda das props */}
               {players.map(p => (
-                <option key={p._id} value={p._id}>{p.name}</option>
+                <option key={p._id || p.id} value={p._id || p.id}>{p.name}</option>
               ))}
             </select>
           </div>

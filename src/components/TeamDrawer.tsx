@@ -3,6 +3,7 @@
 import { CSS } from "@dnd-kit/utilities";
 import {
   DndContext,
+  DragOverlay,
   PointerSensor,
   TouchSensor,
   closestCenter,
@@ -10,10 +11,11 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core";
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useMemo, useRef, useState, type ReactNode } from "react";
-import { Copy, Shuffle, Trash2, Users } from "lucide-react";
+import { Copy, Plus, Shuffle, Trash2, Users } from "lucide-react";
 
 type DrawMode = "teams" | "players";
 type SortMode = "alpha" | "rating";
@@ -43,18 +45,40 @@ interface TeamMember extends InternalPlayer {
   sortValue: number;
 }
 
+const badgeClass = (role: "ATA" | "ZAG" | "MEI") => {
+  if (role === "ATA") return "bg-red-500/20 text-red-600 dark:text-red-300 border-red-500/30";
+  if (role === "ZAG") return "bg-blue-500/20 text-blue-600 dark:text-blue-300 border-blue-500/30";
+  return "bg-green-500/20 text-green-600 dark:text-green-300 border-green-500/30";
+};
+
+const roleBadges = (roles: Role[]) => {
+  if (roles.includes("atk") && roles.includes("def")) {
+    return (
+      <>
+        <span className={`text-[9px] font-bold px-1.5 rounded border ${badgeClass("ATA")}`}>ATA</span>
+        <span className={`text-[9px] font-bold px-1.5 rounded border ${badgeClass("ZAG")}`}>ZAG</span>
+      </>
+    );
+  }
+  if (roles.includes("atk")) return <span className={`text-[9px] font-bold px-1.5 rounded border ${badgeClass("ATA")}`}>ATA</span>;
+  if (roles.includes("def")) return <span className={`text-[9px] font-bold px-1.5 rounded border ${badgeClass("ZAG")}`}>ZAG</span>;
+  return <span className={`text-[9px] font-bold px-1.5 rounded border ${badgeClass("MEI")}`}>MEI</span>;
+};
+
 interface SortablePlayerRowProps {
   player: TeamMember;
   scoreLabel: string;
+  scoreColor: string;
   attrsLabel: React.ReactNode;
 }
 
-function SortablePlayerRow({ player, scoreLabel, attrsLabel }: SortablePlayerRowProps) {
+function SortablePlayerRow({ player, scoreLabel, scoreColor, attrsLabel }: SortablePlayerRowProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: player.id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.6 : 1,
+    boxShadow: isDragging ? "0 10px 24px rgba(0,0,0,0.35)" : "none",
   };
 
   return (
@@ -63,13 +87,16 @@ function SortablePlayerRow({ player, scoreLabel, attrsLabel }: SortablePlayerRow
       style={style}
       {...attributes}
       {...listeners}
-      className="text-xs rounded-md px-2 py-2 flex items-center justify-between touch-none"
+      className="text-xs rounded-md px-2 py-2 flex items-center justify-between touch-none cursor-grab active:cursor-grabbing"
     >
       <div className="min-w-0">
-        <span className="truncate block">{player.name} {player.roles.includes("atk") ? "⚔️" : ""}{player.roles.includes("def") ? "🛡️" : ""}</span>
+        <span className="truncate block flex items-center gap-1">
+          {player.name}
+          {roleBadges(player.roles)}
+        </span>
         <span className="text-[10px]" style={{ color: "var(--text-secondary)" }}>{attrsLabel}</span>
       </div>
-      <span className="font-bold">{scoreLabel}</span>
+      <span className="font-bold" style={{ color: scoreColor }}>{scoreLabel}</span>
     </div>
   );
 }
@@ -77,7 +104,7 @@ function SortablePlayerRow({ player, scoreLabel, attrsLabel }: SortablePlayerRow
 function TeamDropZone({ id, children }: { id: string; children: ReactNode }) {
   const { setNodeRef, isOver } = useDroppable({ id });
   return (
-    <div ref={setNodeRef} className={`p-2 space-y-1 min-h-20 rounded-b-md ${isOver ? "ring-1 ring-white/30" : ""}`}>
+    <div ref={setNodeRef} className={`p-2 space-y-1 min-h-20 rounded-b-md border-2 border-dashed transition-all ${isOver ? "ring-2 ring-cyan-300/50 border-cyan-300 bg-cyan-400/10" : "border-transparent"}`}>
       {children}
     </div>
   );
@@ -124,7 +151,7 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
   const [randomFactor, setRandomFactor] = useState(10);
   const [drawMode, setDrawMode] = useState<DrawMode>("teams");
   const [drawValue, setDrawValue] = useState("4");
-  const [sortMode, setSortMode] = useState<SortMode>("alpha");
+  const [sortMode, setSortMode] = useState<SortMode>("rating");
   const [selectedIds, setSelectedIds] = useState<string[]>(() => pool.map((p) => p.id));
   const [teams, setTeams] = useState<TeamMember[][]>([]);
   const [copied, setCopied] = useState(false);
@@ -132,6 +159,8 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
   const [showBank, setShowBank] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [manualTargetTeam, setManualTargetTeam] = useState(0);
+  const [activeDragId, setActiveDragId] = useState<string | null>(null);
 
   const [name, setName] = useState("");
   const [fis, setFis] = useState("70");
@@ -147,6 +176,16 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
   );
 
   const normalizeName = (value: string) => value.trim().toLocaleLowerCase("pt-BR");
+  const ratingColor = (value: number) => {
+    if (value < 50) return "#ef4444";
+    if (value < 60) return "#f97316";
+    if (value < 70) return "#eab308";
+    if (value < 80) return "#22c55e";
+    if (value < 90) return "#38bdf8";
+    return "#a78bfa";
+  };
+  const teamLabel = (idx: number) => String.fromCharCode(65 + idx);
+  const roleTextFromPlayer = (p: InternalPlayer) => (p.roles.includes("atk") && p.roles.includes("def")) ? "ATA/ZAG" : p.roles.includes("atk") ? "ATA" : p.roles.includes("def") ? "ZAG" : "MEI";
 
   const normalizeStat = (value: number) => toTensScale(value);
 
@@ -272,6 +311,31 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
     setTeams((prev) => prev.map((team) => team.filter((p) => p.id !== id)));
   };
 
+  const getConfiguredTeamCount = () => {
+    const activeCount = pool.filter((p) => selectedIds.includes(p.id)).length;
+    const parsedDrawValue = Number(drawValue) || 2;
+    return drawMode === "teams" ? Math.max(2, parsedDrawValue) : Math.max(2, Math.ceil(activeCount / Math.max(1, parsedDrawValue)));
+  };
+
+  const initManualTeams = () => {
+    const teamCount = getConfiguredTeamCount();
+    setTeams(Array.from({ length: teamCount }, () => []));
+    setManualTargetTeam(0);
+    setTimeout(() => teamsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+  };
+
+  const addPlayerToTeam = (playerId: string, teamIdx: number) => {
+    setTeams((prev) => {
+      if (!prev.length || !prev[teamIdx]) return prev;
+      const player = pool.find((p) => p.id === playerId);
+      if (!player) return prev;
+      const next = prev.map((team) => team.filter((p) => p.id !== playerId).map((p) => ({ ...p })));
+      const member: TeamMember = { ...player, currentOvr: calcOverall(player.attributes), sortValue: calcOverall(player.attributes) };
+      next[teamIdx].push(member);
+      return next;
+    });
+  };
+
   const buildTeams = () => {
     const active = pool.filter((p) => selectedIds.includes(p.id));
     if (active.length < 2) return alert("Selecione no minimo 2 jogadores.");
@@ -281,18 +345,6 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
     if (active.length < teamCount) return alert("Jogadores insuficientes para essa configuracao.");
 
     const randomScale = randomFactor / 10;
-    const decorated: TeamMember[] = active
-      .map((p) => {
-        const currentOvr = calcOverall(p.attributes);
-        const sortValue = currentOvr + Math.random() * randomScale;
-        return { ...p, currentOvr, sortValue };
-      });
-
-    const attackers = decorated.filter((p) => p.roles.includes("atk") && !p.roles.includes("def"));
-    const defenders = decorated.filter((p) => p.roles.includes("def") && !p.roles.includes("atk"));
-    const versatile = decorated.filter((p) => !attackers.includes(p) && !defenders.includes(p));
-
-    const nextTeams: TeamMember[][] = Array.from({ length: teamCount }, () => []);
     const teamPower = (team: TeamMember[]) => team.reduce((sum, p) => sum + p.currentOvr, 0);
     const teamAttrPower = (team: TeamMember[], attr: "fisico" | "habilidade" | "defesa") =>
       team.reduce((sum, p) => sum + normalizedAttrs(p.attributes)[attr], 0);
@@ -312,7 +364,21 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
       return projectedPower * 3.2 + projectedFis * 0.45 + projectedHab * 0.45 + projectedDef * 0.45 + atkPenalty + defPenalty + sizePenalty;
     };
 
-    const allocate = (group: TeamMember[]) => {
+    const buildOnce = () => {
+      const decorated: TeamMember[] = active.map((p) => {
+        const currentOvr = calcOverall(p.attributes);
+        const jitter = (Math.random() * 2 - 1) * (0.6 + randomScale * 0.5);
+        const sortValue = currentOvr + Math.random() * randomScale + jitter;
+        return { ...p, currentOvr, sortValue };
+      });
+
+      const attackers = decorated.filter((p) => p.roles.includes("atk") && !p.roles.includes("def"));
+      const defenders = decorated.filter((p) => p.roles.includes("def") && !p.roles.includes("atk"));
+      const versatile = decorated.filter((p) => !attackers.includes(p) && !defenders.includes(p));
+
+      const nextTeams: TeamMember[][] = Array.from({ length: teamCount }, () => []);
+
+      const allocate = (group: TeamMember[]) => {
       [...group]
         .sort((a, b) => b.sortValue - a.sortValue)
         .forEach((player) => {
@@ -321,15 +387,17 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
             .sort((a, b) => {
               if (a.size !== b.size) return a.size - b.size;
               if (Math.abs(a.score - b.score) > 0.0001) return a.score - b.score;
-              return a.idx - b.idx;
+              return Math.random() < 0.5 ? -1 : 1;
             })[0];
           nextTeams[target.idx].push(player);
         });
-    };
+      };
 
-    allocate(attackers);
-    allocate(defenders);
-    allocate(versatile);
+      allocate(attackers);
+      allocate(defenders);
+      allocate(versatile);
+      return nextTeams;
+    };
 
     const balanceQuality = (candidateTeams: TeamMember[][]) => {
       const powers = candidateTeams.map(teamPower);
@@ -343,20 +411,20 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
       return powerVariance * 1.6 + powerSpread * 0.9 + roleSpread * 1.2;
     };
 
-    const tryImproveBySwapping = () => {
+    const tryImproveBySwapping = (candidateTeams: TeamMember[][]) => {
       let improved = false;
-      let bestQuality = balanceQuality(nextTeams);
-      for (let a = 0; a < nextTeams.length; a++) {
-        for (let b = a + 1; b < nextTeams.length; b++) {
-          for (let i = 0; i < nextTeams[a].length; i++) {
-            for (let j = 0; j < nextTeams[b].length; j++) {
-              [nextTeams[a][i], nextTeams[b][j]] = [nextTeams[b][j], nextTeams[a][i]];
-              const newQuality = balanceQuality(nextTeams);
+      let bestQuality = balanceQuality(candidateTeams);
+      for (let a = 0; a < candidateTeams.length; a++) {
+        for (let b = a + 1; b < candidateTeams.length; b++) {
+          for (let i = 0; i < candidateTeams[a].length; i++) {
+            for (let j = 0; j < candidateTeams[b].length; j++) {
+              [candidateTeams[a][i], candidateTeams[b][j]] = [candidateTeams[b][j], candidateTeams[a][i]];
+              const newQuality = balanceQuality(candidateTeams);
               if (newQuality + 0.0001 < bestQuality) {
                 bestQuality = newQuality;
                 improved = true;
               } else {
-                [nextTeams[a][i], nextTeams[b][j]] = [nextTeams[b][j], nextTeams[a][i]];
+                [candidateTeams[a][i], candidateTeams[b][j]] = [candidateTeams[b][j], candidateTeams[a][i]];
               }
             }
           }
@@ -365,11 +433,20 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
       return improved;
     };
 
-    for (let pass = 0; pass < 12; pass++) {
-      if (!tryImproveBySwapping()) break;
+    const attempts = Math.max(4, Math.round(randomFactor / 12) + 4);
+    const candidates: Array<{ teams: TeamMember[][]; quality: number }> = [];
+    for (let t = 0; t < attempts; t++) {
+      const attempt = buildOnce();
+      for (let pass = 0; pass < 8; pass++) {
+        if (!tryImproveBySwapping(attempt)) break;
+      }
+      candidates.push({ teams: attempt, quality: balanceQuality(attempt) });
     }
 
-    return nextTeams;
+    candidates.sort((a, b) => a.quality - b.quality);
+    const poolSize = Math.min(3, candidates.length);
+    const choice = Math.floor(Math.random() * poolSize);
+    return candidates[choice].teams;
   };
 
   const handleDraw = () => {
@@ -395,31 +472,45 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (!over) return;
+    if (!over) {
+      setActiveDragId(null);
+      return;
+    }
 
     const activeId = String(active.id);
     const overId = String(over.id);
 
     const fromIdx = teams.findIndex((team) => team.some((p) => p.id === activeId));
-    if (fromIdx < 0) return;
+    if (fromIdx < 0) {
+      setActiveDragId(null);
+      return;
+    }
 
     const toIdx = overId.startsWith("team-")
       ? Number(overId.replace("team-", ""))
       : teams.findIndex((team) => team.some((p) => p.id === overId));
 
-    if (toIdx < 0 || toIdx === fromIdx) return;
+    if (toIdx < 0 || toIdx === fromIdx) {
+      setActiveDragId(null);
+      return;
+    }
     movePlayer(fromIdx, toIdx, activeId);
+    setActiveDragId(null);
+  };
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveDragId(String(event.active.id));
   };
 
   const shareText = useMemo(() => {
     let text = "⚽ *SORTEIO DE TIMES PRO* ⚽\n\n";
     teams.forEach((team, i) => {
       const avg = team.length ? team.reduce((s, p) => s + calcOverall(p.attributes), 0) / team.length : 0;
-      text += `${i % 2 === 0 ? "🔵" : "🔴"} *TIME ${i + 1}* (Media: ${avg.toFixed(1)})\n`;
+      text += `${i % 2 === 0 ? "🔵" : "🔴"} *TIME ${teamLabel(i)}* (Media: ${avg.toFixed(1)})\n`;
       [...team]
         .sort((a, b) => calcOverall(b.attributes) - calcOverall(a.attributes))
         .forEach((p) => {
-          const label = [p.roles.includes("atk") ? "ATA" : "", p.roles.includes("def") ? "ZAG" : ""].filter(Boolean).join("+");
+          const label = roleTextFromPlayer(p);
           text += `▫️ ${p.name.toUpperCase()} ${label ? `[${label}]` : ""} (${calcOverall(p.attributes).toFixed(1)}) [F:${p.attributes.fisico} H:${p.attributes.habilidade} D:${p.attributes.defesa}]\n`;
         });
       text += "\n";
@@ -537,7 +628,7 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
         </div>
         <div className="space-y-2">
           <div className="text-sm font-bold">Cadastro em lote</div>
-          <textarea value={bulkInput} onChange={(e) => setBulkInput(e.target.value)} rows={5} className="w-full rounded-md p-2 border text-xs" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }} placeholder="NOME, NOTA, ATA&#10;NOME, F, H, D, ZAG" />
+          <textarea value={bulkInput} onChange={(e) => setBulkInput(e.target.value)} rows={5} className="w-full rounded-md p-2 border text-xs" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }} placeholder={`NOME, NOTA, ATA\nNOME, F, H, D, ZAG`} />
           <button onClick={importBulk} className="px-3 py-2 rounded-md font-bold text-xs border" style={{ borderColor: "var(--border)" }}>Importar</button>
         </div>
         </div>}
@@ -547,7 +638,7 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
       <section className="rounded-xl border p-3" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}>
         <div className="flex items-center justify-between mb-2">
           <button type="button" onClick={() => setShowBank((v) => !v)} className="font-bold text-sm flex items-center gap-2" style={{ color: "var(--text-primary)" }}><span>{showBank ? "▾" : "▸"}</span><Users size={16} /> Banco de jogadores ({pool.length})</button>
-          <div className="flex items-center gap-2 text-xs" style={{ color: "var(--text-secondary)" }}>
+          <div className="flex items-center gap-2 text-xs flex-wrap justify-end" style={{ color: "var(--text-secondary)" }}>
             <select value={sortMode} onChange={(e) => setSortMode(e.target.value as SortMode)} className="rounded-md p-1 border" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }}>
               <option value="alpha">Alfabetica</option>
               <option value="rating">Nota do jogador</option>
@@ -561,15 +652,30 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
             <button onClick={handleDraw} className="px-3 py-1.5 rounded-md font-bold text-xs flex items-center gap-1.5" style={{ backgroundColor: "var(--accent)", color: "var(--accent-text)" }}>
               <Shuffle size={14} /> Gerar times
             </button>
+            <button onClick={initManualTeams} className="px-3 py-1.5 rounded-md font-bold text-xs border" style={{ borderColor: "var(--border)", color: "var(--text-primary)" }}>
+              Montagem manual
+            </button>
           </div>
         </div>
-        {showBank && <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
+        {teams.length > 0 && (
+          <div className="mb-2 flex items-center gap-2 text-xs">
+            <span style={{ color: "var(--text-secondary)" }}>Adicionar no time:</span>
+            <select value={manualTargetTeam} onChange={(e) => setManualTargetTeam(Number(e.target.value))} className="rounded-md p-1 border" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }}>
+              {teams.map((_, idx) => <option key={idx} value={idx}>Time {teamLabel(idx)}</option>)}
+            </select>
+          </div>
+        )}
+        {showBank && <div className="grid grid-cols-1 gap-1.5 max-w-2xl">
           {sortedPlayers.map((p) => (
-            <label key={p.id} className="rounded-lg border p-2 flex items-center justify-between gap-2" style={{ borderColor: "var(--border)" }}>
-              <div className="flex items-center gap-2 min-w-0">
+            <label key={p.id} className="rounded-lg border px-2 py-1.5 flex items-center justify-between gap-1" style={{ borderColor: "var(--border)" }}>
+              <div className="flex items-center gap-1.5 min-w-0">
                 <input type="checkbox" checked={selectedIds.includes(p.id)} onChange={(e) => setSelectedIds((prev) => (e.target.checked ? [...prev, p.id] : prev.filter((id) => id !== p.id)))} />
                 <div className="min-w-0">
-                  <p className="text-xs font-black truncate">{p.name} {p.roles.includes("atk") ? "⚔️" : ""}{p.roles.includes("def") ? "🛡️" : ""}</p>
+                  <p className="text-[11px] font-black truncate flex items-center gap-1">
+                    {p.name}
+                    {roleBadges(p.roles)}
+                    <span style={{ color: ratingColor(calcOverall(p.attributes)) }}>{calcOverall(p.attributes).toFixed(1)}</span>
+                  </p>
                   <p className="text-[11px]" style={{ color: "var(--text-secondary)" }}>
                     <span style={{ color: "var(--attr-fis)" }}>F:{normalizedAttrs(p.attributes).fisico}</span>{" "}
                     <span style={{ color: "var(--attr-hab)" }}>H:{normalizedAttrs(p.attributes).habilidade}</span>{" "}
@@ -577,8 +683,12 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="text-xs font-black" style={{ color: "var(--accent)" }}>{calcOverall(p.attributes).toFixed(1)}</div>
+               <div className="flex items-center gap-0.5">
+                {teams.length > 0 && (
+                  <button type="button" onClick={() => addPlayerToTeam(p.id, manualTargetTeam)} className="text-emerald-400 hover:text-emerald-300" aria-label="Adicionar ao time">
+                    <Plus size={14} />
+                  </button>
+                )}
                 <button type="button" onClick={() => removeOne(p.id)} className="text-red-400 hover:text-red-300" aria-label="Apagar jogador">×</button>
               </div>
             </label>
@@ -599,7 +709,10 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
           <div className="mb-2 text-xs font-bold" style={{ color: "var(--text-secondary)" }}>
             Media geral dos times: <span style={{ color: "var(--accent)" }}>{teamMetrics.globalAvg.toFixed(1)}</span>
           </div>
-          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <div className="mb-2 text-[11px]" style={{ color: "var(--text-secondary)" }}>
+            Arraste e solte jogadores entre cards para rebalancear manualmente.
+          </div>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={() => setActiveDragId(null)}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           {teams.map((team, idx) => {
               const avg = teamMetrics.byTeam[idx]?.avg ?? 0;
@@ -614,7 +727,7 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
               return (
                 <div key={idx} className="rounded-xl border overflow-hidden" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}>
                   <div className="p-2 border-b flex items-center justify-between" style={{ borderColor: "var(--border)" }}>
-                    <span className="text-xs font-black">Time {idx + 1}</span>
+                    <span className="text-xs font-black">Time {teamLabel(idx)} ({team.length})</span>
                     <span className="text-xs font-black" style={{ color: "var(--accent)" }}>
                       NOT: {avg.toFixed(1)} <span style={{ color: diffColor }}>({diffLabel})</span>
                     </span>
@@ -627,10 +740,11 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
                   <SortableContext items={team.map((p) => p.id)} strategy={verticalListSortingStrategy}>
                     <TeamDropZone id={`team-${idx}`}>
                       {[...team].sort((a, b) => calcOverall(b.attributes) - calcOverall(a.attributes)).map((p) => (
-                        <div key={p.id} style={{ backgroundColor: "var(--bg-page)" }} className="rounded-md">
+                        <div key={p.id} style={{ backgroundColor: "var(--bg-page)" }} className="rounded-md border border-transparent hover:border-cyan-300/60 transition-colors">
                           <SortablePlayerRow
                             player={p}
                             scoreLabel={calcOverall(p.attributes).toFixed(1)}
+                            scoreColor={ratingColor(calcOverall(p.attributes))}
                             attrsLabel={
                               <>
                                 <span style={{ color: "var(--attr-fis)" }}>F:{normalizedAttrs(p.attributes).fisico}</span>{" "}
@@ -650,6 +764,13 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
               );
             })}
           </div>
+          <DragOverlay>
+            {activeDragId ? (
+              <div className="rounded-md px-3 py-2 text-xs font-bold shadow-2xl border" style={{ backgroundColor: "var(--bg-card)", borderColor: "#67e8f9", color: "var(--text-primary)", cursor: "grabbing" }}>
+                ✋ Movendo jogador...
+              </div>
+            ) : null}
+          </DragOverlay>
           </DndContext>
         </section>
       )}
