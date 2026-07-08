@@ -18,9 +18,6 @@ export default function HomePage() {
           <Link href="/sorteio" className="rounded-xl px-4 py-4 font-bold text-sm border text-center" style={{ borderColor: "var(--border)", color: "var(--text-primary)" }}>
             Sorteador Novo
           </Link>
-          <Link href="/sorteador-antigo" className="rounded-xl px-4 py-4 font-bold text-sm border text-center" style={{ borderColor: "var(--border)", color: "var(--text-primary)" }}>
-            Sorteador Antigo
-          </Link>
         </div>
       </div>
     </main>
