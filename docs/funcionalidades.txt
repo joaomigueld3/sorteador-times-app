@@ -7,11 +7,6 @@ sorteio: balanceamento do time com base em atributos, ajuste com drop & drag, tx
 cartinha do fifa com animação basica; 
 cada jogador upa a própria foto em 3 versões
 
-ótimo, nessa conversa quero continuar desenvolvimento; 
-
-primeiro me ajude a decidir a melhor forma de continuar, não forneça código;
-
-
 
 Quero um app: 
 
@@ -33,3 +28,7 @@ votação se os times da última rodada foram equilibrados
 front end: copiar com notas, e sem notas
 
 fazer a lista de presentes com IA dentro do próprio site (https://gemini.google.com/share/cf019c974047)
+
+lista de jogadores ao lado dos times, drag drop para montar manual
+espaço para rolagem no mobile
+modifique o botao 'copiar times' para 'copiar com notas' e crie ao lado 'copiar sem notas'
