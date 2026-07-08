@@ -1,15 +1,15 @@
 [
-  { "name": "Must (I. Fellows)", "currentStats": { "fisico": 90, "habilidade": 100, "defesa": 70 }, "positions": ["ATA"] },
+  { "name": "Must (I. Fellows)", "currentStats": { "fisico": 80, "habilidade": 100, "defesa": 70 }, "positions": ["ATA"] },
   { "name": "Sundown", "currentStats": { "fisico": 100, "habilidade": 100, "defesa": 80 }, "positions": ["ATA", "ZAG"] },
   { "name": "Pernambuco", "currentStats": { "fisico": 100, "habilidade": 100, "defesa": 80 }, "positions": ["ATA"] },
   { "name": "Cheldon", "currentStats": { "fisico": 90, "habilidade": 90, "defesa": 100 }, "positions": ["ATA", "ZAG"] },
-  { "name": "Lucas Guedes", "currentStats": { "fisico": 100, "habilidade": 90, "defesa": 70 }, "positions": ["ATA", "ZAG"] },
+  { "name": "Lucas Guedes", "currentStats": { "fisico": 100, "habilidade": 100, "defesa": 80 }, "positions": ["ATA", "ZAG"] },
   { "name": "Sales", "currentStats": { "fisico": 80, "habilidade": 90, "defesa": 80 }, "positions": ["ATA", "ZAG"] },
   { "name": "Rafael Coelho", "currentStats": { "fisico": 80, "habilidade": 80, "defesa": 70 }, "positions": ["ATA"] },
   { "name": "Ighor Honorato", "currentStats": { "fisico": 70, "habilidade": 100, "defesa": 80 }, "positions": ["ATA", "ZAG"] },
   { "name": "Caio Almeida", "currentStats": { "fisico": 90, "habilidade": 80, "defesa": 90 }, "positions": ["ZAG"] },
   { "name": "Emanuel", "currentStats": { "fisico": 90, "habilidade": 70, "defesa": 80 }, "positions": ["ATA", "ZAG"] },
-  { "name": "Heverton", "currentStats": { "fisico": 80, "habilidade": 80, "defesa": 80 }, "positions": ["ZAG"] },
+  { "name": "Heverton", "currentStats": { "fisico": 70, "habilidade": 70, "defesa": 80 }, "positions": ["ZAG"] },
   { "name": "Rennar", "currentStats": { "fisico": 70, "habilidade": 80, "defesa": 80 }, "positions": ["ZAG"] },
   { "name": "Diogo", "currentStats": { "fisico": 90, "habilidade": 60, "defesa": 70 }, "positions": ["ATA"] },
   { "name": "Juninho", "currentStats": { "fisico": 70, "habilidade": 80, "defesa": 70 }, "positions": ["ATA"] },
@@ -21,5 +21,9 @@
   { "name": "Joao Miguel", "currentStats": { "fisico": 60, "habilidade": 60, "defesa": 60 }, "positions": ["ATA"] },
   { "name": "Jeff Pai", "currentStats": { "fisico": 60, "habilidade": 70, "defesa": 60 }, "positions": ["ZAG"] },
   { "name": "Victor Hugo", "currentStats": { "fisico": 60, "habilidade": 80, "defesa": 60 }, "positions": ["ATA"] },
-  { "name": "Mateus Souza", "currentStats": { "fisico": 50, "habilidade": 50, "defesa": 50 }, "positions": ["ZAG"] }
+  { "name": "Mateus Souza", "currentStats": { "fisico": 50, "habilidade": 50, "defesa": 50 }, "positions": ["ZAG"] },
+  { "name": "Deodato", "currentStats": { "fisico": 70, "habilidade": 60, "defesa": 70 }, "positions": ["ATA", "ZAG"] },
+  { "name": "Raffa Tangamandapio", "currentStats": { "fisico": 60, "habilidade": 70, "defesa": 60 }, "positions": ["ZAG"] },
+  { "name": "Luciano", "currentStats": { "fisico": 70, "habilidade": 80, "defesa": 70 }, "positions": ["ZAG"] }
+
 ]
