@@ -114,7 +114,7 @@ const STORAGE_KEY = "players_pro_v17";
 
 const toTensScale = (value: number) => {
   const normalizedBase = value <= 10 ? value * 10 : value;
-  const rounded = Math.round(normalizedBase / 10) * 10;
+  const rounded = Math.round(normalizedBase);
   if (rounded < 10) return 10;
   if (rounded > 100) return 100;
   return rounded;
