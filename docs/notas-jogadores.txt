@@ -1,3 +1,5 @@
+Nome, Físico (Corre?), Habilidade(Drible, Chute, Passe), Defesa, Posição
+
 Must (I. Fellows), 8,10,7, ATA
 Sundown, 10,10,8, ATA+ZAG
 Pernambuco, 10,10,8, ATA

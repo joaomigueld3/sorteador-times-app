@@ -1,0 +1,24 @@
+Nome, Fisico, Habilidade, Defesa, Posição
+
+Sundown, 93, 94, 65, ATA+ZAG
+Lucas Guedes, 87, 82, 67, ATA+ZAG
+Pernambuco, 84, 88, 62, ATA
+Cheldon, 80, 77, 89, ATA+ZAG
+Caio Almeida, 80, 68, 82, ATA+ZAG
+Rennar, 76, 68, 71, ZAG
+Emanuel, 75, 65, 74, ATA+ZAG
+Must, 72, 89, 61, ATA
+Luquinhas, 70, 71, 45, ATA
+Rafael Coelho, 69, 74, 62, ATA
+Heverton, 66, 67, 71, ATA+ZAG
+Ighor, 65, 78, 82, ATA+ZAG
+Deodato, 58, 65, 62, ATA+ZAG
+Juninho, 58, 63, 61, ATA+ZAG
+Miguel Guerra, 56, 47, 73, ZAG
+Victor Hugo, 55, 76, 52, ATA
+Luciano, 51, 61, 54, ZAG
+João Miguel, 47, 53, 48, ATA
+Mateus Souza, 47, 45, 55, ZAG
+
+Mattias, 75, 70, 70, ATA+ZAG
+Raffa Tang, 60, 65, 60, ATA+ZAG
