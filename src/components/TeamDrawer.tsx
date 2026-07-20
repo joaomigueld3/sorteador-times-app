@@ -153,37 +153,75 @@ const STORAGE_KEY = "players_pro_v17";
 
 const toTensScale = (value: number) => {
   const normalizedBase = value <= 10 ? value * 10 : value;
-  const rounded = Math.round(normalizedBase / 10) * 10;
+  const rounded = Math.round(normalizedBase);
   if (rounded < 10) return 10;
   if (rounded > 100) return 100;
   return rounded;
 };
 
-const roleFromPositions = (positions: string[]): Role[] => {
-  const roles: Role[] = [];
-  if (positions.includes("ATA")) roles.push("atk");
-  if (positions.includes("ZAG") || positions.includes("GOL")) roles.push("def");
-  return roles;
+const normName = (s: string) => s.trim().toLocaleLowerCase("pt-BR");
+
+const parseTxtNotes = (text: string): InternalPlayer[] => {
+  const parsed: InternalPlayer[] = [];
+  text.split("\n").forEach((line) => {
+    const parts = line.split(/[;,]/).map((p) => p.trim()).filter(Boolean);
+    if (parts.length < 2) return;
+    const playerName = parts[0];
+    if (parsed.some((p) => normName(p.name) === normName(playerName))) return;
+    let nf = Number(parts[1]);
+    let nh = Number(parts[1]);
+    let nd = Number(parts[1]);
+    let rolePart = parts[2] || "";
+    if (parts.length >= 4) {
+      nf = Number(parts[1]);
+      nh = Number(parts[2]);
+      nd = Number(parts[3]);
+      rolePart = parts[4] || "";
+    }
+    if ([nf, nh, nd].some((v) => Number.isNaN(v))) return;
+    const roles: Role[] = [];
+    if (rolePart.toUpperCase().includes("ATA")) roles.push("atk");
+    if (rolePart.toUpperCase().includes("ZAG")) roles.push("def");
+    parsed.push({
+      id: crypto.randomUUID(),
+      name: playerName,
+      attributes: { fisico: toTensScale(nf), habilidade: toTensScale(nh), defesa: toTensScale(nd) },
+      roles,
+    });
+  });
+  return parsed;
 };
 
-const toInternal = (players: SourcePlayer[]): InternalPlayer[] =>
-  players.map((p) => ({
-    id: p._id || p.id || crypto.randomUUID(),
-    name: p.name,
-    attributes: {
-      fisico: toTensScale(p.currentStats.fisico),
-      habilidade: toTensScale(p.currentStats.habilidade),
-      defesa: toTensScale(p.currentStats.defesa),
-    },
-    roles: roleFromPositions(p.positions),
-  }));
+// Snapshot de docs/notas-planilha.txt — usado como padrão inicial (sem fetch).
+// Para dados frescos do arquivo, use o botão "Notas planilha".
+const PLANILHA_SNAPSHOT = `Sundown, 93, 94, 65, ATA+ZAG
+Lucas Guedes, 87, 82, 67, ATA+ZAG
+Pernambuco, 84, 88, 62, ATA
+Cheldon, 80, 77, 89, ATA+ZAG
+Caio Almeida, 80, 68, 82, ATA+ZAG
+Rennar, 76, 68, 71, ZAG
+Emanuel, 75, 65, 74, ATA+ZAG
+Must, 72, 89, 61, ATA
+Luquinhas, 70, 71, 45, ATA
+Rafael Coelho, 69, 74, 62, ATA
+Heverton, 66, 67, 71, ATA+ZAG
+Ighor, 65, 78, 82, ATA+ZAG
+Deodato, 58, 65, 62, ATA+ZAG
+Juninho, 58, 63, 61, ATA+ZAG
+Miguel Guerra, 56, 47, 73, ZAG
+Victor Hugo, 55, 76, 52, ATA
+Luciano, 51, 61, 54, ZAG
+João Miguel, 47, 53, 48, ATA
+Mateus Souza, 47, 45, 55, ZAG
+Mattias, 75, 70, 70, ATA+ZAG
+Raffa Tang, 60, 65, 60, ATA+ZAG`;
 
-export default function TeamDrawer({ players }: TeamDrawerProps) {
+export default function TeamDrawer({}: TeamDrawerProps) {
   const [pool, setPool] = useState<InternalPlayer[]>(() => {
-    if (typeof window === "undefined") return toInternal(players);
+    if (typeof window === "undefined") return parseTxtNotes(PLANILHA_SNAPSHOT);
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) return JSON.parse(saved) as InternalPlayer[];
-    return toInternal(players);
+    return parseTxtNotes(PLANILHA_SNAPSHOT);
   });
 
   const [weights, setWeights] = useState({ fis: "40", hab: "35", def: "25" });
@@ -208,6 +246,7 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
   const [def, setDef] = useState("70");
   const [atk, setAtk] = useState(false);
   const [defRole, setDefRole] = useState(false);
+  const [loadingNotes, setLoadingNotes] = useState<"adm" | "planilha" | null>(null);
 
   const teamsSectionRef = useRef<HTMLElement | null>(null);
   const sensors = useSensors(
@@ -335,6 +374,28 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
     persist([...pool, ...parsed]);
     setSelectedIds((prev) => [...prev, ...parsed.map((p) => p.id)]);
     setBulkInput("");
+  };
+
+  const loadFromPlanilha = async () => {
+    setLoadingNotes("planilha");
+    try {
+      const res = await fetch("/notas-planilha.txt", { cache: "no-store" });
+      if (!res.ok) throw new Error();
+      const parsed = parseTxtNotes(await res.text());
+      if (parsed.length > 0) { persist(parsed); setSelectedIds(parsed.map((p) => p.id)); setTeams([]); }
+    } catch { alert("Erro ao carregar notas da planilha."); }
+    finally { setLoadingNotes(null); }
+  };
+
+  const loadFromADM = async () => {
+    setLoadingNotes("adm");
+    try {
+      const res = await fetch("/notas-jogadores.txt", { cache: "no-store" });
+      if (!res.ok) throw new Error();
+      const parsed = parseTxtNotes(await res.text());
+      if (parsed.length > 0) { persist(parsed); setSelectedIds(parsed.map((p) => p.id)); setTeams([]); }
+    } catch { alert("Erro ao carregar notas ADM."); }
+    finally { setLoadingNotes(null); }
   };
 
   const clearAll = () => {
@@ -711,7 +772,17 @@ export default function TeamDrawer({ players }: TeamDrawerProps) {
       <div className={teams.length > 0 ? "lg:grid lg:grid-cols-[23rem_minmax(0,1fr)] lg:gap-4 lg:items-start" : ""}>
       <section className={`rounded-xl border p-3 ${teams.length > 0 ? "lg:sticky lg:top-20" : ""}`} style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}>
         <div className="flex items-center justify-between mb-2">
-          <button type="button" onClick={() => setShowBank((v) => !v)} className="font-bold text-sm flex items-center gap-2" style={{ color: "var(--text-primary)" }}><span>{showBank ? "▾" : "▸"}</span><Users size={16} /> Banco de jogadores ({pool.length})</button>
+          <div className="flex items-center gap-2 flex-wrap">
+            <button type="button" onClick={() => setShowBank((v) => !v)} className="font-bold text-sm flex items-center gap-2" style={{ color: "var(--text-primary)" }}><span>{showBank ? "▾" : "▸"}</span><Users size={16} /> Banco de jogadores ({pool.length})</button>
+            <div className="flex items-center gap-1">
+              <button onClick={loadFromPlanilha} disabled={loadingNotes !== null} className="px-2 py-0.5 rounded border text-[11px] font-bold disabled:opacity-50" style={{ borderColor: "var(--accent)", color: "var(--accent)" }}>
+                {loadingNotes === "planilha" ? "..." : "Notas planilha"}
+              </button>
+              <button onClick={loadFromADM} disabled={loadingNotes !== null} className="px-2 py-0.5 rounded border text-[11px] font-bold disabled:opacity-50" style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}>
+                {loadingNotes === "adm" ? "..." : "Notas ADM"}
+              </button>
+            </div>
+          </div>
           <div className="hidden md:flex items-center gap-2 text-xs flex-wrap" style={{ color: "var(--text-secondary)" }}>
             <select value={sortMode} onChange={(e) => setSortMode(e.target.value as SortMode)} className="rounded-md p-1 border" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }}>
               <option value="alpha">Alfabetica</option>

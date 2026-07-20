@@ -28,3 +28,19 @@ Jeff Pai, 6,7,6, ZAG
 Victor Hugo, 6,8,6, ATA
 Mateus Souza, 5,5,5, ZAG
 
+adicionar os diaristas regulares (separado)
+Pedro Lyra, 8,8,8, ZAG
+Lucas Mago, 10,10,7, ATA
+Candido, 6,7,7, ATA+ZAG
+Pedro Augusto, 9,8,8, ATA+ZAG
+Paulo, 7,6,7, ZAG
+Beto (Cantor), 6,7,7, ZAG
+Lucas Galego, 6,6,6, ATA
+Raffa Tang, 6,5,6, ATA+ZAG
+Almir Mago, 5,5,6, ZAG
+
+Teo, 6,5,6, ATA+ZAG
+Bernardo, 7,9,6, ATA
+
+
+1: voto dos diretores
