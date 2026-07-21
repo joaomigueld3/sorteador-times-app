@@ -30,9 +30,9 @@ export default function SorteioPage() {
   }, [theme]);
 
   return (
-    <main className="min-h-screen pb-6 transition-colors duration-300">
+    <main className="min-h-screen pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-6 transition-colors duration-300">
       <header className="sticky top-0 z-30 px-3 py-2 shadow-sm backdrop-blur-md border-b" style={{ backgroundColor: "var(--bg-header)", borderColor: "var(--border)" }}>
-        <div className="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           <Link href="/" className="text-lg font-black italic tracking-tighter text-white">
             Perronhas<span style={{ color: "var(--accent)" }}>Rebirth</span>
           </Link>
@@ -43,7 +43,7 @@ export default function SorteioPage() {
           </div>
         </div>
       </header>
-      <div className="p-2.5 md:p-4 max-w-5xl mx-auto">
+      <div className="p-2.5 md:p-4 max-w-7xl mx-auto">
         {backendError && <div className="mb-4 rounded-lg border px-3 py-2 text-xs font-semibold" style={{ borderColor: "#fca5a5", color: "#fecaca", backgroundColor: "rgba(127, 29, 29, 0.35)" }}>{backendError}</div>}
         <TeamDrawer players={players} />
       </div>

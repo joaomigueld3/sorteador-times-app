@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "handoff": "node scripts/generate-handoff.mjs"
+    "handoff": "node scripts/generate-handoff.mjs",
+    "seed": "npx tsx scripts/seed.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -15,6 +16,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "clsx": "^2.1.1",
     "lucide-react": "^0.563.0",
+    "mongodb": "^7.4.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",

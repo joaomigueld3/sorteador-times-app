@@ -7,7 +7,7 @@ import { MOCK_PLAYERS } from "../../data/mocks";
 import VotingCard from "../../components/VotingCard";
 import RankingList from "../../components/RankingList";
 import LoginModal from "../../components/LoginModal";
-import { Sun, Moon, LogOut, CheckCircle2 } from "lucide-react";
+import { Sun, Moon, LogOut, CheckCircle2, Menu, X } from "lucide-react";
 
 const calculateOverall = (stats: any) => {
   if (!stats) return 0;
@@ -23,6 +23,7 @@ export default function NotasPage() {
   const [votes, setVotes] = useState<Record<string, any>>({});
   const [backendError, setBackendError] = useState("");
   const [offlineMode, setOfflineMode] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     api.getPlayers()
@@ -76,21 +77,30 @@ export default function NotasPage() {
   }
 
   return (
-    <main className="min-h-screen pb-24 transition-colors duration-300">
+    <main className="min-h-screen pb-28 transition-colors duration-300">
       <header className="sticky top-0 z-30 px-3 py-3 shadow-sm backdrop-blur-md border-b" style={{ backgroundColor: "var(--bg-header)", borderColor: "var(--border)" }}>
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-2">
           <Link href="/" className="text-lg font-black italic tracking-tighter text-white">
             Perronhas<span style={{ color: "var(--accent)" }}>Rebirth</span>
           </Link>
           <div className="flex items-center gap-1">
-            <Link href="/" className="px-2.5 py-1.5 rounded-md text-xs font-bold bg-black/20 text-white">
+            <Link href="/" className="hidden md:inline-block px-2.5 py-1.5 rounded-md text-xs font-bold bg-black/20 text-white">
               INICIO
             </Link>
-            <Link href="/sorteio" className="px-2.5 py-1.5 rounded-md text-xs font-bold bg-black/20 text-white">SORTEIO</Link>
+            <Link href="/sorteio" className="hidden md:inline-block px-2.5 py-1.5 rounded-md text-xs font-bold bg-black/20 text-white">SORTEIO</Link>
             <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-white/10 text-white">{theme === "light" ? <Moon size={18} /> : <Sun size={18} />}</button>
             <button onClick={() => { setCurrentUser(null); setActiveMatchId(null); }} className="p-2 rounded-full hover:bg-red-500/20 text-white/80"><LogOut size={18} /></button>
+            <button onClick={() => setMenuOpen((v) => !v)} className="p-2 rounded-full hover:bg-white/10 text-white md:hidden">
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
+        {menuOpen && (
+          <div className="md:hidden mt-2 flex flex-col gap-1">
+            <Link href="/" className="px-3 py-2.5 rounded-md text-sm font-bold bg-black/20 text-white text-center" onClick={() => setMenuOpen(false)}>INICIO</Link>
+            <Link href="/sorteio" className="px-3 py-2.5 rounded-md text-sm font-bold bg-black/20 text-white text-center" onClick={() => setMenuOpen(false)}>SORTEIO</Link>
+          </div>
+        )}
         <div className="max-w-xl mx-auto mt-2 flex p-1 rounded-lg bg-black/10">
           <button onClick={() => setActiveTab("vote")} className={`flex-1 py-2 text-xs font-bold rounded-md ${activeTab === "vote" ? "shadow-sm" : "opacity-60"}`} style={{ backgroundColor: activeTab === "vote" ? "var(--bg-card)" : "transparent", color: activeTab === "vote" ? "var(--accent-text)" : "white" }}>VOTACAO</button>
           <button onClick={() => setActiveTab("ranking")} className={`flex-1 py-2 text-xs font-bold rounded-md ${activeTab === "ranking" ? "shadow-sm" : "opacity-60"}`} style={{ backgroundColor: activeTab === "ranking" ? "var(--bg-card)" : "transparent", color: activeTab === "ranking" ? "var(--accent-text)" : "white" }}>RANKING</button>

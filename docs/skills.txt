@@ -1,0 +1,9 @@
+
+npx skills add https://github.com/juliusbrussee/caveman --skill caveman
+npx skills add https://github.com/shadcn/ui --skill shadcn
+npx skills add https://github.com/vercel/nextjs-skills --skill next-best-practices
+npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices
+npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
+npx skills add https://github.com/anthropics/skills --skill frontend-design
+npx skills add https://github.com/supabase/agent-skills --skill supabase-postgres-best-practices
+npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines

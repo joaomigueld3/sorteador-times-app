@@ -112,11 +112,11 @@ export default function VotingCard({ player, onVoteChange, isSelf }: VotingCardP
           </div>
         </div>
 
-        <button 
+        <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="p-2 hover:bg-black/5 rounded text-[var(--text-secondary)] transition-colors"
+          className="p-2 hover:bg-black/5 rounded text-[var(--text-secondary)] transition-colors flex flex-col items-center gap-0.5"
         >
-          {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          {isExpanded ? <ChevronUp size={18} /> : <><span className="text-[9px] leading-none font-medium">Ajuste</span><ChevronDown size={14} /></>}
         </button>
       </div>
 
