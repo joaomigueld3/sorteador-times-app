@@ -1,5 +1,35 @@
 Nome, Físico (Corre?), Habilidade(Drible, Chute, Passe), Defesa, Posição
 
+Must (I. Fellows), 70, 90, 65, ATA
+Sundown, 92, 92, 60, ATA
+Pernambuco, 88, 88, 60, ATA+ZAG
+Cheldon, 78, 78, 90, ATA+ZAG
+Lucas Guedes, 88, 83, 68, ATA+ZAG
+Sales, 70, 80, 70, ATA+ZAG
+Caio Almeida, 80, 70, 80, ATA+ZAG
+
+Mattias, 70, 70, 70, ATA+ZAG
+Rafael Coelho, 70, 70, 60, ATA
+Ighor Honorato, 60, 90, 70, ATA+ZAG
+Emanuel, 80, 60, 70, ATA+ZAG
+Rennar, 60, 70, 70, ZAG
+Heverton, 60, 60, 70, ATA+ZAG
+Diogo, 80, 50, 60, ATA
+Juninho, 60, 67, 65, ATA+ZAG
+Silas, 55, 60, 60, ZAG
+Miguel Guerra, 60, 52, 80, ZAG
+Petros, 50, 50, 90, ZAG
+Luciano, 57, 68, 60, ZAG
+
+Deodato, 60, 50, 60, ATA+ZAG
+Luquinhas, 68, 68, 40, ATA
+João Miguel, 50, 50, 50, ATA
+Jeff Pai, 50, 60, 50, ZAG
+Victor Hugo, 50, 70, 50, ATA
+Mateus Souza, 40, 40, 40, ZAG
+
+Nome, Físico (Corre?), Habilidade(Drible, Chute, Passe), Defesa, Posição
+
 Must (I. Fellows), 8,10,7, ATA
 Sundown, 10,10,8, ATA+ZAG
 Pernambuco, 10,10,8, ATA
@@ -27,4 +57,3 @@ João Miguel, 6,6,6, ATA
 Jeff Pai, 6,7,6, ZAG
 Victor Hugo, 6,8,6, ATA
 Mateus Souza, 5,5,5, ZAG
-
