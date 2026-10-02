@@ -38,48 +38,11 @@
 - No monorepo/workspace layout.
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: f3b98bc385 -->
+<!-- structure-hash: 668c34a50a -->
 ## Snapshot automático
 
 - **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`
-- **Arquivos possivelmente não usados:** nenhum
-
-```text
-src/app/admin/page.tsx
-src/app/admin/rodada/[id]/page.tsx
-src/app/api/admin/rounds/[id]/route.ts
-src/app/api/admin/rounds/route.ts
-src/app/api/auth/[...nextauth]/route.ts
-src/app/api/players/route.ts
-src/app/api/rounds/[id]/route.ts
-src/app/api/vote/route.ts
-src/app/favicon.ico
-src/app/layout.tsx
-src/app/notas/page.tsx
-src/app/page.tsx
-src/app/sorteador-antigo/page.tsx
-src/app/sorteio/page.tsx
-src/app/votar/[roundId]/layout.tsx
-src/app/votar/[roundId]/page.tsx
-src/components/LoginModal.tsx
-src/components/RankingList.tsx
-src/components/TeamDrawer.tsx
-src/components/VotingCard.tsx
-src/data/mocks.ts
-src/lib/admin.ts
-src/lib/auth.ts
-src/lib/mongodb.ts
-src/lib/types.ts
-src/services/api.ts
-```
-<!-- AUTO:END -->
-
-<!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: 1dcada088d -->
-## Snapshot automático
-
-- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`
-- **Arquivos possivelmente não usados:** `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`
+- **Arquivos possivelmente não usados:** `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/playerParser.test.ts`
 
 ```text
 src/app/admin/page.tsx
@@ -120,6 +83,7 @@ src/core/use-cases/UpdateSettingsUseCase.ts
 src/core/use-cases/__tests__/CreateRoundUseCase.test.ts
 src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts
 src/data/mocks.ts
+src/lib/__tests__/playerParser.test.ts
 src/lib/admin.ts
 src/lib/auth.ts
 src/lib/mongodb.ts
