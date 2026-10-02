@@ -1,3 +1,5 @@
+import { Player } from "@/data/mocks";
+
 const API_URL = 'http://localhost:4000'; // Ou sua URL do Render/Railway depois
 
 export class ApiError extends Error {
@@ -10,7 +12,7 @@ export class ApiError extends Error {
 }
 
 export interface LoginResponse {
-  player: any;
+  player: Player;
   activeMatchId: string | null;
   error?: string;
 }
@@ -51,7 +53,7 @@ export const getErrorMessage = (error: unknown, fallback = "Ocorreu um erro ines
 export const api = {
   // 1. Listar todos os jogadores (Para o Dashboard)
   getPlayers: async () => {
-    return request<any[]>("/players");
+    return request<Player[]>("/players");
   },
 
   // 2. Fazer Login
@@ -64,7 +66,7 @@ export const api = {
   },
 
   // 3. Enviar Voto (Tempo Real)
-  submitVote: async (voterId: string, matchId: string, votes: any) => {
+  submitVote: async (voterId: string, matchId: string, votes: Record<string, unknown>) => {
     return request<{ success?: boolean; error?: string }>("/votes", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

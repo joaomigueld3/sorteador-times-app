@@ -2,10 +2,11 @@
 import { useState } from "react";
 import { api, getErrorMessage } from "../services/api"; // Importando a API
 import { Lock, User, CheckCircle2, Sun, Moon } from "lucide-react";
+import { Player } from "../data/mocks";
 
 interface LoginModalProps {
-  players: any[]; // Recebe a lista do Backend
-  onLogin: (player: any, matchId: string | null) => void; // Agora retorna também o MatchID
+  players: Player[]; // Recebe a lista do Backend
+  onLogin: (player: Player, matchId: string | null) => void; // Agora retorna também o MatchID
   toggleTheme: () => void;
   currentTheme: 'light' | 'dark';
   backendError?: string;

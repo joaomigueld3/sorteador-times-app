@@ -1,6 +1,5 @@
 "use client";
 import { Player, calculateOverall } from "../data/mocks";
-import { Trophy } from "lucide-react";
 
 export default function RankingList({ players }: { players: Player[] }) {
   const ratingColor = (value: number) => {

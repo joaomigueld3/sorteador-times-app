@@ -15,23 +15,26 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useRef, useState, useEffect, type ReactNode } from "react";
 import { Copy, Eye, EyeOff, GripVertical, Plus, Shuffle, Trash2, Users } from "lucide-react";
+import { PlayerType } from "@/lib/types";
+import { parsePlayerLines } from "@/lib/playerParser";
 
 type DrawMode = "teams" | "players";
 type SortMode = "alpha" | "rating";
 type Role = "atk" | "def";
 
-interface SourcePlayer {
+export interface SourcePlayer {
   _id?: string;
   id?: string;
   name: string;
   positions: string[];
   currentStats: { fisico: number; habilidade: number; defesa: number };
+  type?: PlayerType;
 }
 
 interface TeamDrawerProps {
-  players: SourcePlayer[];
+  players?: SourcePlayer[];
 }
 
 interface InternalPlayer {
@@ -39,6 +42,7 @@ interface InternalPlayer {
   name: string;
   attributes: { fisico: number; habilidade: number; defesa: number };
   roles: Role[];
+  type?: PlayerType;
 }
 
 interface TeamMember extends InternalPlayer {
@@ -159,37 +163,20 @@ const toTensScale = (value: number) => {
   return rounded;
 };
 
-const normName = (s: string) => s.trim().toLocaleLowerCase("pt-BR");
-
-const parseTxtNotes = (text: string): InternalPlayer[] => {
-  const parsed: InternalPlayer[] = [];
-  text.split("\n").forEach((line) => {
-    const parts = line.split(/[;,]/).map((p) => p.trim()).filter(Boolean);
-    if (parts.length < 2) return;
-    const playerName = parts[0];
-    if (parsed.some((p) => normName(p.name) === normName(playerName))) return;
-    let nf = Number(parts[1]);
-    let nh = Number(parts[1]);
-    let nd = Number(parts[1]);
-    let rolePart = parts[2] || "";
-    if (parts.length >= 4) {
-      nf = Number(parts[1]);
-      nh = Number(parts[2]);
-      nd = Number(parts[3]);
-      rolePart = parts[4] || "";
-    }
-    if ([nf, nh, nd].some((v) => Number.isNaN(v))) return;
+const parseTxtNotes = (text: string, defaultType: PlayerType = "mensalista"): InternalPlayer[] => {
+  const parsed = parsePlayerLines(text, defaultType);
+  return parsed.map((p) => {
     const roles: Role[] = [];
-    if (rolePart.toUpperCase().includes("ATA")) roles.push("atk");
-    if (rolePart.toUpperCase().includes("ZAG")) roles.push("def");
-    parsed.push({
+    if (p.positions.includes("ATA")) roles.push("atk");
+    if (p.positions.includes("ZAG")) roles.push("def");
+    return {
       id: crypto.randomUUID(),
-      name: playerName,
-      attributes: { fisico: toTensScale(nf), habilidade: toTensScale(nh), defesa: toTensScale(nd) },
+      name: p.name,
+      attributes: p.currentStats,
       roles,
-    });
+      type: p.type,
+    };
   });
-  return parsed;
 };
 
 // Snapshot de docs/notas-planilha.txt — usado como padrão inicial (sem fetch).
@@ -216,23 +203,82 @@ Mateus Souza, 47, 45, 55, ZAG
 Mattias, 75, 70, 70, ATA+ZAG
 Raffa Tang, 60, 65, 60, ATA+ZAG`;
 
-export default function TeamDrawer({}: TeamDrawerProps) {
+const sourceToInternal = (src: SourcePlayer[]): InternalPlayer[] => {
+  return src.map((p) => {
+    const roles: Role[] = [];
+    if (p.positions?.some((pos) => pos.toUpperCase().includes("ATA"))) roles.push("atk");
+    if (p.positions?.some((pos) => pos.toUpperCase().includes("ZAG"))) roles.push("def");
+    return {
+      id: p.id || p._id || crypto.randomUUID(),
+      name: p.name,
+      attributes: {
+        fisico: toTensScale(p.currentStats?.fisico ?? 70),
+        habilidade: toTensScale(p.currentStats?.habilidade ?? 70),
+        defesa: toTensScale(p.currentStats?.defesa ?? 70),
+      },
+      roles,
+      type: p.type || "mensalista",
+    };
+  });
+};
+
+const normalizeStat = (value: number) => toTensScale(value);
+
+const normalizedAttrs = (attrs: InternalPlayer["attributes"]) => ({
+  fisico: normalizeStat(attrs.fisico),
+  habilidade: normalizeStat(attrs.habilidade),
+  defesa: normalizeStat(attrs.defesa),
+});
+
+export default function TeamDrawer({ players: sourcePlayers = [] }: TeamDrawerProps) {
   const [pool, setPool] = useState<InternalPlayer[]>(() => {
+    if (sourcePlayers && sourcePlayers.length > 0) {
+      return sourceToInternal(sourcePlayers);
+    }
     if (typeof window === "undefined") return parseTxtNotes(PLANILHA_SNAPSHOT);
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) return JSON.parse(saved) as InternalPlayer[];
     return parseTxtNotes(PLANILHA_SNAPSHOT);
   });
 
-  const [weights, setWeights] = useState({ fis: "40", hab: "35", def: "25" });
+  const [weights, setWeights] = useState({ fis: "40", hab: "30", def: "30" });
+  
+  useEffect(() => {
+    fetch("/api/settings")
+      .then(res => res.json())
+      .then(data => {
+        if (data?.weights) {
+          setWeights({
+            fis: String(data.weights.fisico),
+            hab: String(data.weights.habilidade),
+            def: String(data.weights.defesa)
+          });
+        }
+      })
+      .catch(console.error);
+  }, []);
+
   const [randomFactor, setRandomFactor] = useState(10);
   const [drawMode, setDrawMode] = useState<DrawMode>("teams");
   const [drawValue, setDrawValue] = useState("4");
   const [sortMode, setSortMode] = useState<SortMode>("rating");
-  const [selectedIds, setSelectedIds] = useState<string[]>(() => pool.map((p) => p.id));
+  const [selectedIds, setSelectedIds] = useState<string[]>(() =>
+    pool.filter((p) => p.type !== "diarista").map((p) => p.id)
+  );
+
+  useEffect(() => {
+    if (sourcePlayers && sourcePlayers.length > 0) {
+      const converted = sourceToInternal(sourcePlayers);
+      setPool(converted);
+      setSelectedIds(converted.filter((p) => p.type !== "diarista").map((p) => p.id));
+    }
+  }, [sourcePlayers]);
+
   const [teams, setTeams] = useState<TeamMember[][]>([]);
   const [copied, setCopied] = useState<"notes" | "plain" | null>(null);
   const [bulkInput, setBulkInput] = useState("");
+  const [newPlayerType, setNewPlayerType] = useState<PlayerType>("mensalista");
+  const [bulkDefaultType, setBulkDefaultType] = useState<PlayerType>("mensalista");
   const [showBank, setShowBank] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
@@ -266,27 +312,19 @@ export default function TeamDrawer({}: TeamDrawerProps) {
   const teamLabel = (idx: number) => String.fromCharCode(65 + idx);
   const roleEmojiFromPlayer = (p: InternalPlayer) => (p.roles.includes("atk") && p.roles.includes("def")) ? "⚔️🛡️" : p.roles.includes("atk") ? "⚔️" : p.roles.includes("def") ? "🛡️" : "MEI";
 
-  const normalizeStat = (value: number) => toTensScale(value);
-
-  const normalizedAttrs = (attrs: InternalPlayer["attributes"]) => ({
-    fisico: normalizeStat(attrs.fisico),
-    habilidade: normalizeStat(attrs.habilidade),
-    defesa: normalizeStat(attrs.defesa),
-  });
-
   const parsedWeights = {
     fis: Number(weights.fis) || 0,
     hab: Number(weights.hab) || 0,
     def: Number(weights.def) || 0,
   };
 
-  const calcOverall = (attrs: InternalPlayer["attributes"]) => {
+  const calcOverall = useCallback((attrs: InternalPlayer["attributes"]) => {
     const normalized = normalizedAttrs(attrs);
     const wf = parsedWeights.fis / 100;
     const wh = parsedWeights.hab / 100;
     const wd = parsedWeights.def / 100;
     return normalized.fisico * wf + normalized.habilidade * wh + normalized.defesa * wd;
-  };
+  }, [parsedWeights.fis, parsedWeights.hab, parsedWeights.def]);
 
   const persist = (next: InternalPlayer[]) => {
     setPool(next);
@@ -302,7 +340,17 @@ export default function TeamDrawer({}: TeamDrawerProps) {
       }
       return a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" });
     });
-  }, [pool, sortMode, weights]);
+  }, [pool, sortMode, calcOverall]);
+
+  const sortedMensalistas = useMemo(
+    () => sortedPlayers.filter((p) => p.type !== "diarista"),
+    [sortedPlayers]
+  );
+
+  const sortedDiaristas = useMemo(
+    () => sortedPlayers.filter((p) => p.type === "diarista"),
+    [sortedPlayers]
+  );
 
   const addSingle = () => {
     if (!name.trim()) return;
@@ -326,53 +374,42 @@ export default function TeamDrawer({}: TeamDrawerProps) {
         name: name.trim(),
         attributes: { fisico: toTensScale(nf), habilidade: toTensScale(nh), defesa: toTensScale(nd) },
         roles,
+        type: newPlayerType,
       },
     ];
     persist(next);
-    setSelectedIds((prev) => [...prev, next[next.length - 1].id]);
+    if (newPlayerType !== "diarista") {
+      setSelectedIds((prev) => [...prev, next[next.length - 1].id]);
+    }
     setName("");
   };
 
   const importBulk = () => {
     const text = bulkInput.trim();
     if (!text) return;
-    const parsed: InternalPlayer[] = [];
-
-    text.split("\n").forEach((line) => {
-      const parts = line.split(/[;,]/).map((p) => p.trim()).filter(Boolean);
-      if (parts.length < 2) return;
-      const playerName = parts[0];
-      if (pool.some((p) => normalizeName(p.name) === normalizeName(playerName))) return;
-      if (parsed.some((p) => normalizeName(p.name) === normalizeName(playerName))) return;
-      let nf = Number(parts[1]);
-      let nh = Number(parts[1]);
-      let nd = Number(parts[1]);
-      let rolePart = parts[2] || "";
-
-      if (parts.length >= 4) {
-        nf = Number(parts[1]);
-        nh = Number(parts[2]);
-        nd = Number(parts[3]);
-        rolePart = parts[4] || "";
-      }
-
-      if ([nf, nh, nd].some((v) => Number.isNaN(v))) return;
-
-      const roles: Role[] = [];
-      if (rolePart.toUpperCase().includes("ATA")) roles.push("atk");
-      if (rolePart.toUpperCase().includes("ZAG")) roles.push("def");
-
-      parsed.push({
-        id: crypto.randomUUID(),
-        name: playerName,
-        attributes: { fisico: toTensScale(nf), habilidade: toTensScale(nh), defesa: toTensScale(nd) },
-        roles,
-      });
-    });
-
+    const parsed = parsePlayerLines(text, bulkDefaultType);
     if (!parsed.length) return;
-    persist([...pool, ...parsed]);
-    setSelectedIds((prev) => [...prev, ...parsed.map((p) => p.id)]);
+
+    const nextPlayers: InternalPlayer[] = [];
+    for (const p of parsed) {
+      if (pool.some((exist) => normalizeName(exist.name) === normalizeName(p.name))) continue;
+      if (nextPlayers.some((exist) => normalizeName(exist.name) === normalizeName(p.name))) continue;
+      const roles: Role[] = [];
+      if (p.positions.includes("ATA")) roles.push("atk");
+      if (p.positions.includes("ZAG")) roles.push("def");
+      nextPlayers.push({
+        id: crypto.randomUUID(),
+        name: p.name,
+        attributes: p.currentStats,
+        roles,
+        type: p.type,
+      });
+    }
+
+    if (!nextPlayers.length) return;
+    persist([...pool, ...nextPlayers]);
+    const newSelected = nextPlayers.filter((p) => p.type !== "diarista").map((p) => p.id);
+    setSelectedIds((prev) => [...prev, ...newSelected]);
     setBulkInput("");
   };
 
@@ -382,7 +419,11 @@ export default function TeamDrawer({}: TeamDrawerProps) {
       const res = await fetch("/notas-planilha.txt", { cache: "no-store" });
       if (!res.ok) throw new Error();
       const parsed = parseTxtNotes(await res.text());
-      if (parsed.length > 0) { persist(parsed); setSelectedIds(parsed.map((p) => p.id)); setTeams([]); }
+      if (parsed.length > 0) {
+        persist(parsed);
+        setSelectedIds(parsed.filter((p) => p.type !== "diarista").map((p) => p.id));
+        setTeams([]);
+      }
     } catch { alert("Erro ao carregar notas da planilha."); }
     finally { setLoadingNotes(null); }
   };
@@ -393,7 +434,11 @@ export default function TeamDrawer({}: TeamDrawerProps) {
       const res = await fetch("/notas-jogadores.txt", { cache: "no-store" });
       if (!res.ok) throw new Error();
       const parsed = parseTxtNotes(await res.text());
-      if (parsed.length > 0) { persist(parsed); setSelectedIds(parsed.map((p) => p.id)); setTeams([]); }
+      if (parsed.length > 0) {
+        persist(parsed);
+        setSelectedIds(parsed.filter((p) => p.type !== "diarista").map((p) => p.id));
+        setTeams([]);
+      }
     } catch { alert("Erro ao carregar notas ADM."); }
     finally { setLoadingNotes(null); }
   };
@@ -675,7 +720,75 @@ export default function TeamDrawer({}: TeamDrawerProps) {
         diff: current.avg - globalAvg,
       })),
     };
-  }, [teams, weights]);
+  }, [teams, calcOverall]);
+
+  const renderBankPlayerRow = (p: InternalPlayer) => (
+    <DraggableBankRow key={p.id} playerId={p.id} disabled={teams.length === 0}>
+      <label className="flex-1 min-w-0 pr-2 py-2.5 flex items-center justify-between gap-1 cursor-pointer">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <input
+            type="checkbox"
+            className="w-5 h-5 shrink-0"
+            checked={selectedIds.includes(p.id)}
+            onChange={(e) =>
+              setSelectedIds((prev) =>
+                e.target.checked ? [...prev, p.id] : prev.filter((id) => id !== p.id)
+              )
+            }
+          />
+          <div className="min-w-0">
+            <p className="text-[11px] font-black flex items-center gap-1 flex-wrap">
+              <span className="truncate max-w-[9rem]">{p.name}</span>
+              {roleBadges(p.roles)}
+              <span
+                className={`text-[9px] font-bold px-1 rounded border uppercase ${
+                  p.type === "diarista"
+                    ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
+                    : "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                }`}
+              >
+                {p.type === "diarista" ? "DIA" : "MEN"}
+              </span>
+              <span style={{ color: ratingColor(calcOverall(p.attributes)) }}>
+                {calcOverall(p.attributes).toFixed(1)}
+              </span>
+            </p>
+            <p className="text-[11px]" style={{ color: "var(--text-secondary)" }}>
+              <span style={{ color: "var(--attr-fis)" }}>F:{normalizedAttrs(p.attributes).fisico}</span>{" "}
+              <span style={{ color: "var(--attr-hab)" }}>H:{normalizedAttrs(p.attributes).habilidade}</span>{" "}
+              <span style={{ color: "var(--attr-def)" }}>D:{normalizedAttrs(p.attributes).defesa}</span>
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 shrink-0">
+          {teams.length > 0 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                addPlayerToTeam(p.id, manualTargetTeam);
+              }}
+              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-md text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
+              aria-label="Adicionar ao time"
+            >
+              <Plus size={18} />
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              removeOne(p.id);
+            }}
+            className="w-10 h-10 flex items-center justify-center rounded-md text-red-400 hover:text-red-300 hover:bg-red-500/10"
+            aria-label="Apagar jogador"
+          >
+            <Trash2 size={16} />
+          </button>
+        </div>
+      </label>
+    </DraggableBankRow>
+  );
 
   return (
     <div className="space-y-4">
@@ -720,10 +833,10 @@ export default function TeamDrawer({}: TeamDrawerProps) {
       </section>
 
       <section className="rounded-xl border p-2.5" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}>
-        <button type="button" onClick={() => setShowRegister((v) => !v)} className="text-sm font-bold mb-2 flex items-center gap-2"><span>{showRegister ? "▾" : "▸"}</span>Cadastro</button>
+        <button type="button" onClick={() => setShowRegister((v) => !v)} className="text-sm font-bold mb-2 flex items-center gap-2"><span>{showRegister ? "▾" : "▸"}</span>Adicionar Jogadores</button>
         {showRegister && <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <div className="space-y-2">
-          <div className="text-sm font-bold">Cadastro individual</div>
+          <div className="text-sm font-bold">Adicionar individual</div>
           <p className="text-[11px]" style={{ color: "var(--text-secondary)" }}>Notas de 0 a 100</p>
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder="NOME" className="w-full rounded-md p-2 text-xs border" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }} />
           <div className="grid grid-cols-3 gap-2">
@@ -731,7 +844,7 @@ export default function TeamDrawer({}: TeamDrawerProps) {
             <input value={hab} onChange={(e) => setHab(e.target.value)} placeholder="HAB" className="rounded-md p-2 text-xs border" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }} />
             <input value={def} onChange={(e) => setDef(e.target.value)} placeholder="DEF" className="rounded-md p-2 text-xs border" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }} />
           </div>
-          <div className="flex gap-2 text-xs">
+          <div className="flex gap-2 text-xs items-center flex-wrap">
             <button
               type="button"
               onClick={() => setAtk((v) => !v)}
@@ -756,12 +869,35 @@ export default function TeamDrawer({}: TeamDrawerProps) {
             >
               🛡️ ZAG
             </button>
+            <button
+              type="button"
+              onClick={() => setNewPlayerType(t => t === "mensalista" ? "diarista" : "mensalista")}
+              className="px-2.5 py-1.5 rounded-full border font-bold text-xs"
+              style={{
+                borderColor: newPlayerType === "diarista" ? "#f59e0b" : "var(--accent)",
+                backgroundColor: newPlayerType === "diarista" ? "#f59e0b" : "transparent",
+                color: newPlayerType === "diarista" ? "#000" : "var(--accent-text)",
+              }}
+            >
+              {newPlayerType === "diarista" ? "Diarista" : "Mensalista"}
+            </button>
           </div>
           <button onClick={addSingle} className="px-3 py-2 rounded-md font-bold text-xs" style={{ backgroundColor: "var(--accent)", color: "var(--accent-text)" }}>Adicionar</button>
         </div>
         <div className="space-y-2">
-          <div className="text-sm font-bold">Cadastro em lote</div>
-          <textarea value={bulkInput} onChange={(e) => setBulkInput(e.target.value)} rows={5} className="w-full rounded-md p-2 border text-xs" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }} placeholder={`NOME, NOTA, ATA\nNOME, F, H, D, ZAG`} />
+          <div className="flex items-center justify-between gap-2">
+            <div className="text-sm font-bold">Adicionar em lote</div>
+            <select
+              value={bulkDefaultType}
+              onChange={(e) => setBulkDefaultType(e.target.value as PlayerType)}
+              className="rounded p-1 text-xs border"
+              style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)", color: "var(--text-primary)" }}
+            >
+              <option value="mensalista">Mensalistas</option>
+              <option value="diarista">Diaristas</option>
+            </select>
+          </div>
+          <textarea value={bulkInput} onChange={(e) => setBulkInput(e.target.value)} rows={5} className="w-full rounded-md p-2 border text-xs" style={{ backgroundColor: "var(--bg-page)", borderColor: "var(--border)" }} placeholder={`NOME, NOTA, ATA\nNOME, F, H, D, ZAG\nNOME, F, H, D, ATA, diarista`} />
           <button onClick={importBulk} className="px-3 py-2 rounded-md font-bold text-xs border" style={{ borderColor: "var(--border)" }}>Importar</button>
         </div>
         </div>}
@@ -829,38 +965,76 @@ export default function TeamDrawer({}: TeamDrawerProps) {
         )}
         {showBank && (
           <TeamDropZone id="bank" variant="plain" scrollClassName={teams.length > 0 ? "lg:block lg:max-h-[calc(100vh-14rem)] lg:overflow-y-auto styled-scrollbar lg:pr-1" : ""}>
-            <div className="grid grid-cols-1 gap-1.5 max-w-2xl">
-              {sortedPlayers.map((p) => (
-                <DraggableBankRow key={p.id} playerId={p.id} disabled={teams.length === 0}>
-                  <label className="flex-1 min-w-0 pr-2 py-2.5 flex items-center justify-between gap-1">
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <input type="checkbox" className="w-5 h-5 shrink-0" checked={selectedIds.includes(p.id)} onChange={(e) => setSelectedIds((prev) => (e.target.checked ? [...prev, p.id] : prev.filter((id) => id !== p.id)))} />
-                      <div className="min-w-0">
-                        <p className="text-[11px] font-black flex items-center gap-1 flex-wrap">
-                          <span className="truncate max-w-[9rem]">{p.name}</span>
-                          {roleBadges(p.roles)}
-                          <span style={{ color: ratingColor(calcOverall(p.attributes)) }}>{calcOverall(p.attributes).toFixed(1)}</span>
-                        </p>
-                        <p className="text-[11px]" style={{ color: "var(--text-secondary)" }}>
-                          <span style={{ color: "var(--attr-fis)" }}>F:{normalizedAttrs(p.attributes).fisico}</span>{" "}
-                          <span style={{ color: "var(--attr-hab)" }}>H:{normalizedAttrs(p.attributes).habilidade}</span>{" "}
-                          <span style={{ color: "var(--attr-def)" }}>D:{normalizedAttrs(p.attributes).defesa}</span>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1 shrink-0">
-                      {teams.length > 0 && (
-                        <button type="button" onClick={(e) => { e.preventDefault(); addPlayerToTeam(p.id, manualTargetTeam); }} className="lg:hidden w-10 h-10 flex items-center justify-center rounded-md text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10" aria-label="Adicionar ao time">
-                          <Plus size={18} />
-                        </button>
-                      )}
-                      <button type="button" onClick={(e) => { e.preventDefault(); removeOne(p.id); }} className="w-10 h-10 flex items-center justify-center rounded-md text-red-400 hover:text-red-300 hover:bg-red-500/10" aria-label="Apagar jogador">
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </label>
-                </DraggableBankRow>
-              ))}
+            <div className="space-y-4 max-w-2xl">
+              {/* Mensalistas */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5 px-0.5">
+                  <span className="text-xs font-bold" style={{ color: "var(--text-primary)" }}>
+                    Mensalistas ({sortedMensalistas.filter((p) => selectedIds.includes(p.id)).length}/{sortedMensalistas.length})
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const allSelected = sortedMensalistas.length > 0 && sortedMensalistas.every((p) => selectedIds.includes(p.id));
+                      if (allSelected) {
+                        setSelectedIds((prev) => prev.filter((id) => !sortedMensalistas.some((m) => m.id === id)));
+                      } else {
+                        setSelectedIds((prev) => Array.from(new Set([...prev, ...sortedMensalistas.map((m) => m.id)])));
+                      }
+                    }}
+                    className="text-[11px] underline"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    {sortedMensalistas.length > 0 && sortedMensalistas.every((p) => selectedIds.includes(p.id)) ? "Desmarcar todos" : "Marcar todos"}
+                  </button>
+                </div>
+                {sortedMensalistas.length === 0 ? (
+                  <p className="text-[11px] italic py-1 px-1" style={{ color: "var(--text-secondary)" }}>Nenhum mensalista cadastrado.</p>
+                ) : (
+                  <div className="grid grid-cols-1 gap-1.5">
+                    {sortedMensalistas.map((p) => renderBankPlayerRow(p))}
+                  </div>
+                )}
+              </div>
+
+              {/* Diaristas */}
+              <div className="pt-3 border-t" style={{ borderColor: "var(--border)" }}>
+                <div className="flex items-center justify-between mb-1.5 px-0.5 flex-wrap gap-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-amber-400">
+                      Diaristas ({sortedDiaristas.filter((p) => selectedIds.includes(p.id)).length}/{sortedDiaristas.length} escalados)
+                    </span>
+                    <span className="text-[10px]" style={{ color: "var(--text-secondary)" }}>
+                      (desmarcados por padrão)
+                    </span>
+                  </div>
+                  {sortedDiaristas.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const allSelected = sortedDiaristas.length > 0 && sortedDiaristas.every((p) => selectedIds.includes(p.id));
+                        if (allSelected) {
+                          setSelectedIds((prev) => prev.filter((id) => !sortedDiaristas.some((d) => d.id === id)));
+                        } else {
+                          setSelectedIds((prev) => Array.from(new Set([...prev, ...sortedDiaristas.map((d) => d.id)])));
+                        }
+                      }}
+                      className="text-[11px] underline text-amber-400"
+                    >
+                      {sortedDiaristas.length > 0 && sortedDiaristas.every((p) => selectedIds.includes(p.id)) ? "Desmarcar diaristas" : "Marcar todos"}
+                    </button>
+                  )}
+                </div>
+                {sortedDiaristas.length === 0 ? (
+                  <p className="text-[11px] italic py-1 px-1" style={{ color: "var(--text-secondary)" }}>
+                    Nenhum diarista cadastrado no momento.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 gap-1.5">
+                    {sortedDiaristas.map((p) => renderBankPlayerRow(p))}
+                  </div>
+                )}
+              </div>
             </div>
           </TeamDropZone>
         )}
@@ -921,7 +1095,11 @@ export default function TeamDrawer({}: TeamDrawerProps) {
                           className="rounded-md border border-transparent hover:border-cyan-300/60 transition-colors"
                           onClick={() => setExpandedTeamPlayers((prev) => {
                             const next = new Set(prev);
-                            next.has(p.id) ? next.delete(p.id) : next.add(p.id);
+                            if (next.has(p.id)) {
+                              next.delete(p.id);
+                            } else {
+                              next.add(p.id);
+                            }
                             return next;
                           })}
                         >
