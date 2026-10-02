@@ -38,10 +38,10 @@
 - No monorepo/workspace layout.
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: 668c34a50a -->
+<!-- structure-hash: 24d05f6508 -->
 ## Snapshot automático
 
-- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`
+- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `prepare`
 - **Arquivos possivelmente não usados:** `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/playerParser.test.ts`
 
 ```text

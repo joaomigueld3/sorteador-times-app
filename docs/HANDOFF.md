@@ -1,32 +1,69 @@
 # HANDOFF
 
 ## Contexto
-- Gerado em: 12/05/2026, 20:13:48 (2026-05-12T23:13:48.876Z)
-- Branch: `develop`
-- HEAD: `83f6340`
+- Gerado em: 01/10/2026, 22:16:12 (2026-10-02T01:16:12.826Z)
+- Branch: `develop2`
+- HEAD: `1cf1c8d`
 
 ## Estado Atual do Git
 ### Alteracoes locais
-- M src/app/page.tsx
--  M src/app/sorteador-antigo/page.tsx
+- A  .env.example
+- AM .githooks/pre-commit
+- M  .gitignore
+-  M AGENTS.md
+-  M LICENSE
+-  M README.md
+-  M docs/notas-jogadores-2.txt
+- M  package-lock.json
+- M  package.json
+- A  scripts/project-check.mjs
+-  M scripts/seed.ts
+-  M src/app/notas/page.tsx
+-  M src/app/page.tsx
+-  M src/app/sorteio/page.tsx
+-  M src/components/LoginModal.tsx
+-  M src/components/RankingList.tsx
 -  M src/components/TeamDrawer.tsx
-- ?? src/app/notas/
-- ?? src/app/sorteio/
+-  M src/data/mocks.ts
+-  M src/services/api.ts
+- ?? CONTEXT.md
+- ?? docs/BACKLOG.md
+- ?? src/app/admin/
+- ?? src/app/api/
+- ?? src/app/votar/
+- ?? src/core/
+- ?? src/lib/
 
 ### Staged
-- Nenhum arquivo staged
+- .env.example
+- .githooks/pre-commit
+- .gitignore
+- package-lock.json
+- package.json
+- scripts/project-check.mjs
 
 ### Unstaged
+- .githooks/pre-commit
+- AGENTS.md
+- LICENSE
+- README.md
+- docs/notas-jogadores-2.txt
+- scripts/seed.ts
+- src/app/notas/page.tsx
 - src/app/page.tsx
-- src/app/sorteador-antigo/page.tsx
+- src/app/sorteio/page.tsx
+- src/components/LoginModal.tsx
+- src/components/RankingList.tsx
 - src/components/TeamDrawer.tsx
+- src/data/mocks.ts
+- src/services/api.ts
 
 ## Commits Recentes
-- 83f6340 implementing team sorter (Joao Miguel, 2026-05-07)
-- 7aa7e55 voting scene (João Miguel, 2026-04-19)
-- ce3a5fa fix (deploy): typescript syntax error (João Miguel, 2026-02-08)
-- 704f1ec fix(deploy): revert build command to npm run build (João Miguel, 2026-02-08)
-- 65c3c7e feat: v1 completed (João Miguel, 2026-02-08)
+- 1cf1c8d Add MIT License to the project (João Miguel Decendente, 2026-09-03)
+- adb243f Merge pull request #9 from joaomigueld3/develop2 (João Miguel Decendente, 2026-08-04)
+- fbe6b36 chore(stats): update (Joao Miguel, 2026-08-03)
+- 4805f18 Merge pull request #8 from joaomigueld3/develop2 (João Miguel Decendente, 2026-07-21)
+- d7a9634 Merge branch 'master' into develop2 (João Miguel Decendente, 2026-07-21)
 
 ## Validacao Recomendada
 - `npm run lint`
@@ -35,5 +72,3 @@
 ## Proximos Passos
 - Revisar alteracoes acima e continuar pela feature em andamento.
 - Atualizar este arquivo ao final da sessao com `npm run handoff`.
-
-'ótimo, agora eu quero transformar os jogadores em cartas de fifa, como fazer isso de forma que eu possa editar as cartas?'

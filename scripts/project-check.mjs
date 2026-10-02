@@ -56,8 +56,10 @@ const block = [
     END,
 ].join('\n');
 
-const current = existsSync(AGENTS_MD) ? readFileSync(AGENTS_MD, 'utf8') : '';
-const re = new RegExp(`${START.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}[\\\\s\\\\S]*?${END}`);
+const current = existsSync(AGENTS_MD) ? readFileSync(AGENTS_MD, 'utf8').replace(/\r\n/g, '\n') : '';
+const escapedStart = START.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const escapedEnd = END.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const re = new RegExp(`${escapedStart}[\\s\\S]*?${escapedEnd}`);
 const prevHash = current.match(/structure-hash: (\w+)/)?.[1];
 const next = re.test(current) ? current.replace(re, block) : `${current.trimEnd()}\n\n${block}\n`;
 const stale = next !== current;
@@ -146,6 +148,28 @@ if (mode === '--full') {
         .split('\n')
         .filter((f) => /(^|\/)\.env|\.(pem|key|secret)$/.test(f));
     if (tracked.length) problems.push(`arquivos sensíveis versionados: ${tracked.join(', ')}`);
+
+    // Varredura de credenciais e segredos hardcoded dentro do código
+    const secretPatterns = [
+        { name: 'URI de banco com credenciais', regex: /(mongodb(\+srv)?|postgres(ql)?|mysql):\/\/[^:]+:[^@\s]+@/i },
+        { name: 'Chave privada criptográfica', regex: /-----BEGIN [A-Z ]*PRIVATE KEY-----/ },
+        { name: 'Google OAuth Client Secret', regex: /GOCSPX-[a-zA-Z0-9_-]{20,}/ },
+        { name: 'AWS Access Key / Secret', regex: /(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}/ },
+        { name: 'Atribuição explícita de secret/token/password', regex: /(api_?key|secret|password|auth_?token)\s*[:=]\s*['"][a-zA-Z0-9_\-]{20,}['"]/i }
+    ];
+
+    const filesToScan = srcFiles.concat(['scripts/seed.ts', 'package.json']);
+    for (const file of filesToScan) {
+        const fullPath = join(ROOT, file);
+        if (!existsSync(fullPath)) continue;
+        const content = readFileSync(fullPath, 'utf8');
+        for (const { name, regex } of secretPatterns) {
+            if (regex.test(content)) {
+                problems.push(`Possível vazamento de credencial em ${file}: ${name}`);
+            }
+        }
+    }
+
     const risky = run('grep', ['-rnE', 'dangerouslySetInnerHTML|innerHTML\\s*=|document\\.write|eval\\(|new Function\\(', 'src']);
     if (risky.stdout.trim()) problems.push(`padrões de XSS/injeção encontrados:\n${risky.stdout}`);
     if (unused.length) console.log(`aviso: arquivos possivelmente não usados: ${unused.join(', ')}`);
