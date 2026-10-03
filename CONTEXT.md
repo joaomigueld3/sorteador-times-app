@@ -124,7 +124,7 @@ O frontend chama http://localhost:4000 via src/services/api.ts:
 
 ---
 
-## Comandos
+## Comandos e Pipeline de Qualidade
 
 | Comando | O que faz |
 |---------|-----------|
@@ -132,17 +132,17 @@ O frontend chama http://localhost:4000 via src/services/api.ts:
 | npm run build | Build de producao |
 | npm run lint | Linting (ESLint) |
 | npm run seed | Popula o MongoDB com jogadores |
+| npm test | Roda testes unitarios com Vitest |
 | npm run handoff | Gera docs/HANDOFF.md para handoff de sessao |
+| node scripts/project-check.mjs --full | Varredura de tipos, lint, credenciais/segredos e vulnerabilidades |
+| node scripts/project-check.mjs --sync | Sincroniza o mapa automatico de arquivos no AGENTS.md |
 
 ---
 
 ## O que NAO esta configurado
 
-- Backend/API (chamado pelo front mas nao existe neste repo)
-- CI/CD (sem GitHub Actions)
-- Testes (zero testes)
-- Deploy (nenhum pipeline configurado)
-- Pre-commit hooks
+- CI/CD em nuvem (sem GitHub Actions configurado ainda)
+- Deploy automatico (Vercel/Render)
 
 ---
 

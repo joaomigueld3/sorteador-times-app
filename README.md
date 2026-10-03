@@ -49,6 +49,23 @@ App web para organizar peladas de futebol com sistema de notas e sorteio de time
 | npm run lint | Linting |
 | npm run seed | Popular MongoDB |
 | npm run handoff | Gerar snapshot de sessao |
+| npm test | Executar testes unitarios com Vitest |
+| node scripts/project-check.mjs --full | Verificacao completa de tipos, linter, segredos e vulnerabilidades |
+| node scripts/project-check.mjs --sync | Sincronizar mapa de arquivos no AGENTS.md |
+
+## Pipeline de Desenvolvimento e Qualidade
+
+O ciclo de desenvolvimento segue 4 etapas estruturadas:
+
+1. **Desenvolvimento:** `npm run dev` para iterar localmente nas rotas e componentes.
+2. **Validacao de Qualidade:**
+   - Testes unitarios: `npx vitest run`
+   - Checagem completa de tipos, linter, vulnerabilidades e varredura de credenciais: `node scripts/project-check.mjs --full`
+3. **Git Commit com Guard-rails:**
+   - Pre-commit hook ativo em `.githooks/pre-commit` (validando tipos, linting, segredos e AGENTS.md).
+   - Padrao de mensagens semanticas com escopo claro: `feat(backend): ...`, `feat(frontend): ...`, `chore(infra): ...`, `docs: ...`.
+4. **Fechamento e Handoff:**
+   - `npm run handoff` para atualizar `docs/HANDOFF.md` antes de push ou abertura de PR.
 
 ## Documentacao
 
@@ -56,6 +73,7 @@ App web para organizar peladas de futebol com sistema de notas e sorteio de time
 - **AGENTS.md** - Mapa do codigo para agentes IA
 - **docs/BACKLOG.md** - Backlog priorizado de features
 - **docs/spec-sorter.md** - Especificacao tecnica do sorteador
+- **docs/PROMPT_NOVO_PROJETO.md** - Guia de bootstrap e garantia de qualidade para novos projetos
 
 ## Licenca
 
