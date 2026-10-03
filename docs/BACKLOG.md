@@ -21,6 +21,7 @@
 | 1.4 | Cold Start e pesos configuráveis | FEITO | Pesos F(40), H(30), D(30) configuráveis no painel ADM e persistidos via `/api/settings`. |
 | 1.5 | Remoção de jogador do banco pelo ADM | PENDENTE | Botão de exclusão com confirmação em `/admin` e rota `DELETE /api/admin/players`. |
 | 1.6 | Aprovação de times submetidos pelo ADM | PENDENTE | Visualização de times com data e hora formatadas, composição, médias, equilíbrio e botões Aprovar/Rejeitar. |
+| 1.7 | Histórico de rodadas e times passados no ADM | PENDENTE | Tela do ADM com consulta de notas de rodadas passadas (abertas, fechadas e aplicadas) e listagem/detalhes dos times confirmados passados. |
 
 ## Prioridade 2 — Features do Sorteio (`/sorteio`)
 
@@ -47,6 +48,7 @@
 | 3.4 | Ranking geral | FEITO | Lista ordenada por nota overall. |
 | 3.5 | Registro de notas mensais e progresso do jogador | PENDENTE | Backend registra evolução mês a mês e interface permite acompanhar o progresso das notas. |
 | 3.6 | Votação de equilíbrio dos times | PENDENTE | Após a rodada, jogadores votam se os times foram equilibrados. |
+| 3.7 | Autenticação híbrida (Google + E-mail/Senha) | PENDENTE | Suporte a login por e-mail e senha tradicionais via NextAuth Credentials, fluxo de confirmação de e-mail (token), e recuperação de senha ("esqueci minha senha"). |
 
 ## Prioridade 4 — UX / Visual
 

@@ -737,18 +737,14 @@ export default function TeamDrawer({ players: sourcePlayers = [] }: TeamDrawerPr
             }
           />
           <div className="min-w-0">
-            <p className="text-[11px] font-black flex items-center gap-1 flex-wrap">
+            <p className="text-sm font-black flex items-center gap-1 flex-wrap">
               <span className="truncate max-w-[9rem]">{p.name}</span>
               {roleBadges(p.roles)}
-              <span
-                className={`text-[9px] font-bold px-1 rounded border uppercase ${
-                  p.type === "diarista"
-                    ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
-                    : "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                }`}
-              >
-                {p.type === "diarista" ? "DIA" : "MEN"}
-              </span>
+              {p.type === "diarista" && (
+                <span className="text-[9px] font-bold px-1 rounded border uppercase bg-amber-500/20 text-amber-400 border-amber-500/30">
+                  DIA
+                </span>
+              )}
               <span style={{ color: ratingColor(calcOverall(p.attributes)) }}>
                 {calcOverall(p.attributes).toFixed(1)}
               </span>

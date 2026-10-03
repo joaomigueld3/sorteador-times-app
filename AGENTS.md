@@ -38,7 +38,7 @@
 - No monorepo/workspace layout.
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: 24d05f6508 -->
+<!-- structure-hash: c71b5cac3e -->
 ## Snapshot automático
 
 - **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `prepare`
@@ -47,6 +47,7 @@
 ```text
 src/app/admin/page.tsx
 src/app/admin/rodada/[id]/page.tsx
+src/app/api/admin/players/[id]/route.ts
 src/app/api/admin/players/route.ts
 src/app/api/admin/rounds/[id]/route.ts
 src/app/api/admin/rounds/route.ts
