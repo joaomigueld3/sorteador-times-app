@@ -21,7 +21,7 @@ export async function GET(
     const players = await db
       .collection("players")
       .find({ _id: { $in: playerOids } })
-      .project({ name: 1, positions: 1 })
+      .project({ name: 1, positions: 1, type: 1 })
       .toArray();
 
     // Verificar se o usuario logado ja votou e se e diarista

@@ -9,6 +9,7 @@ const createRoundSchema = z.object({
   adminNotes: z.record(
     z.string(),
     z.object({
+      name: z.string().optional(),
       fisico: z.number(),
       habilidade: z.number(),
       defesa: z.number(),

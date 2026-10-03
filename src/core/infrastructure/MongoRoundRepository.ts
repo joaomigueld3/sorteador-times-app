@@ -11,6 +11,7 @@ interface RoundDoc {
   playerIds: string[];
   adminNotes: Record<string, PlayerAttributes>;
   votedEmails: string[];
+  votedNames?: string[];
   voteCount: number;
 }
 
@@ -27,6 +28,7 @@ export class MongoRoundRepository implements IRoundRepository {
       playerIds: doc.playerIds,
       adminNotes: doc.adminNotes,
       votedEmails: doc.votedEmails,
+      votedNames: doc.votedNames,
       voteCount: doc.voteCount,
     };
   }
@@ -41,23 +43,29 @@ export class MongoRoundRepository implements IRoundRepository {
       playerIds: data.playerIds,
       adminNotes: data.adminNotes,
       votedEmails: [],
+      votedNames: [],
       voteCount: 0,
     });
     return result.insertedId.toString();
   }
 
-  async addVoter(roundId: string, email: string): Promise<boolean> {
+  async addVoter(roundId: string, email: string, name?: string): Promise<boolean> {
     const db = await getDb();
+    const updateQuery: { $push: { votedEmails: string; votedNames?: string }; $inc: { voteCount: number } } = {
+      $push: { votedEmails: email },
+      $inc: { voteCount: 1 },
+    };
+    if (name) {
+      updateQuery.$push.votedNames = name;
+    }
+    
     const result = await db.collection<RoundDoc>("rounds").updateOne(
       {
         _id: new ObjectId(roundId),
         status: "open",
         votedEmails: { $ne: email },
       },
-      {
-        $push: { votedEmails: email },
-        $inc: { voteCount: 1 },
-      }
+      updateQuery
     );
     return result.matchedCount > 0;
   }

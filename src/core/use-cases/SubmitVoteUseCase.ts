@@ -6,6 +6,7 @@ import { isValidNote } from "../../lib/types";
 interface SubmitVoteDTO {
   roundId: string;
   email: string;
+  name?: string;
   ratings: Record<string, PlayerAttributes>;
 }
 
@@ -24,7 +25,7 @@ export class SubmitVoteUseCase {
     }
 
     // 2. Atualiza a rodada garantindo que o email nao votou antes (atomicamente)
-    const success = await this.roundRepo.addVoter(data.roundId, data.email);
+    const success = await this.roundRepo.addVoter(data.roundId, data.email, data.name);
     if (!success) {
       throw new Error("Voce ja votou nesta rodada, ou a rodada nao esta aberta/nao existe.");
     }

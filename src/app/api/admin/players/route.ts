@@ -93,7 +93,8 @@ export async function POST(req: NextRequest) {
       inserted,
       skipped,
     });
-  } catch {
+  } catch (err) {
+    console.error("Player Registration Error:", err);
     return NextResponse.json(
       { error: "Erro interno ao cadastrar jogador(es)." },
       { status: 500 }

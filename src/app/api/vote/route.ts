@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
     await useCase.execute({
       roundId: result.data.roundId,
       email: session.user.email,
+      name: session.user.name || undefined,
       ratings: result.data.ratings,
     });
 

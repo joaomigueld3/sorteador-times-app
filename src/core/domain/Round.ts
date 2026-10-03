@@ -1,4 +1,5 @@
 export interface PlayerAttributes {
+  name?: string;
   fisico: number;
   habilidade: number;
   defesa: number;
@@ -12,5 +13,6 @@ export interface Round {
   playerIds: string[];
   adminNotes: Record<string, PlayerAttributes>;
   votedEmails: string[];
+  votedNames?: string[];
   voteCount: number;
 }

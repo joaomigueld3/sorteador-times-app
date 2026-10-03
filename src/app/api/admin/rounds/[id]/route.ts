@@ -56,8 +56,11 @@ export async function GET(
       .toArray();
 
     // Quem votou (nomes)
-    const allPlayers = await db.collection("players").find({ googleEmail: { $in: round.votedEmails } }).toArray();
-    const voterNames = allPlayers.map((p) => String(p.name || ""));
+    let voterNames = round.votedNames || [];
+    if (voterNames.length === 0 && round.votedEmails.length > 0) {
+      const allPlayers = await db.collection("players").find({ googleEmail: { $in: round.votedEmails } }).toArray();
+      voterNames = allPlayers.map((p) => String(p.name || ""));
+    }
 
     return NextResponse.json({
       round,
@@ -96,13 +99,45 @@ export async function PATCH(
       return NextResponse.json({ success: true, status: "closed" });
     }
 
+    if (action === "open") {
+      await db.collection("rounds").updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { status: "open" } }
+      );
+      return NextResponse.json({ success: true, status: "open" });
+    }
+
     if (action === "apply") {
-      if (!finalNotes) {
-        return NextResponse.json({ error: "finalNotes obrigatorio para aplicar." }, { status: 400 });
+      let notesToApply = finalNotes;
+
+      // Se finalNotes nao for enviado, computa a media a partir dos votos
+      if (!notesToApply) {
+        const votes = await db.collection("votes").find({ roundId: new ObjectId(id) }).toArray();
+        const averages: Record<string, PlayerAttributes & { count: number }> = {};
+        for (const vote of votes) {
+          for (const [pid, ratings] of Object.entries(vote.ratings as Record<string, PlayerAttributes>)) {
+            if (!averages[pid]) {
+              averages[pid] = { fisico: 0, habilidade: 0, defesa: 0, count: 0 };
+            }
+            averages[pid].fisico += ratings.fisico;
+            averages[pid].habilidade += ratings.habilidade;
+            averages[pid].defesa += ratings.defesa;
+            averages[pid].count += 1;
+          }
+        }
+        
+        notesToApply = {};
+        for (const [pid, agg] of Object.entries(averages)) {
+          notesToApply[pid] = {
+            fisico: Math.round(agg.fisico / agg.count),
+            habilidade: Math.round(agg.habilidade / agg.count),
+            defesa: Math.round(agg.defesa / agg.count),
+          };
+        }
       }
 
       // Atualizar currentStats de cada jogador
-      const bulk = Object.entries(finalNotes as Record<string, PlayerAttributes>).map(
+      const bulk = Object.entries(notesToApply as Record<string, PlayerAttributes>).map(
         ([pid, stats]) => ({
           updateOne: {
             filter: { _id: new ObjectId(pid) },
@@ -123,8 +158,36 @@ export async function PATCH(
       return NextResponse.json({ success: true, status: "applied" });
     }
 
-    return NextResponse.json({ error: "action invalida. Use 'close' ou 'apply'." }, { status: 400 });
+    return NextResponse.json({ error: "action invalida. Use 'open', 'close' ou 'apply'." }, { status: 400 });
   } catch {
     return NextResponse.json({ error: "Erro ao atualizar rodada." }, { status: 500 });
+  }
+}
+
+// DELETE /api/admin/rounds/[id] - Deletar rodada
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const err = validateAdmin(req);
+  if (err) return err;
+
+  try {
+    const { id } = await params;
+    const db = await getDb();
+    
+    // Deleta os votos associados
+    await db.collection("votes").deleteMany({ roundId: new ObjectId(id) });
+    
+    // Deleta a rodada
+    const result = await db.collection("rounds").deleteOne({ _id: new ObjectId(id) });
+    
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Rodada nao encontrada." }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: "Erro ao deletar rodada." }, { status: 500 });
   }
 }
