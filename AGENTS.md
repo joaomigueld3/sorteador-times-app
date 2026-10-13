@@ -32,16 +32,15 @@
 - Team cards show live average + diff vs global team average and must update after drag-and-drop moves.
 - Theme system is CSS-variable based in `globals.css`; `page.tsx` toggles light mode by setting `data-theme="light"`, and uses default `:root` values for dark mode by removing the attribute.
 
-## Not Configured (Do Not Assume)
-- No CI workflows in `.github/workflows`.
-- No pre-commit hooks or task runner config.
-- No monorepo/workspace layout.
+## Multi-Agent Setup (Claude Code & Gemini)
+- `CLAUDE.md` é um symlink para `AGENTS.md` para garantir uma fonte única da verdade para ambos os agentes.
+- `.claude/skills` é um symlink para `.agents/skills` para unificar o compartilhamento de skills entre Claude Code e Gemini (Antigravity).
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: c71b5cac3e -->
+<!-- structure-hash: e9c675aff6 -->
 ## Snapshot automático
 
-- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `prepare`
+- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `prepare`, `test`, `spec`, `spec:status`, `spec:verify`, `spec:audit`
 - **Arquivos possivelmente não usados:** `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/playerParser.test.ts`
 
 ```text
