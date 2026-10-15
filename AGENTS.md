@@ -38,14 +38,14 @@
 - Refactoring log and next phases: `docs/skills/01-clean-ddd-hexagonal.md`.
 
 ## Multi-Agent Setup (Claude Code & Gemini)
-- `CLAUDE.md` é um symlink para `AGENTS.md` para garantir uma fonte única da verdade para ambos os agentes.
-- `.claude/skills` é um symlink para `.agents/skills` para unificar o compartilhamento de skills entre Claude Code e Gemini (Antigravity).
+- `CLAUDE.md` referencia `AGENTS.md` para garantir uma fonte única da verdade para ambos os agentes.
+- `.agents/skills` é o diretório centralizado de skills compartilhadas entre Claude Code e Gemini (Antigravity).
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: 0e28781ab9 -->
+<!-- structure-hash: 63d5eb5974 -->
 ## Snapshot automático
 
-- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `prepare`, `test`, `spec`, `spec:status`, `spec:verify`, `spec:audit`
+- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `check`, `test`, `spec`, `spec:status`, `spec:verify`, `spec:audit`
 - **Arquivos possivelmente não usados:** `src/core/domain/__tests__/VoteAverages.test.ts`, `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/playerParser.test.ts`
 
 ```text

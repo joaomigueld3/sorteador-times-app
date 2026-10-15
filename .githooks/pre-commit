@@ -1,2 +1,3 @@
 #!/bin/sh
-node scripts/project-check.mjs --precommit
+# Verificacoes completas agora rodam no GitHub Actions CI (.github/workflows/ci.yml)
+exit 0

@@ -9,7 +9,7 @@
     "lint": "eslint",
     "handoff": "node scripts/generate-handoff.mjs",
     "seed": "npx tsx scripts/seed.ts",
-    "prepare": "git config core.hooksPath .githooks",
+    "check": "node scripts/project-check.mjs --full",
     "test": "vitest run",
     "spec": "npx @onovoprogramador/onp-spec",
     "spec:status": "npx @onovoprogramador/onp-spec status",
