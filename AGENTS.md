@@ -32,16 +32,21 @@
 - Team cards show live average + diff vs global team average and must update after drag-and-drop moves.
 - Theme system is CSS-variable based in `globals.css`; `page.tsx` toggles light mode by setting `data-theme="light"`, and uses default `:root` values for dark mode by removing the attribute.
 
+## Backend Architecture (`src/core`, hexagonal)
+- Dependency rule: `core/domain` and `core/use-cases` must not import from `next/*`, `mongodb`, `@/lib/*` or `core/infrastructure`. Only `core/infrastructure` (adapters) and `src/app/api` routes may touch Mongo/Next.
+- Business rules live in use cases / domain and throw typed errors from `core/domain/errors.ts`; API routes map them to HTTP status via `instanceof` (never by message text).
+- Refactoring log and next phases: `docs/skills/01-clean-ddd-hexagonal.md`.
+
 ## Multi-Agent Setup (Claude Code & Gemini)
 - `CLAUDE.md` é um symlink para `AGENTS.md` para garantir uma fonte única da verdade para ambos os agentes.
 - `.claude/skills` é um symlink para `.agents/skills` para unificar o compartilhamento de skills entre Claude Code e Gemini (Antigravity).
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: e9c675aff6 -->
+<!-- structure-hash: 0e28781ab9 -->
 ## Snapshot automático
 
 - **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `prepare`, `test`, `spec`, `spec:status`, `spec:verify`, `spec:audit`
-- **Arquivos possivelmente não usados:** `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/playerParser.test.ts`
+- **Arquivos possivelmente não usados:** `src/core/domain/__tests__/VoteAverages.test.ts`, `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/playerParser.test.ts`
 
 ```text
 src/app/admin/page.tsx
@@ -67,12 +72,19 @@ src/components/LoginModal.tsx
 src/components/RankingList.tsx
 src/components/TeamDrawer.tsx
 src/components/VotingCard.tsx
+src/core/domain/Player.ts
+src/core/domain/Rating.ts
 src/core/domain/Round.ts
 src/core/domain/Settings.ts
 src/core/domain/Vote.ts
+src/core/domain/VoteAverages.ts
+src/core/domain/__tests__/VoteAverages.test.ts
+src/core/domain/errors.ts
+src/core/infrastructure/MongoPlayerRepository.ts
 src/core/infrastructure/MongoRoundRepository.ts
 src/core/infrastructure/MongoSettingsRepository.ts
 src/core/infrastructure/MongoVoteRepository.ts
+src/core/ports/IPlayerRepository.ts
 src/core/ports/IRoundRepository.ts
 src/core/ports/ISettingsRepository.ts
 src/core/ports/IVoteRepository.ts
