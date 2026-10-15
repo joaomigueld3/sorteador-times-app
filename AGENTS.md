@@ -9,13 +9,18 @@
 - Install deps: `npm install`
 - Dev server: `npm run dev` (serves on port 3000 by default)
 - Lint: `npm run lint`
+- Typecheck: `npx tsc --noEmit`
+- Unit tests: `npm test` (Vitest)
+- Full local check: `npm run check` (types, lint, secrets scan)
+- GitFlow pull base: `npm run git:pull` (sync develop2)
+- GitFlow sync: `npm run git:sync`
 - Production check: `npm run build`
 - Start built app: `npm run start`
 - Generate session handoff: `npm run handoff` (writes `docs/HANDOFF.md`)
 
 ## Validation Workflow
-- There is no test suite configured right now.
-- For code changes, run `npm run lint` first, then `npm run build` to catch type/build regressions.
+- Automated CI pipeline runs in GitHub Actions (`.github/workflows/ci.yml`) on push and pull requests (lint, tsc, Vitest).
+- For local validation: run `npm test` and `npm run check` to catch regressions early.
 - End each meaningful session with `npm run handoff` so another machine/session can resume quickly.
 
 ## Codebase Map (Real Entrypoints)
@@ -32,15 +37,21 @@
 - Team cards show live average + diff vs global team average and must update after drag-and-drop moves.
 - Theme system is CSS-variable based in `globals.css`; `page.tsx` toggles light mode by setting `data-theme="light"`, and uses default `:root` values for dark mode by removing the attribute.
 
+## GitFlow Standards
+- Branch de integração ativa: `develop2`. Branch de produção: `master`.
+- Todas as branches de feature (`feat/*`), correções (`fix/*`) e refatorações (`refactor/*`) partem de `develop2` e retornam a ela via PR.
+- Estratégia de merge no GitHub: **Squash and Merge** (1 commit atômico por PR).
+- Detalhes completos na skill: `.agents/skills/gitflow/SKILL.md`.
+
 ## Multi-Agent Setup (Claude Code & Gemini)
-- `CLAUDE.md` é um symlink para `AGENTS.md` para garantir uma fonte única da verdade para ambos os agentes.
-- `.claude/skills` é um symlink para `.agents/skills` para unificar o compartilhamento de skills entre Claude Code e Gemini (Antigravity).
+- `CLAUDE.md` referencia `AGENTS.md` para garantir uma fonte única da verdade para ambos os agentes.
+- `.agents/skills` é o diretório centralizado de skills compartilhadas entre Claude Code e Gemini (Antigravity).
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: e9c675aff6 -->
+<!-- structure-hash: cd7facb168 -->
 ## Snapshot automático
 
-- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `prepare`, `test`, `spec`, `spec:status`, `spec:verify`, `spec:audit`
+- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `check`, `test`, `git:pull`, `git:sync`, `git:handoff`
 - **Arquivos possivelmente não usados:** `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/playerParser.test.ts`
 
 ```text

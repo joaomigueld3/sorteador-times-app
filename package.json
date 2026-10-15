@@ -9,7 +9,11 @@
     "lint": "eslint",
     "handoff": "node scripts/generate-handoff.mjs",
     "seed": "npx tsx scripts/seed.ts",
-    "prepare": "git config core.hooksPath .githooks"
+    "check": "node scripts/project-check.mjs --full",
+    "test": "vitest run",
+    "git:pull": "git checkout develop2 && git pull origin develop2",
+    "git:sync": "git fetch origin && git pull",
+    "git:handoff": "npm run handoff"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

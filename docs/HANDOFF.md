@@ -1,69 +1,43 @@
 # HANDOFF
 
 ## Contexto
-- Gerado em: 01/10/2026, 22:16:12 (2026-10-02T01:16:12.826Z)
-- Branch: `develop2`
-- HEAD: `1cf1c8d`
+- Gerado em: 15/10/2026, 19:01:10 (2026-10-15T22:01:10.911Z)
+- Branch: `feat/gitflow-skill`
+- HEAD: `eee5c36`
 
 ## Estado Atual do Git
 ### Alteracoes locais
-- A  .env.example
-- AM .githooks/pre-commit
-- M  .gitignore
+- D .claude/skills
+-  D .githooks/pre-commit
+-  M .gitignore
 -  M AGENTS.md
--  M LICENSE
+-  T CLAUDE.md
 -  M README.md
--  M docs/notas-jogadores-2.txt
-- M  package-lock.json
-- M  package.json
-- A  scripts/project-check.mjs
--  M scripts/seed.ts
--  M src/app/notas/page.tsx
--  M src/app/page.tsx
--  M src/app/sorteio/page.tsx
--  M src/components/LoginModal.tsx
--  M src/components/RankingList.tsx
--  M src/components/TeamDrawer.tsx
--  M src/data/mocks.ts
--  M src/services/api.ts
-- ?? CONTEXT.md
-- ?? docs/BACKLOG.md
-- ?? src/app/admin/
-- ?? src/app/api/
-- ?? src/app/votar/
-- ?? src/core/
-- ?? src/lib/
+-  M docs/HANDOFF.md
+-  M package.json
+- ?? .agents/
+- ?? .github/
+- ?? docs/architecture-and-design.md
 
 ### Staged
-- .env.example
-- .githooks/pre-commit
-- .gitignore
-- package-lock.json
-- package.json
-- scripts/project-check.mjs
+- Nenhum arquivo staged
 
 ### Unstaged
+- .claude/skills
 - .githooks/pre-commit
+- .gitignore
 - AGENTS.md
-- LICENSE
+- CLAUDE.md
 - README.md
-- docs/notas-jogadores-2.txt
-- scripts/seed.ts
-- src/app/notas/page.tsx
-- src/app/page.tsx
-- src/app/sorteio/page.tsx
-- src/components/LoginModal.tsx
-- src/components/RankingList.tsx
-- src/components/TeamDrawer.tsx
-- src/data/mocks.ts
-- src/services/api.ts
+- docs/HANDOFF.md
+- package.json
 
 ## Commits Recentes
-- 1cf1c8d Add MIT License to the project (João Miguel Decendente, 2026-09-03)
-- adb243f Merge pull request #9 from joaomigueld3/develop2 (João Miguel Decendente, 2026-08-04)
-- fbe6b36 chore(stats): update (Joao Miguel, 2026-08-03)
-- 4805f18 Merge pull request #8 from joaomigueld3/develop2 (João Miguel Decendente, 2026-07-21)
-- d7a9634 Merge branch 'master' into develop2 (João Miguel Decendente, 2026-07-21)
+- eee5c36 chore: setup multi-agent symlinks for Claude Code and Gemini (Joao Miguel, 2026-10-13)
+- 659e671 feat(frontend): adjust player card badge in TeamDrawer and docs: update backlog (Joao Miguel, 2026-10-03)
+- 920cf2c feat(frontend): enhance admin dashboard and round detail with player edit/delete and round controls (Joao Miguel, 2026-10-03)
+- 6be2bcc feat(frontend): improve voting flow with Google OAuth, local login, sorting and warnings (Joao Miguel, 2026-10-03)
+- f2e8d46 feat(backend): persist voter names, round lifecycle actions, player endpoints and credentials auth (Joao Miguel, 2026-10-03)
 
 ## Validacao Recomendada
 - `npm run lint`
