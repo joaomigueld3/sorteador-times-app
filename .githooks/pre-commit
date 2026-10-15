@@ -1,3 +1,0 @@
-#!/bin/sh
-# Verificacoes completas agora rodam no GitHub Actions CI (.github/workflows/ci.yml)
-exit 0

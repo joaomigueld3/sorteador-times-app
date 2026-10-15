@@ -102,8 +102,8 @@ O ciclo de desenvolvimento segue guard-rails rigorosos:
    - `npm test` para testes unitários com Vitest.
    - `npm run spec:audit` para garantir conformidade entre código, testes e constituição.
    - `node scripts/project-check.mjs --full` para checar tipos, segredos e vulnerabilidades.
-4. **Git Hooks & Handoff:**
-   - Pre-commit hook configurado em `.githooks/pre-commit` protegendo a branch contra regressões.
+4. **CI/CD & Handoff:**
+   - Pipeline automatizado no GitHub Actions (`.github/workflows/ci.yml`) validando lint, tipos, testes e spec audit a cada push/PR.
    - `npm run handoff` para atualizar o contexto em `docs/HANDOFF.md`.
 
 ---

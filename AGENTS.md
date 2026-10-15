@@ -9,13 +9,17 @@
 - Install deps: `npm install`
 - Dev server: `npm run dev` (serves on port 3000 by default)
 - Lint: `npm run lint`
+- Typecheck: `npx tsc --noEmit`
+- Unit tests: `npm test` (Vitest)
+- Spec audit: `npm run spec:audit` (ONP Spec)
+- Full local check: `npm run check` (types, lint, secrets scan)
 - Production check: `npm run build`
 - Start built app: `npm run start`
 - Generate session handoff: `npm run handoff` (writes `docs/HANDOFF.md`)
 
 ## Validation Workflow
-- There is no test suite configured right now.
-- For code changes, run `npm run lint` first, then `npm run build` to catch type/build regressions.
+- Automated CI pipeline runs in GitHub Actions (`.github/workflows/ci.yml`) on push and pull requests (lint, tsc, Vitest, spec audit).
+- For local validation: run `npm test` and `npm run check` to catch regressions early.
 - End each meaningful session with `npm run handoff` so another machine/session can resume quickly.
 
 ## Codebase Map (Real Entrypoints)

@@ -133,16 +133,16 @@ O frontend chama http://localhost:4000 via src/services/api.ts:
 | npm run lint | Linting (ESLint) |
 | npm run seed | Popula o MongoDB com jogadores |
 | npm test | Roda testes unitarios com Vitest |
+| npm run spec:audit | Auditoria mecânica da especificação (ONP Spec) |
+| npm run check | Varredura de tipos, lint, credenciais/segredos e vulnerabilidades |
 | npm run handoff | Gera docs/HANDOFF.md para handoff de sessao |
-| node scripts/project-check.mjs --full | Varredura de tipos, lint, credenciais/segredos e vulnerabilidades |
 | node scripts/project-check.mjs --sync | Sincroniza o mapa automatico de arquivos no AGENTS.md |
 
 ---
 
 ## O que NAO esta configurado
 
-- CI/CD em nuvem (sem GitHub Actions configurado ainda)
-- Deploy automatico (Vercel/Render)
+- Deploy automatico em nuvem (Vercel/Render)
 
 ---
 

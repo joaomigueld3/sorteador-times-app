@@ -70,7 +70,7 @@
 | 5.1 | Testes automatizados | FEITO | Vitest configurado com testes de use-cases e parser. |
 | 5.2 | Verificação e scripts de checagem | FEITO | Scripts de projeto, verificação de linter e types sem erros. |
 | 5.3 | Lista de presentes com IA | IDEIA | Usar Gemini para processar lista de presentes no WhatsApp. |
-| 5.4 | CI/CD | IDEIA | GitHub Actions: lint, build, deploy. |
+| 5.4 | CI/CD (GitHub Actions) | FEITO | Pipeline em .github/workflows/ci.yml rodando lint, types, testes e spec audit. |
 | 5.5 | Deploy | IDEIA | Vercel (front) + Railway/Atlas (backend). |
 
 ## Versão 2 (TBD — Estatísticas de Jogos e Temporada)
