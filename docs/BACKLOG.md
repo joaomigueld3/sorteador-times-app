@@ -7,6 +7,7 @@
 - FEITO — Implementado e funcionando
 - EM ANDAMENTO — Em desenvolvimento ativo
 - PENDENTE — No plano para execução
+- TBD — To Be Defined (Versão 2 / Futuro)
 - IDEIA — Sugestão, sem compromisso
 
 ---
@@ -49,6 +50,8 @@
 | 3.5 | Registro de notas mensais e progresso do jogador | PENDENTE | Backend registra evolução mês a mês e interface permite acompanhar o progresso das notas. |
 | 3.6 | Votação de equilíbrio dos times | PENDENTE | Após a rodada, jogadores votam se os times foram equilibrados. |
 | 3.7 | Autenticação híbrida (Google + E-mail/Senha) | PENDENTE | Suporte a login por e-mail e senha tradicionais via NextAuth Credentials, fluxo de confirmação de e-mail (token), e recuperação de senha ("esqueci minha senha"). |
+| 3.8 | Votação de posição do jogador (ATA, ZAG, AMBOS) | PENDENTE | Votante avalia se o jogador rende como ATA, ZAG ou AMBOS com 1 toque (pré-preenchido com posição atual); backend calcula porcentagens e ADM valida antes de aplicar. |
+| 3.9 | Votação paralela sem login (link único no WhatsApp) | PENDENTE | Sistema de votação direta sem login e sem PIN, com link único no WhatsApp, seleção de nome pelo votante, e tripla proteção contra voto duplo (trava atômica no MongoDB por jogador, cookie/localStorage no dispositivo e transparência/reset no painel do ADM). Mantém suporte ao Google Auth para o futuro. |
 
 ## Prioridade 4 — UX / Visual
 
@@ -69,6 +72,16 @@
 | 5.3 | Lista de presentes com IA | IDEIA | Usar Gemini para processar lista de presentes no WhatsApp. |
 | 5.4 | CI/CD | IDEIA | GitHub Actions: lint, build, deploy. |
 | 5.5 | Deploy | IDEIA | Vercel (front) + Railway/Atlas (backend). |
+
+## Versão 2 (TBD — Estatísticas de Jogos e Temporada)
+
+| # | Feature | Status | Detalhes |
+|---|---------|--------|----------|
+| v2.1 | Registro de placares dos jogos | TBD | Interface para anotação dos placares dos confrontos entre os times da rodada. |
+| v2.2 | Registro de gols e assistências | TBD | Contabilização de artilharia e passes para gol aos jogadores em cada partida. |
+| v2.3 | MVP da rodada (Craque da rodada) | TBD | Eleição do melhor jogador da rodada com base em notas, votos e estatísticas de jogo. |
+| v2.4 | Seleção da pelada | TBD | Montagem do time ideal da rodada ou do mês destacando os melhores por posição (ATA, ZAG). |
+| v2.5 | Estatísticas gerais e histórico da temporada | TBD | Rankings acumulados (artilheiro, garçom, vitórias/aproveitamento) e quadro de recordes da pelada. |
 
 ---
 
