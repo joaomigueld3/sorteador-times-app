@@ -40,6 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-
 # Keep .env.example tracked, ignore actual secrets
 !.env.example

@@ -1,40 +1,496 @@
 # HANDOFF
 
 ## Contexto
-- Gerado em: 15/10/2026, 19:57:21 (2026-10-15T22:57:21.006Z)
-- Branch: `refactor/clean-ddd-hexagonal`
-- HEAD: `6defb19`
+- Gerado em: 16/10/2026, 18:32:20 (2026-10-16T21:32:20.623Z)
+- Branch: `feat/gitflow-skill`
+- HEAD: `7fbb621`
 
 ## Estado Atual do Git
 ### Alteracoes locais
-- M .env.example
--  M .github/workflows/ci.yml
--  M AGENTS.md
--  M package.json
--  M src/app/api/players/route.ts
--  M src/app/api/settings/route.ts
--  M src/lib/mongodb.ts
-- ?? .nvmrc
-- ?? src/lib/__tests__/mongodb.test.ts
+- A  .agents/hooks.json
+- A  .agents/skills/caveman/README.md
+- A  .agents/skills/caveman/SKILL.md
+- A  .agents/skills/clean-code/SKILL.md
+- A  .agents/skills/clean-code/references/code-smells.md
+- A  .agents/skills/clean-code/references/comments-formatting.md
+- A  .agents/skills/clean-code/references/error-handling.md
+- A  .agents/skills/clean-code/references/functions-and-methods.md
+- A  .agents/skills/clean-code/references/naming-conventions.md
+- A  .agents/skills/clean-code/references/testing-principles.md
+- A  .agents/skills/clean-ddd-hexagonal/SKILL.md
+- A  .agents/skills/clean-ddd-hexagonal/references/CHEATSHEET.md
+- A  .agents/skills/clean-ddd-hexagonal/references/CQRS-EVENTS.md
+- A  .agents/skills/clean-ddd-hexagonal/references/DDD-STRATEGIC.md
+- A  .agents/skills/clean-ddd-hexagonal/references/DDD-TACTICAL.md
+- A  .agents/skills/clean-ddd-hexagonal/references/HEXAGONAL.md
+- A  .agents/skills/clean-ddd-hexagonal/references/LAYERS.md
+- A  .agents/skills/clean-ddd-hexagonal/references/TESTING.md
+- A  .agents/skills/dev-check/SKILL.md
+- A  .agents/skills/frontend-design/LICENSE.txt
+- A  .agents/skills/frontend-design/SKILL.md
+- A  .agents/skills/onp-spec-driven/SKILL.md
+- A  .agents/skills/onp-spec-driven/references/constituicao.md
+- A  .agents/skills/onp-spec-driven/references/escrevendo-specs.md
+- A  .agents/skills/onp-spec-driven/references/fluxo.md
+- A  .agents/skills/onp-spec-driven/references/licoes.md
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/cli.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/config.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/audit.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/labels.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/ledger.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/licoes.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/plano.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/project.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/report.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/resumo.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/scaffold.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/sinais.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/core/verify.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/index.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/parsers/annotations.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/parsers/constitution.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/parsers/spec.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/parsers/tasks.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/src/util/text.js
+- A  .agents/skills/onp-spec-driven/scripts/lib/templates/constituicao-base.md
+- A  .agents/skills/onp-spec-driven/scripts/lib/templates/constituicao-lgpd-educacao.md
+- A  .agents/skills/onp-spec-driven/scripts/lib/templates/spec.md
+- A  .agents/skills/onp-spec-driven/scripts/lib/templates/tasks.md
+- A  .agents/skills/onp-spec-driven/scripts/onp-spec.mjs
+- A  .agents/skills/refactoring-patterns/SKILL.md
+- A  .agents/skills/refactoring-patterns/references/composing-methods.md
+- A  .agents/skills/refactoring-patterns/references/moving-features.md
+- A  .agents/skills/refactoring-patterns/references/organizing-data.md
+- A  .agents/skills/refactoring-patterns/references/refactoring-workflow.md
+- A  .agents/skills/refactoring-patterns/references/simplifying-conditionals.md
+- A  .agents/skills/refactoring-patterns/references/smell-catalog.md
+- A  .agents/skills/shadcn/SKILL.md
+- A  .agents/skills/shadcn/agents/openai.yml
+- A  .agents/skills/shadcn/assets/shadcn-small.png
+- A  .agents/skills/shadcn/assets/shadcn.png
+- A  .agents/skills/shadcn/cli.md
+- A  .agents/skills/shadcn/customization.md
+- A  .agents/skills/shadcn/evals/evals.json
+- A  .agents/skills/shadcn/mcp.md
+- A  .agents/skills/shadcn/registry.md
+- A  .agents/skills/shadcn/rules/base-vs-radix.md
+- A  .agents/skills/shadcn/rules/chat.md
+- A  .agents/skills/shadcn/rules/composition.md
+- A  .agents/skills/shadcn/rules/forms.md
+- A  .agents/skills/shadcn/rules/icons.md
+- A  .agents/skills/shadcn/rules/styling.md
+- A  .agents/skills/vercel-composition-patterns/AGENTS.md
+- A  .agents/skills/vercel-composition-patterns/README.md
+- A  .agents/skills/vercel-composition-patterns/SKILL.md
+- A  .agents/skills/vercel-composition-patterns/metadata.json
+- A  .agents/skills/vercel-composition-patterns/rules/_sections.md
+- A  .agents/skills/vercel-composition-patterns/rules/_template.md
+- A  .agents/skills/vercel-composition-patterns/rules/architecture-avoid-boolean-props.md
+- A  .agents/skills/vercel-composition-patterns/rules/architecture-compound-components.md
+- A  .agents/skills/vercel-composition-patterns/rules/patterns-children-over-render-props.md
+- A  .agents/skills/vercel-composition-patterns/rules/patterns-explicit-variants.md
+- A  .agents/skills/vercel-composition-patterns/rules/react19-no-forwardref.md
+- A  .agents/skills/vercel-composition-patterns/rules/state-context-interface.md
+- A  .agents/skills/vercel-composition-patterns/rules/state-decouple-implementation.md
+- A  .agents/skills/vercel-composition-patterns/rules/state-lift-state.md
+- A  .agents/skills/vercel-react-best-practices/AGENTS.md
+- A  .agents/skills/vercel-react-best-practices/README.md
+- A  .agents/skills/vercel-react-best-practices/SKILL.md
+- A  .agents/skills/vercel-react-best-practices/metadata.json
+- A  .agents/skills/vercel-react-best-practices/rules/_sections.md
+- A  .agents/skills/vercel-react-best-practices/rules/_template.md
+- A  .agents/skills/vercel-react-best-practices/rules/advanced-effect-event-deps.md
+- A  .agents/skills/vercel-react-best-practices/rules/advanced-event-handler-refs.md
+- A  .agents/skills/vercel-react-best-practices/rules/advanced-init-once.md
+- A  .agents/skills/vercel-react-best-practices/rules/advanced-use-latest.md
+- A  .agents/skills/vercel-react-best-practices/rules/async-api-routes.md
+- A  .agents/skills/vercel-react-best-practices/rules/async-cheap-condition-before-await.md
+- A  .agents/skills/vercel-react-best-practices/rules/async-defer-await.md
+- A  .agents/skills/vercel-react-best-practices/rules/async-dependencies.md
+- A  .agents/skills/vercel-react-best-practices/rules/async-parallel.md
+- A  .agents/skills/vercel-react-best-practices/rules/async-suspense-boundaries.md
+- A  .agents/skills/vercel-react-best-practices/rules/bundle-analyzable-paths.md
+- A  .agents/skills/vercel-react-best-practices/rules/bundle-barrel-imports.md
+- A  .agents/skills/vercel-react-best-practices/rules/bundle-conditional.md
+- A  .agents/skills/vercel-react-best-practices/rules/bundle-defer-third-party.md
+- A  .agents/skills/vercel-react-best-practices/rules/bundle-dynamic-imports.md
+- A  .agents/skills/vercel-react-best-practices/rules/bundle-preload.md
+- A  .agents/skills/vercel-react-best-practices/rules/client-event-listeners.md
+- A  .agents/skills/vercel-react-best-practices/rules/client-localstorage-schema.md
+- A  .agents/skills/vercel-react-best-practices/rules/client-passive-event-listeners.md
+- A  .agents/skills/vercel-react-best-practices/rules/client-swr-dedup.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-batch-dom-css.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-cache-function-results.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-cache-property-access.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-cache-storage.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-combine-iterations.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-early-exit.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-flatmap-filter.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-hoist-regexp.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-index-maps.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-length-check-first.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-min-max-loop.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-request-idle-callback.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-set-map-lookups.md
+- A  .agents/skills/vercel-react-best-practices/rules/js-tosorted-immutable.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-activity.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-animate-svg-wrapper.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-conditional-render.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-content-visibility.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-hoist-jsx.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-hydration-no-flicker.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-hydration-suppress-warning.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-resource-hints.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-script-defer-async.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-svg-precision.md
+- A  .agents/skills/vercel-react-best-practices/rules/rendering-usetransition-loading.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-defer-reads.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-dependencies.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-derived-state-no-effect.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-derived-state.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-functional-setstate.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-lazy-state-init.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-memo-with-default-value.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-memo.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-move-effect-to-event.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-no-inline-components.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-simple-expression-in-memo.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-split-combined-hooks.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-transitions.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-use-deferred-value.md
+- A  .agents/skills/vercel-react-best-practices/rules/rerender-use-ref-transient-values.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-after-nonblocking.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-auth-actions.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-cache-lru.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-cache-react.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-dedup-props.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-hoist-static-io.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-no-shared-module-state.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-parallel-fetching.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-parallel-nested-fetching.md
+- A  .agents/skills/vercel-react-best-practices/rules/server-serialization.md
+- A  .agents/skills/vercel-react-native-skills/AGENTS.md
+- A  .agents/skills/vercel-react-native-skills/README.md
+- A  .agents/skills/vercel-react-native-skills/SKILL.md
+- A  .agents/skills/vercel-react-native-skills/metadata.json
+- A  .agents/skills/vercel-react-native-skills/rules/_sections.md
+- A  .agents/skills/vercel-react-native-skills/rules/_template.md
+- A  .agents/skills/vercel-react-native-skills/rules/animation-derived-value.md
+- A  .agents/skills/vercel-react-native-skills/rules/animation-gesture-detector-press.md
+- A  .agents/skills/vercel-react-native-skills/rules/animation-gpu-properties.md
+- A  .agents/skills/vercel-react-native-skills/rules/design-system-compound-components.md
+- A  .agents/skills/vercel-react-native-skills/rules/fonts-config-plugin.md
+- A  .agents/skills/vercel-react-native-skills/rules/imports-design-system-folder.md
+- A  .agents/skills/vercel-react-native-skills/rules/js-hoist-intl.md
+- A  .agents/skills/vercel-react-native-skills/rules/list-performance-callbacks.md
+- A  .agents/skills/vercel-react-native-skills/rules/list-performance-function-references.md
+- A  .agents/skills/vercel-react-native-skills/rules/list-performance-images.md
+- A  .agents/skills/vercel-react-native-skills/rules/list-performance-inline-objects.md
+- A  .agents/skills/vercel-react-native-skills/rules/list-performance-item-expensive.md
+- A  .agents/skills/vercel-react-native-skills/rules/list-performance-item-memo.md
+- A  .agents/skills/vercel-react-native-skills/rules/list-performance-item-types.md
+- A  .agents/skills/vercel-react-native-skills/rules/list-performance-virtualize.md
+- A  .agents/skills/vercel-react-native-skills/rules/monorepo-native-deps-in-app.md
+- A  .agents/skills/vercel-react-native-skills/rules/monorepo-single-dependency-versions.md
+- A  .agents/skills/vercel-react-native-skills/rules/navigation-native-navigators.md
+- A  .agents/skills/vercel-react-native-skills/rules/react-compiler-destructure-functions.md
+- A  .agents/skills/vercel-react-native-skills/rules/react-compiler-reanimated-shared-values.md
+- A  .agents/skills/vercel-react-native-skills/rules/react-state-dispatcher.md
+- A  .agents/skills/vercel-react-native-skills/rules/react-state-fallback.md
+- A  .agents/skills/vercel-react-native-skills/rules/react-state-minimize.md
+- A  .agents/skills/vercel-react-native-skills/rules/rendering-no-falsy-and.md
+- A  .agents/skills/vercel-react-native-skills/rules/rendering-text-in-text-component.md
+- A  .agents/skills/vercel-react-native-skills/rules/scroll-position-no-state.md
+- A  .agents/skills/vercel-react-native-skills/rules/state-ground-truth.md
+- A  .agents/skills/vercel-react-native-skills/rules/ui-expo-image.md
+- A  .agents/skills/vercel-react-native-skills/rules/ui-image-gallery.md
+- A  .agents/skills/vercel-react-native-skills/rules/ui-measure-views.md
+- A  .agents/skills/vercel-react-native-skills/rules/ui-menus.md
+- A  .agents/skills/vercel-react-native-skills/rules/ui-native-modals.md
+- A  .agents/skills/vercel-react-native-skills/rules/ui-pressable.md
+- A  .agents/skills/vercel-react-native-skills/rules/ui-safe-area-scroll.md
+- A  .agents/skills/vercel-react-native-skills/rules/ui-scrollview-content-inset.md
+- A  .agents/skills/vercel-react-native-skills/rules/ui-styling.md
+- A  .agents/skills/web-design-guidelines/SKILL.md
+- M  .env.example
+- A  .gitattributes
+- M  .github/workflows/ci.yml
+- A  .nvmrc
+- A  .spec/constituicao.md
+- A  .spec/verification/.gitkeep
+- A  .spec/verification/sinais.json
+- M  AGENTS.md
+- M  CONTEXT.md
+- M  README.md
+- M  docs/BACKLOG.md
+- M  docs/HANDOFF.md
+- A  docs/skills/01-clean-ddd-hexagonal.md
+- A  onpspec.config.json
+- M  package.json
+- M  src/app/api/admin/rounds/[id]/route.ts
+- M  src/app/api/players/route.ts
+- M  src/app/api/settings/route.ts
+- M  src/app/api/vote/route.ts
+- A  src/core/domain/Player.ts
+- A  src/core/domain/Rating.ts
+- A  src/core/domain/VoteAverages.ts
+- A  src/core/domain/__tests__/VoteAverages.test.ts
+- A  src/core/domain/errors.ts
+- A  src/core/infrastructure/MongoPlayerRepository.ts
+- A  src/core/ports/IPlayerRepository.ts
+- M  src/core/use-cases/SubmitVoteUseCase.ts
+- M  src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts
+- A  src/lib/__tests__/mongodb.test.ts
+- M  src/lib/mongodb.ts
+- M  src/lib/types.ts
 
 ### Staged
-- Nenhum arquivo staged
-
-### Unstaged
+- .agents/hooks.json
+- .agents/skills/caveman/README.md
+- .agents/skills/caveman/SKILL.md
+- .agents/skills/clean-code/SKILL.md
+- .agents/skills/clean-code/references/code-smells.md
+- .agents/skills/clean-code/references/comments-formatting.md
+- .agents/skills/clean-code/references/error-handling.md
+- .agents/skills/clean-code/references/functions-and-methods.md
+- .agents/skills/clean-code/references/naming-conventions.md
+- .agents/skills/clean-code/references/testing-principles.md
+- .agents/skills/clean-ddd-hexagonal/SKILL.md
+- .agents/skills/clean-ddd-hexagonal/references/CHEATSHEET.md
+- .agents/skills/clean-ddd-hexagonal/references/CQRS-EVENTS.md
+- .agents/skills/clean-ddd-hexagonal/references/DDD-STRATEGIC.md
+- .agents/skills/clean-ddd-hexagonal/references/DDD-TACTICAL.md
+- .agents/skills/clean-ddd-hexagonal/references/HEXAGONAL.md
+- .agents/skills/clean-ddd-hexagonal/references/LAYERS.md
+- .agents/skills/clean-ddd-hexagonal/references/TESTING.md
+- .agents/skills/dev-check/SKILL.md
+- .agents/skills/frontend-design/LICENSE.txt
+- .agents/skills/frontend-design/SKILL.md
+- .agents/skills/onp-spec-driven/SKILL.md
+- .agents/skills/onp-spec-driven/references/constituicao.md
+- .agents/skills/onp-spec-driven/references/escrevendo-specs.md
+- .agents/skills/onp-spec-driven/references/fluxo.md
+- .agents/skills/onp-spec-driven/references/licoes.md
+- .agents/skills/onp-spec-driven/scripts/lib/src/cli.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/config.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/audit.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/labels.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/ledger.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/licoes.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/plano.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/project.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/report.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/resumo.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/scaffold.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/sinais.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/core/verify.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/index.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/parsers/annotations.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/parsers/constitution.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/parsers/spec.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/parsers/tasks.js
+- .agents/skills/onp-spec-driven/scripts/lib/src/util/text.js
+- .agents/skills/onp-spec-driven/scripts/lib/templates/constituicao-base.md
+- .agents/skills/onp-spec-driven/scripts/lib/templates/constituicao-lgpd-educacao.md
+- .agents/skills/onp-spec-driven/scripts/lib/templates/spec.md
+- .agents/skills/onp-spec-driven/scripts/lib/templates/tasks.md
+- .agents/skills/onp-spec-driven/scripts/onp-spec.mjs
+- .agents/skills/refactoring-patterns/SKILL.md
+- .agents/skills/refactoring-patterns/references/composing-methods.md
+- .agents/skills/refactoring-patterns/references/moving-features.md
+- .agents/skills/refactoring-patterns/references/organizing-data.md
+- .agents/skills/refactoring-patterns/references/refactoring-workflow.md
+- .agents/skills/refactoring-patterns/references/simplifying-conditionals.md
+- .agents/skills/refactoring-patterns/references/smell-catalog.md
+- .agents/skills/shadcn/SKILL.md
+- .agents/skills/shadcn/agents/openai.yml
+- .agents/skills/shadcn/assets/shadcn-small.png
+- .agents/skills/shadcn/assets/shadcn.png
+- .agents/skills/shadcn/cli.md
+- .agents/skills/shadcn/customization.md
+- .agents/skills/shadcn/evals/evals.json
+- .agents/skills/shadcn/mcp.md
+- .agents/skills/shadcn/registry.md
+- .agents/skills/shadcn/rules/base-vs-radix.md
+- .agents/skills/shadcn/rules/chat.md
+- .agents/skills/shadcn/rules/composition.md
+- .agents/skills/shadcn/rules/forms.md
+- .agents/skills/shadcn/rules/icons.md
+- .agents/skills/shadcn/rules/styling.md
+- .agents/skills/vercel-composition-patterns/AGENTS.md
+- .agents/skills/vercel-composition-patterns/README.md
+- .agents/skills/vercel-composition-patterns/SKILL.md
+- .agents/skills/vercel-composition-patterns/metadata.json
+- .agents/skills/vercel-composition-patterns/rules/_sections.md
+- .agents/skills/vercel-composition-patterns/rules/_template.md
+- .agents/skills/vercel-composition-patterns/rules/architecture-avoid-boolean-props.md
+- .agents/skills/vercel-composition-patterns/rules/architecture-compound-components.md
+- .agents/skills/vercel-composition-patterns/rules/patterns-children-over-render-props.md
+- .agents/skills/vercel-composition-patterns/rules/patterns-explicit-variants.md
+- .agents/skills/vercel-composition-patterns/rules/react19-no-forwardref.md
+- .agents/skills/vercel-composition-patterns/rules/state-context-interface.md
+- .agents/skills/vercel-composition-patterns/rules/state-decouple-implementation.md
+- .agents/skills/vercel-composition-patterns/rules/state-lift-state.md
+- .agents/skills/vercel-react-best-practices/AGENTS.md
+- .agents/skills/vercel-react-best-practices/README.md
+- .agents/skills/vercel-react-best-practices/SKILL.md
+- .agents/skills/vercel-react-best-practices/metadata.json
+- .agents/skills/vercel-react-best-practices/rules/_sections.md
+- .agents/skills/vercel-react-best-practices/rules/_template.md
+- .agents/skills/vercel-react-best-practices/rules/advanced-effect-event-deps.md
+- .agents/skills/vercel-react-best-practices/rules/advanced-event-handler-refs.md
+- .agents/skills/vercel-react-best-practices/rules/advanced-init-once.md
+- .agents/skills/vercel-react-best-practices/rules/advanced-use-latest.md
+- .agents/skills/vercel-react-best-practices/rules/async-api-routes.md
+- .agents/skills/vercel-react-best-practices/rules/async-cheap-condition-before-await.md
+- .agents/skills/vercel-react-best-practices/rules/async-defer-await.md
+- .agents/skills/vercel-react-best-practices/rules/async-dependencies.md
+- .agents/skills/vercel-react-best-practices/rules/async-parallel.md
+- .agents/skills/vercel-react-best-practices/rules/async-suspense-boundaries.md
+- .agents/skills/vercel-react-best-practices/rules/bundle-analyzable-paths.md
+- .agents/skills/vercel-react-best-practices/rules/bundle-barrel-imports.md
+- .agents/skills/vercel-react-best-practices/rules/bundle-conditional.md
+- .agents/skills/vercel-react-best-practices/rules/bundle-defer-third-party.md
+- .agents/skills/vercel-react-best-practices/rules/bundle-dynamic-imports.md
+- .agents/skills/vercel-react-best-practices/rules/bundle-preload.md
+- .agents/skills/vercel-react-best-practices/rules/client-event-listeners.md
+- .agents/skills/vercel-react-best-practices/rules/client-localstorage-schema.md
+- .agents/skills/vercel-react-best-practices/rules/client-passive-event-listeners.md
+- .agents/skills/vercel-react-best-practices/rules/client-swr-dedup.md
+- .agents/skills/vercel-react-best-practices/rules/js-batch-dom-css.md
+- .agents/skills/vercel-react-best-practices/rules/js-cache-function-results.md
+- .agents/skills/vercel-react-best-practices/rules/js-cache-property-access.md
+- .agents/skills/vercel-react-best-practices/rules/js-cache-storage.md
+- .agents/skills/vercel-react-best-practices/rules/js-combine-iterations.md
+- .agents/skills/vercel-react-best-practices/rules/js-early-exit.md
+- .agents/skills/vercel-react-best-practices/rules/js-flatmap-filter.md
+- .agents/skills/vercel-react-best-practices/rules/js-hoist-regexp.md
+- .agents/skills/vercel-react-best-practices/rules/js-index-maps.md
+- .agents/skills/vercel-react-best-practices/rules/js-length-check-first.md
+- .agents/skills/vercel-react-best-practices/rules/js-min-max-loop.md
+- .agents/skills/vercel-react-best-practices/rules/js-request-idle-callback.md
+- .agents/skills/vercel-react-best-practices/rules/js-set-map-lookups.md
+- .agents/skills/vercel-react-best-practices/rules/js-tosorted-immutable.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-activity.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-animate-svg-wrapper.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-conditional-render.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-content-visibility.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-hoist-jsx.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-hydration-no-flicker.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-hydration-suppress-warning.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-resource-hints.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-script-defer-async.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-svg-precision.md
+- .agents/skills/vercel-react-best-practices/rules/rendering-usetransition-loading.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-defer-reads.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-dependencies.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-derived-state-no-effect.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-derived-state.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-functional-setstate.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-lazy-state-init.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-memo-with-default-value.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-memo.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-move-effect-to-event.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-no-inline-components.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-simple-expression-in-memo.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-split-combined-hooks.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-transitions.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-use-deferred-value.md
+- .agents/skills/vercel-react-best-practices/rules/rerender-use-ref-transient-values.md
+- .agents/skills/vercel-react-best-practices/rules/server-after-nonblocking.md
+- .agents/skills/vercel-react-best-practices/rules/server-auth-actions.md
+- .agents/skills/vercel-react-best-practices/rules/server-cache-lru.md
+- .agents/skills/vercel-react-best-practices/rules/server-cache-react.md
+- .agents/skills/vercel-react-best-practices/rules/server-dedup-props.md
+- .agents/skills/vercel-react-best-practices/rules/server-hoist-static-io.md
+- .agents/skills/vercel-react-best-practices/rules/server-no-shared-module-state.md
+- .agents/skills/vercel-react-best-practices/rules/server-parallel-fetching.md
+- .agents/skills/vercel-react-best-practices/rules/server-parallel-nested-fetching.md
+- .agents/skills/vercel-react-best-practices/rules/server-serialization.md
+- .agents/skills/vercel-react-native-skills/AGENTS.md
+- .agents/skills/vercel-react-native-skills/README.md
+- .agents/skills/vercel-react-native-skills/SKILL.md
+- .agents/skills/vercel-react-native-skills/metadata.json
+- .agents/skills/vercel-react-native-skills/rules/_sections.md
+- .agents/skills/vercel-react-native-skills/rules/_template.md
+- .agents/skills/vercel-react-native-skills/rules/animation-derived-value.md
+- .agents/skills/vercel-react-native-skills/rules/animation-gesture-detector-press.md
+- .agents/skills/vercel-react-native-skills/rules/animation-gpu-properties.md
+- .agents/skills/vercel-react-native-skills/rules/design-system-compound-components.md
+- .agents/skills/vercel-react-native-skills/rules/fonts-config-plugin.md
+- .agents/skills/vercel-react-native-skills/rules/imports-design-system-folder.md
+- .agents/skills/vercel-react-native-skills/rules/js-hoist-intl.md
+- .agents/skills/vercel-react-native-skills/rules/list-performance-callbacks.md
+- .agents/skills/vercel-react-native-skills/rules/list-performance-function-references.md
+- .agents/skills/vercel-react-native-skills/rules/list-performance-images.md
+- .agents/skills/vercel-react-native-skills/rules/list-performance-inline-objects.md
+- .agents/skills/vercel-react-native-skills/rules/list-performance-item-expensive.md
+- .agents/skills/vercel-react-native-skills/rules/list-performance-item-memo.md
+- .agents/skills/vercel-react-native-skills/rules/list-performance-item-types.md
+- .agents/skills/vercel-react-native-skills/rules/list-performance-virtualize.md
+- .agents/skills/vercel-react-native-skills/rules/monorepo-native-deps-in-app.md
+- .agents/skills/vercel-react-native-skills/rules/monorepo-single-dependency-versions.md
+- .agents/skills/vercel-react-native-skills/rules/navigation-native-navigators.md
+- .agents/skills/vercel-react-native-skills/rules/react-compiler-destructure-functions.md
+- .agents/skills/vercel-react-native-skills/rules/react-compiler-reanimated-shared-values.md
+- .agents/skills/vercel-react-native-skills/rules/react-state-dispatcher.md
+- .agents/skills/vercel-react-native-skills/rules/react-state-fallback.md
+- .agents/skills/vercel-react-native-skills/rules/react-state-minimize.md
+- .agents/skills/vercel-react-native-skills/rules/rendering-no-falsy-and.md
+- .agents/skills/vercel-react-native-skills/rules/rendering-text-in-text-component.md
+- .agents/skills/vercel-react-native-skills/rules/scroll-position-no-state.md
+- .agents/skills/vercel-react-native-skills/rules/state-ground-truth.md
+- .agents/skills/vercel-react-native-skills/rules/ui-expo-image.md
+- .agents/skills/vercel-react-native-skills/rules/ui-image-gallery.md
+- .agents/skills/vercel-react-native-skills/rules/ui-measure-views.md
+- .agents/skills/vercel-react-native-skills/rules/ui-menus.md
+- .agents/skills/vercel-react-native-skills/rules/ui-native-modals.md
+- .agents/skills/vercel-react-native-skills/rules/ui-pressable.md
+- .agents/skills/vercel-react-native-skills/rules/ui-safe-area-scroll.md
+- .agents/skills/vercel-react-native-skills/rules/ui-scrollview-content-inset.md
+- .agents/skills/vercel-react-native-skills/rules/ui-styling.md
+- .agents/skills/web-design-guidelines/SKILL.md
 - .env.example
+- .gitattributes
 - .github/workflows/ci.yml
+- .nvmrc
+- .spec/constituicao.md
+- .spec/verification/.gitkeep
+- .spec/verification/sinais.json
 - AGENTS.md
+- CONTEXT.md
+- README.md
+- docs/BACKLOG.md
+- docs/HANDOFF.md
+- docs/skills/01-clean-ddd-hexagonal.md
+- onpspec.config.json
 - package.json
+- src/app/api/admin/rounds/[id]/route.ts
 - src/app/api/players/route.ts
 - src/app/api/settings/route.ts
+- src/app/api/vote/route.ts
+- src/core/domain/Player.ts
+- src/core/domain/Rating.ts
+- src/core/domain/VoteAverages.ts
+- src/core/domain/__tests__/VoteAverages.test.ts
+- src/core/domain/errors.ts
+- src/core/infrastructure/MongoPlayerRepository.ts
+- src/core/ports/IPlayerRepository.ts
+- src/core/use-cases/SubmitVoteUseCase.ts
+- src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts
+- src/lib/__tests__/mongodb.test.ts
 - src/lib/mongodb.ts
+- src/lib/types.ts
+
+### Unstaged
+- Nenhum arquivo unstaged
 
 ## Commits Recentes
-- 6defb19 chore: track .agents skills, remove legacy githooks and update docs for CI (Joao Miguel, 2026-10-15)
-- 37a7f9e ci: replace symlinks with direct refs and add GitHub Actions workflow (Joao Miguel, 2026-10-15)
-- c785b4b docs: update README with hexagonal architecture, admin routes and spec commands (Joao Miguel, 2026-10-15)
-- 5dea354 docs: update backlog and session handoff (Joao Miguel, 2026-10-15)
-- 442325e chore(spec): configure onp-spec driven development with vitest (Joao Miguel, 2026-10-15)
+- 7fbb621 feat(gitflow): add gitflow skill, git aliases and ci workflow (Joao Miguel, 2026-10-15)
+- eee5c36 chore: setup multi-agent symlinks for Claude Code and Gemini (Joao Miguel, 2026-10-13)
+- 659e671 feat(frontend): adjust player card badge in TeamDrawer and docs: update backlog (Joao Miguel, 2026-10-03)
+- 920cf2c feat(frontend): enhance admin dashboard and round detail with player edit/delete and round controls (Joao Miguel, 2026-10-03)
+- 6be2bcc feat(frontend): improve voting flow with Google OAuth, local login, sorting and warnings (Joao Miguel, 2026-10-03)
 
 ## Validacao Recomendada
 - `npm run lint`
