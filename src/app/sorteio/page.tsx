@@ -3,21 +3,27 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
-import TeamDrawer from "../../components/TeamDrawer";
-import { api, getErrorMessage } from "../../services/api";
+import TeamDrawer, { SourcePlayer } from "../../components/TeamDrawer";
+import { getErrorMessage } from "../../services/api";
 import { MOCK_PLAYERS } from "../../data/mocks";
 
 export default function SorteioPage() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [players, setPlayers] = useState<any[]>(MOCK_PLAYERS);
+  const [players, setPlayers] = useState<SourcePlayer[]>(MOCK_PLAYERS);
   const [backendError, setBackendError] = useState("");
 
   useEffect(() => {
-    api.getPlayers()
+    fetch("/api/players")
+      .then((res) => {
+        if (!res.ok) throw new Error("Falha ao buscar jogadores");
+        return res.json();
+      })
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setPlayers(data);
           setBackendError("");
+        } else {
+          setPlayers(MOCK_PLAYERS);
         }
       })
       .catch((error) => {

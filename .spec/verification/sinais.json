@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "sinais": {
+    "GLOB_SEM_ARQUIVOS::—::P-002": {
+      "codigo": "GLOB_SEM_ARQUIVOS",
+      "feature": "—",
+      "ref": "P-002",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-10T19:21:03.970Z",
+      "ultimaVez": "2026-10-10T19:40:02.132Z",
+      "gitRev": "659e671"
+    }
+  }
+}

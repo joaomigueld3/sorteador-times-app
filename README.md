@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Perronhas Rebirth
 
-## Getting Started
+App web para organizar peladas de futebol com sistema de notas, ranking e sorteio de times equilibrados.
 
-First, run the development server:
+## Funcionalidades
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Notas e Ranking (`/notas`)
+- Login de jogador por PIN ou credenciais
+- Votação nos atributos dos colegas: Físico, Habilidade e Defesa
+- Notas pré-preenchidas com os valores atuais para votação ágil
+- Ranking geral e ordenações por nota overall e atributos específicos
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Sorteador de Times (`/sorteio`)
+- Seleção visual de jogadores presentes na rodada
+- Sorteio balanceado por média ponderada configurável (padrão: F=40%, H=35%, D=25%)
+- Ajuste manual em tempo real via drag-and-drop com recálculo imediato de médias
+- Exportação formatada para WhatsApp (com ou sem notas)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Painel Administrativo (`/admin` e `/admin/rodada/[id]`)
+- Gestão completa de jogadores: cadastro, edição de posições/notas e exclusão
+- Gestão do ciclo de vida das rodadas: criação, ativação e encerramento
+- Configuração de pesos de sorteio e parâmetros do sistema
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Votação por Rodada (`/votar/[roundId]`)
+- Fluxo de votação dedicado para os participantes de uma rodada específica
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Stack e Arquitetura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend & Fullstack:** [Next.js 16](https://nextjs.org/) (App Router) + [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Estilização & Temas:** [Tailwind CSS v4](https://tailwindcss.com/) com suporte a tema escuro (*Cyber Green*) e claro (*Esportes da Sorte*)
+- **Interatividade:** [@dnd-kit](https://dndkit.com/) para drag-and-drop fluido em desktop e mobile
+- **Banco de Dados:** [MongoDB Atlas](https://www.mongodb.com/atlas) com driver nativo
+- **Testes Unitários:** [Vitest](https://vitest.dev/)
+- **Metodologia:** Spec-Driven Development via [ONP Spec](https://github.com/onovoprogramador/onp-spec) (ancoragem mecânica com testes executáveis)
+- **Backend Hexagonal (`src/core/`):**
+  - `src/core/domain`: Entidades puras e regras de negócio (`Player`, `Rating`, `Round`, `Settings`, `Vote`, `VoteAverages`)
+  - `src/core/ports`: Interfaces e contratos de repositórios (`IPlayerRepository`, `IRoundRepository`, etc.)
+  - `src/core/use-cases`: Casos de uso desacoplados do framework HTTP/Next.js
+  - `src/core/infrastructure`: Adaptadores concretos para persistência no MongoDB
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Rodando Localmente
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Configure o `.env` com a connection string do MongoDB:**
+   ```bash
+   cp .env.example .env
+   # Preencha MONGO_URI com sua string de conexão
+   ```
+
+3. **Popule o banco com dados iniciais (opcional):**
+   ```bash
+   npm run seed
+   ```
+
+4. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm run dev
+   ```
+
+5. **Acesse no navegador:**
+   [http://localhost:3000](http://localhost:3000)
+
+---
+
+## Comandos Disponíveis
+
+| Comando | Descrição |
+|---|---|
+| `npm run dev` | Inicia o servidor de desenvolvimento na porta 3000 |
+| `npm run build` | Compilação de produção com Turbopack |
+| `npm run start` | Executa o build de produção |
+| `npm run lint` | Validação estática de código via ESLint |
+| `npm test` | Executa a suíte de testes unitários com Vitest |
+| `npm run seed` | Popula o banco MongoDB com jogadores e dados de exemplo |
+| `npm run handoff` | Gera o snapshot atualizado de sessão em `docs/HANDOFF.md` |
+| `npm run spec:status` | Visualiza o status de features, histórias e critérios de aceite |
+| `npm run spec:verify` | Executa testes e registra a prova executável de cada critério |
+| `npm run spec:audit` | Auditoria mecânica da especificação contra o código e constituição |
+| `node scripts/project-check.mjs --full` | Verificação completa de tipos, linter, segredos e consistência |
+
+---
+
+## Pipeline de Desenvolvimento e Qualidade
+
+O ciclo de desenvolvimento segue guard-rails rigorosos:
+
+1. **Especificação & Planejamento:**
+   - Novas features são especificadas via `npx @onovoprogramador/onp-spec new <feature>` gerando histórias (`US-xxx`) e critérios (`AC-xxx`).
+   - Cada critério vira um teste anotado (`@spec:AC-xxx`) executado pelo Vitest.
+2. **Desenvolvimento e Refatoração:**
+   - Regras de domínio e casos de uso isolados em `src/core/` (sem acoplamento com Next.js ou MongoDB).
+   - Componentes React seguindo padrões de composição limpos.
+3. **Validação de Qualidade Automatizada:**
+   - `npm test` para testes unitários com Vitest.
+   - `npm run spec:audit` para garantir conformidade entre código, testes e constituição.
+   - `node scripts/project-check.mjs --full` para checar tipos, segredos e vulnerabilidades.
+4. **CI/CD & Handoff:**
+   - Pipeline automatizado no GitHub Actions (`.github/workflows/ci.yml`) validando lint, tipos, testes e spec audit a cada push/PR.
+   - `npm run handoff` para atualizar o contexto em `docs/HANDOFF.md`.
+
+---
+
+## Documentação do Projeto
+
+- **[CONTEXT.md](CONTEXT.md)** — Visão completa do projeto, decisões de produto e design
+- **[AGENTS.md](AGENTS.md)** — Mapa do código e regras para agentes de IA
+- **[docs/BACKLOG.md](docs/BACKLOG.md)** — Backlog priorizado de funcionalidades (v1 e v2)
+- **[docs/skills/01-clean-ddd-hexagonal.md](docs/skills/01-clean-ddd-hexagonal.md)** — Registro e plano de migração para Clean Architecture / DDD
+- **[.spec/constituicao.md](.spec/constituicao.md)** — Princípios inegociáveis de engenharia e segurança
+
+---
+
+## Licença
+
+[MIT](LICENSE)

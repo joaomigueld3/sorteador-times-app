@@ -3,24 +3,24 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, getErrorMessage } from "../../services/api";
-import { MOCK_PLAYERS } from "../../data/mocks";
+import { MOCK_PLAYERS, Player, PlayerAttributes } from "../../data/mocks";
 import VotingCard from "../../components/VotingCard";
 import RankingList from "../../components/RankingList";
 import LoginModal from "../../components/LoginModal";
 import { Sun, Moon, LogOut, CheckCircle2, Menu, X } from "lucide-react";
 
-const calculateOverall = (stats: any) => {
+const calculateOverall = (stats?: PlayerAttributes) => {
   if (!stats) return 0;
   return Math.round((stats.fisico * 0.4) + (stats.habilidade * 0.35) + (stats.defesa * 0.25));
 };
 
 export default function NotasPage() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [players, setPlayers] = useState<any[]>([]);
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [currentUser, setCurrentUser] = useState<Player | null>(null);
   const [activeMatchId, setActiveMatchId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"vote" | "ranking">("vote");
-  const [votes, setVotes] = useState<Record<string, any>>({});
+  const [votes, setVotes] = useState<Record<string, PlayerAttributes>>({});
   const [backendError, setBackendError] = useState("");
   const [offlineMode, setOfflineMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -46,11 +46,11 @@ export default function NotasPage() {
   }, [theme]);
 
   const toggleTheme = () => setTheme((prev) => prev === "light" ? "dark" : "light");
-  const handleLoginSuccess = (user: any, matchId: string | null) => {
+  const handleLoginSuccess = (user: Player, matchId: string | null) => {
     setCurrentUser(user);
     setActiveMatchId(matchId);
   };
-  const handleVoteChange = (playerId: string, newStats: any) => setVotes((prev) => ({ ...prev, [playerId]: newStats }));
+  const handleVoteChange = (playerId: string, newStats: PlayerAttributes) => setVotes((prev) => ({ ...prev, [playerId]: newStats }));
 
   const confirmRound = async () => {
     if (offlineMode) {
@@ -60,7 +60,7 @@ export default function NotasPage() {
     if (!currentUser || !activeMatchId) return alert("Erro: Nenhuma rodada ativa encontrada.");
     if (Object.keys(votes).length === 0) return alert("Você não alterou nenhuma nota.");
     try {
-      await api.submitVote(currentUser._id, activeMatchId, votes);
+      await api.submitVote(currentUser._id || currentUser.id, activeMatchId, votes);
       alert("Sucesso! Seus votos foram computados na rodada.");
       setBackendError("");
     } catch (error) {
@@ -115,12 +115,12 @@ export default function NotasPage() {
             </div>
             <div className="grid grid-cols-1 gap-2">
             {sortedPlayersForVoting.map((player) => (
-              <VotingCard key={player._id} player={{ ...player, id: player._id }} onVoteChange={handleVoteChange} isSelf={currentUser._id === player._id} />
+              <VotingCard key={player._id || player.id} player={{ ...player, id: player._id || player.id }} onVoteChange={handleVoteChange} isSelf={(currentUser._id || currentUser.id) === (player._id || player.id)} />
             ))}
             </div>
           </div>
         ) : (
-          <RankingList players={players.map((p) => ({ ...p, id: p._id }))} />
+          <RankingList players={players.map((p) => ({ ...p, id: p._id || p.id }))} />
         )}
       </div>
       {activeTab === "vote" && (

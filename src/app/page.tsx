@@ -18,6 +18,9 @@ export default function HomePage() {
           <Link href="/sorteio" className="rounded-xl px-4 py-4 font-bold text-sm border text-center" style={{ borderColor: "var(--border)", color: "var(--text-primary)" }}>
             Sorteador de Times
           </Link>
+          <Link href="/admin" className="rounded-xl px-4 py-4 font-bold text-sm border text-center opacity-70 hover:opacity-100 transition-opacity" style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}>
+            Admin
+          </Link>
         </div>
       </div>
     </main>

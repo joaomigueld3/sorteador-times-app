@@ -1,32 +1,40 @@
 # HANDOFF
 
 ## Contexto
-- Gerado em: 12/05/2026, 20:13:48 (2026-05-12T23:13:48.876Z)
-- Branch: `develop`
-- HEAD: `83f6340`
+- Gerado em: 15/10/2026, 19:57:21 (2026-10-15T22:57:21.006Z)
+- Branch: `refactor/clean-ddd-hexagonal`
+- HEAD: `6defb19`
 
 ## Estado Atual do Git
 ### Alteracoes locais
-- M src/app/page.tsx
--  M src/app/sorteador-antigo/page.tsx
--  M src/components/TeamDrawer.tsx
-- ?? src/app/notas/
-- ?? src/app/sorteio/
+- M .env.example
+-  M .github/workflows/ci.yml
+-  M AGENTS.md
+-  M package.json
+-  M src/app/api/players/route.ts
+-  M src/app/api/settings/route.ts
+-  M src/lib/mongodb.ts
+- ?? .nvmrc
+- ?? src/lib/__tests__/mongodb.test.ts
 
 ### Staged
 - Nenhum arquivo staged
 
 ### Unstaged
-- src/app/page.tsx
-- src/app/sorteador-antigo/page.tsx
-- src/components/TeamDrawer.tsx
+- .env.example
+- .github/workflows/ci.yml
+- AGENTS.md
+- package.json
+- src/app/api/players/route.ts
+- src/app/api/settings/route.ts
+- src/lib/mongodb.ts
 
 ## Commits Recentes
-- 83f6340 implementing team sorter (Joao Miguel, 2026-05-07)
-- 7aa7e55 voting scene (João Miguel, 2026-04-19)
-- ce3a5fa fix (deploy): typescript syntax error (João Miguel, 2026-02-08)
-- 704f1ec fix(deploy): revert build command to npm run build (João Miguel, 2026-02-08)
-- 65c3c7e feat: v1 completed (João Miguel, 2026-02-08)
+- 6defb19 chore: track .agents skills, remove legacy githooks and update docs for CI (Joao Miguel, 2026-10-15)
+- 37a7f9e ci: replace symlinks with direct refs and add GitHub Actions workflow (Joao Miguel, 2026-10-15)
+- c785b4b docs: update README with hexagonal architecture, admin routes and spec commands (Joao Miguel, 2026-10-15)
+- 5dea354 docs: update backlog and session handoff (Joao Miguel, 2026-10-15)
+- 442325e chore(spec): configure onp-spec driven development with vitest (Joao Miguel, 2026-10-15)
 
 ## Validacao Recomendada
 - `npm run lint`
@@ -35,5 +43,3 @@
 ## Proximos Passos
 - Revisar alteracoes acima e continuar pela feature em andamento.
 - Atualizar este arquivo ao final da sessao com `npm run handoff`.
-
-'ótimo, agora eu quero transformar os jogadores em cartas de fifa, como fazer isso de forma que eu possa editar as cartas?'
