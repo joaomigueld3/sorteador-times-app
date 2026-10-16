@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import type { PlayerType } from "../core/domain/Player";
 
 // ---- Player ----
 export interface PlayerAttributes {
@@ -9,7 +10,7 @@ export interface PlayerAttributes {
 
 export type Position = "ATA" | "ZAG";
 
-export type PlayerType = "mensalista" | "diarista";
+export type { PlayerType };
 
 export interface Player {
   _id?: ObjectId;
@@ -44,11 +45,7 @@ export interface Vote {
 }
 
 // ---- Helpers ----
-export const VALID_NOTES = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100] as const;
-
-export function isValidNote(n: number): boolean {
-  return VALID_NOTES.includes(n as typeof VALID_NOTES[number]);
-}
+export { VALID_NOTES, isValidNote } from "../core/domain/Rating";
 
 export function calculateOverall(stats: PlayerAttributes): number {
   return Math.round(

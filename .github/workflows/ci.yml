@@ -19,7 +19,7 @@ on:
 
 jobs:
   verify:
-    name: Build, Lint, Types, Tests & Validation
+    name: Build, Lint, Types, Tests & Spec Audit
     runs-on: ubuntu-latest
 
     steps:
@@ -43,3 +43,9 @@ jobs:
 
       - name: Run unit tests
         run: npm test
+
+      - name: Spec-driven audit (ONP Spec)
+        run: npm run spec:audit
+
+      - name: Production build
+        run: npm run build

@@ -2,6 +2,9 @@
   "name": "sorteador-times-app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,6 +14,10 @@
     "seed": "npx tsx scripts/seed.ts",
     "check": "node scripts/project-check.mjs --full",
     "test": "vitest run",
+    "spec": "npx @onovoprogramador/onp-spec",
+    "spec:status": "npx @onovoprogramador/onp-spec status",
+    "spec:verify": "npx @onovoprogramador/onp-spec verify",
+    "spec:audit": "npx @onovoprogramador/onp-spec audit --ci",
     "git:pull": "git checkout develop2 && git pull origin develop2",
     "git:sync": "git fetch origin && git pull",
     "git:handoff": "npm run handoff"

@@ -1,0 +1,2 @@
+# Padroniza quebras de linha em LF para todos os arquivos de texto
+* text=auto eol=lf
