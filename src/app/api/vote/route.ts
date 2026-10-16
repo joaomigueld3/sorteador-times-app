@@ -4,8 +4,8 @@ import { z } from "zod";
 import { SubmitVoteUseCase } from "@/core/use-cases/SubmitVoteUseCase";
 import { MongoRoundRepository } from "@/core/infrastructure/MongoRoundRepository";
 import { MongoVoteRepository } from "@/core/infrastructure/MongoVoteRepository";
-
-import { getDb } from "@/lib/mongodb";
+import { MongoPlayerRepository } from "@/core/infrastructure/MongoPlayerRepository";
+import { VoteRejectedError, VotingNotAllowedError } from "@/core/domain/errors";
 
 const submitVoteSchema = z.object({
   roundId: z.string().min(1),
@@ -19,20 +19,17 @@ const submitVoteSchema = z.object({
   ),
 });
 
+function statusFor(error: unknown): number {
+  if (error instanceof VotingNotAllowedError) return 403;
+  if (error instanceof VoteRejectedError) return 409;
+  return 400; // InvalidNoteError e erros não mapeados mantêm o 400 que a rota já retornava
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Faca login com Google primeiro." }, { status: 401 });
-    }
-
-    const db = await getDb();
-    const voterPlayer = await db.collection("players").findOne({ googleEmail: session.user.email });
-    if (voterPlayer && voterPlayer.type === "diarista") {
-      return NextResponse.json(
-        { error: "Jogadores diaristas não têm permissão para votar na rodada." },
-        { status: 403 }
-      );
     }
 
     const body = await req.json();
@@ -42,9 +39,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Payload invalido." }, { status: 400 });
     }
 
-    const roundRepo = new MongoRoundRepository();
-    const voteRepo = new MongoVoteRepository();
-    const useCase = new SubmitVoteUseCase(roundRepo, voteRepo);
+    const useCase = new SubmitVoteUseCase(
+      new MongoRoundRepository(),
+      new MongoVoteRepository(),
+      new MongoPlayerRepository()
+    );
 
     await useCase.execute({
       roundId: result.data.roundId,
@@ -56,7 +55,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, message: "Voto registrado com sucesso!" });
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : "Erro interno";
-    const status = msg.includes("já votou") || msg.includes("nao esta aberta") ? 409 : 400;
-    return NextResponse.json({ error: msg }, { status });
+    return NextResponse.json({ error: msg }, { status: statusFor(error) });
   }
 }

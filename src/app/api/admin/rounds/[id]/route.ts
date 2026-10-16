@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { getDb } from "@/lib/mongodb";
 import { validateAdmin } from "@/lib/admin";
-import { PlayerAttributes } from "@/lib/types";
+import { PlayerAttributes } from "@/core/domain/Round";
+import { computeAverages } from "@/core/domain/VoteAverages";
 
 // GET /api/admin/rounds/[id] - Detalhe da rodada + votos
 export async function GET(
@@ -25,28 +26,9 @@ export async function GET(
       .find({ roundId: new ObjectId(id) })
       .toArray();
 
-    // Computar medias
-    const averages: Record<string, PlayerAttributes & { count: number }> = {};
-    for (const vote of votes) {
-      for (const [pid, ratings] of Object.entries(vote.ratings as Record<string, PlayerAttributes>)) {
-        if (!averages[pid]) {
-          averages[pid] = { fisico: 0, habilidade: 0, defesa: 0, count: 0 };
-        }
-        averages[pid].fisico += ratings.fisico;
-        averages[pid].habilidade += ratings.habilidade;
-        averages[pid].defesa += ratings.defesa;
-        averages[pid].count += 1;
-      }
-    }
-
-    const computedAverages: Record<string, PlayerAttributes> = {};
-    for (const [pid, agg] of Object.entries(averages)) {
-      computedAverages[pid] = {
-        fisico: Math.round(agg.fisico / agg.count),
-        habilidade: Math.round(agg.habilidade / agg.count),
-        defesa: Math.round(agg.defesa / agg.count),
-      };
-    }
+    const computedAverages = computeAverages(
+      votes.map((vote) => vote.ratings as Record<string, PlayerAttributes>)
+    );
 
     // Buscar nomes dos jogadores
     const playerOids = round.playerIds.map((id: string) => new ObjectId(id));
@@ -113,27 +95,9 @@ export async function PATCH(
       // Se finalNotes nao for enviado, computa a media a partir dos votos
       if (!notesToApply) {
         const votes = await db.collection("votes").find({ roundId: new ObjectId(id) }).toArray();
-        const averages: Record<string, PlayerAttributes & { count: number }> = {};
-        for (const vote of votes) {
-          for (const [pid, ratings] of Object.entries(vote.ratings as Record<string, PlayerAttributes>)) {
-            if (!averages[pid]) {
-              averages[pid] = { fisico: 0, habilidade: 0, defesa: 0, count: 0 };
-            }
-            averages[pid].fisico += ratings.fisico;
-            averages[pid].habilidade += ratings.habilidade;
-            averages[pid].defesa += ratings.defesa;
-            averages[pid].count += 1;
-          }
-        }
-        
-        notesToApply = {};
-        for (const [pid, agg] of Object.entries(averages)) {
-          notesToApply[pid] = {
-            fisico: Math.round(agg.fisico / agg.count),
-            habilidade: Math.round(agg.habilidade / agg.count),
-            defesa: Math.round(agg.defesa / agg.count),
-          };
-        }
+        notesToApply = computeAverages(
+          votes.map((vote) => vote.ratings as Record<string, PlayerAttributes>)
+        );
       }
 
       // Atualizar currentStats de cada jogador

@@ -9,13 +9,17 @@
 - Install deps: `npm install`
 - Dev server: `npm run dev` (serves on port 3000 by default)
 - Lint: `npm run lint`
+- Typecheck: `npx tsc --noEmit`
+- Unit tests: `npm test` (Vitest)
+- Spec audit: `npm run spec:audit` (ONP Spec)
+- Full local check: `npm run check` (types, lint, secrets scan)
 - Production check: `npm run build`
 - Start built app: `npm run start`
 - Generate session handoff: `npm run handoff` (writes `docs/HANDOFF.md`)
 
 ## Validation Workflow
-- There is no test suite configured right now.
-- For code changes, run `npm run lint` first, then `npm run build` to catch type/build regressions.
+- Automated CI pipeline runs in GitHub Actions (`.github/workflows/ci.yml`) on push and pull requests (lint, tsc, Vitest, spec audit).
+- For local validation: run `npm test` and `npm run check` to catch regressions early.
 - End each meaningful session with `npm run handoff` so another machine/session can resume quickly.
 
 ## Codebase Map (Real Entrypoints)
@@ -32,17 +36,21 @@
 - Team cards show live average + diff vs global team average and must update after drag-and-drop moves.
 - Theme system is CSS-variable based in `globals.css`; `page.tsx` toggles light mode by setting `data-theme="light"`, and uses default `:root` values for dark mode by removing the attribute.
 
-## Not Configured (Do Not Assume)
-- No CI workflows in `.github/workflows`.
-- No pre-commit hooks or task runner config.
-- No monorepo/workspace layout.
+## Backend Architecture (`src/core`, hexagonal)
+- Dependency rule: `core/domain` and `core/use-cases` must not import from `next/*`, `mongodb`, `@/lib/*` or `core/infrastructure`. Only `core/infrastructure` (adapters) and `src/app/api` routes may touch Mongo/Next.
+- Business rules live in use cases / domain and throw typed errors from `core/domain/errors.ts`; API routes map them to HTTP status via `instanceof` (never by message text).
+- Refactoring log and next phases: `docs/skills/01-clean-ddd-hexagonal.md`.
+
+## Multi-Agent Setup (Claude Code & Gemini)
+- `CLAUDE.md` referencia `AGENTS.md` para garantir uma fonte única da verdade para ambos os agentes.
+- `.agents/skills` é o diretório centralizado de skills compartilhadas entre Claude Code e Gemini (Antigravity).
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: c71b5cac3e -->
+<!-- structure-hash: 34cee5c143 -->
 ## Snapshot automático
 
-- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `prepare`
-- **Arquivos possivelmente não usados:** `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/playerParser.test.ts`
+- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `check`, `test`, `spec`, `spec:status`, `spec:verify`, `spec:audit`
+- **Arquivos possivelmente não usados:** `src/core/domain/__tests__/VoteAverages.test.ts`, `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/mongodb.test.ts`, `src/lib/__tests__/playerParser.test.ts`
 
 ```text
 src/app/admin/page.tsx
@@ -68,12 +76,19 @@ src/components/LoginModal.tsx
 src/components/RankingList.tsx
 src/components/TeamDrawer.tsx
 src/components/VotingCard.tsx
+src/core/domain/Player.ts
+src/core/domain/Rating.ts
 src/core/domain/Round.ts
 src/core/domain/Settings.ts
 src/core/domain/Vote.ts
+src/core/domain/VoteAverages.ts
+src/core/domain/__tests__/VoteAverages.test.ts
+src/core/domain/errors.ts
+src/core/infrastructure/MongoPlayerRepository.ts
 src/core/infrastructure/MongoRoundRepository.ts
 src/core/infrastructure/MongoSettingsRepository.ts
 src/core/infrastructure/MongoVoteRepository.ts
+src/core/ports/IPlayerRepository.ts
 src/core/ports/IRoundRepository.ts
 src/core/ports/ISettingsRepository.ts
 src/core/ports/IVoteRepository.ts
@@ -84,6 +99,7 @@ src/core/use-cases/UpdateSettingsUseCase.ts
 src/core/use-cases/__tests__/CreateRoundUseCase.test.ts
 src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts
 src/data/mocks.ts
+src/lib/__tests__/mongodb.test.ts
 src/lib/__tests__/playerParser.test.ts
 src/lib/admin.ts
 src/lib/auth.ts

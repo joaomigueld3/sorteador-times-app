@@ -1,69 +1,40 @@
 # HANDOFF
 
 ## Contexto
-- Gerado em: 01/10/2026, 22:16:12 (2026-10-02T01:16:12.826Z)
-- Branch: `develop2`
-- HEAD: `1cf1c8d`
+- Gerado em: 15/10/2026, 19:57:21 (2026-10-15T22:57:21.006Z)
+- Branch: `refactor/clean-ddd-hexagonal`
+- HEAD: `6defb19`
 
 ## Estado Atual do Git
 ### Alteracoes locais
-- A  .env.example
-- AM .githooks/pre-commit
-- M  .gitignore
+- M .env.example
+-  M .github/workflows/ci.yml
 -  M AGENTS.md
--  M LICENSE
--  M README.md
--  M docs/notas-jogadores-2.txt
-- M  package-lock.json
-- M  package.json
-- A  scripts/project-check.mjs
--  M scripts/seed.ts
--  M src/app/notas/page.tsx
--  M src/app/page.tsx
--  M src/app/sorteio/page.tsx
--  M src/components/LoginModal.tsx
--  M src/components/RankingList.tsx
--  M src/components/TeamDrawer.tsx
--  M src/data/mocks.ts
--  M src/services/api.ts
-- ?? CONTEXT.md
-- ?? docs/BACKLOG.md
-- ?? src/app/admin/
-- ?? src/app/api/
-- ?? src/app/votar/
-- ?? src/core/
-- ?? src/lib/
+-  M package.json
+-  M src/app/api/players/route.ts
+-  M src/app/api/settings/route.ts
+-  M src/lib/mongodb.ts
+- ?? .nvmrc
+- ?? src/lib/__tests__/mongodb.test.ts
 
 ### Staged
-- .env.example
-- .githooks/pre-commit
-- .gitignore
-- package-lock.json
-- package.json
-- scripts/project-check.mjs
+- Nenhum arquivo staged
 
 ### Unstaged
-- .githooks/pre-commit
+- .env.example
+- .github/workflows/ci.yml
 - AGENTS.md
-- LICENSE
-- README.md
-- docs/notas-jogadores-2.txt
-- scripts/seed.ts
-- src/app/notas/page.tsx
-- src/app/page.tsx
-- src/app/sorteio/page.tsx
-- src/components/LoginModal.tsx
-- src/components/RankingList.tsx
-- src/components/TeamDrawer.tsx
-- src/data/mocks.ts
-- src/services/api.ts
+- package.json
+- src/app/api/players/route.ts
+- src/app/api/settings/route.ts
+- src/lib/mongodb.ts
 
 ## Commits Recentes
-- 1cf1c8d Add MIT License to the project (João Miguel Decendente, 2026-09-03)
-- adb243f Merge pull request #9 from joaomigueld3/develop2 (João Miguel Decendente, 2026-08-04)
-- fbe6b36 chore(stats): update (Joao Miguel, 2026-08-03)
-- 4805f18 Merge pull request #8 from joaomigueld3/develop2 (João Miguel Decendente, 2026-07-21)
-- d7a9634 Merge branch 'master' into develop2 (João Miguel Decendente, 2026-07-21)
+- 6defb19 chore: track .agents skills, remove legacy githooks and update docs for CI (Joao Miguel, 2026-10-15)
+- 37a7f9e ci: replace symlinks with direct refs and add GitHub Actions workflow (Joao Miguel, 2026-10-15)
+- c785b4b docs: update README with hexagonal architecture, admin routes and spec commands (Joao Miguel, 2026-10-15)
+- 5dea354 docs: update backlog and session handoff (Joao Miguel, 2026-10-15)
+- 442325e chore(spec): configure onp-spec driven development with vitest (Joao Miguel, 2026-10-15)
 
 ## Validacao Recomendada
 - `npm run lint`
