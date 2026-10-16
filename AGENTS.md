@@ -13,6 +13,8 @@
 - Unit tests: `npm test` (Vitest)
 - Spec audit: `npm run spec:audit` (ONP Spec)
 - Full local check: `npm run check` (types, lint, secrets scan)
+- GitFlow pull base: `npm run git:pull` (sync develop2)
+- GitFlow sync: `npm run git:sync`
 - Production check: `npm run build`
 - Start built app: `npm run start`
 - Generate session handoff: `npm run handoff` (writes `docs/HANDOFF.md`)
@@ -36,6 +38,12 @@
 - Team cards show live average + diff vs global team average and must update after drag-and-drop moves.
 - Theme system is CSS-variable based in `globals.css`; `page.tsx` toggles light mode by setting `data-theme="light"`, and uses default `:root` values for dark mode by removing the attribute.
 
+## GitFlow Standards
+- Branch de integração ativa: `develop2`. Branch de produção: `master`.
+- Todas as branches de feature (`feat/*`), correções (`fix/*`) e refatorações (`refactor/*`) partem de `develop2` e retornam a ela via PR.
+- Estratégia de merge no GitHub: **Squash and Merge** (1 commit atômico por PR).
+- Detalhes completos na skill: `.agents/skills/gitflow/SKILL.md`.
+
 ## Backend Architecture (`src/core`, hexagonal)
 - Dependency rule: `core/domain` and `core/use-cases` must not import from `next/*`, `mongodb`, `@/lib/*` or `core/infrastructure`. Only `core/infrastructure` (adapters) and `src/app/api` routes may touch Mongo/Next.
 - Business rules live in use cases / domain and throw typed errors from `core/domain/errors.ts`; API routes map them to HTTP status via `instanceof` (never by message text).
@@ -46,10 +54,10 @@
 - `.agents/skills` é o diretório centralizado de skills compartilhadas entre Claude Code e Gemini (Antigravity).
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: 34cee5c143 -->
+<!-- structure-hash: 1fcc4aa6fb -->
 ## Snapshot automático
 
-- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `check`, `test`, `spec`, `spec:status`, `spec:verify`, `spec:audit`
+- **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `check`, `test`, `spec`, `spec:status`, `spec:verify`, `spec:audit`, `git:pull`, `git:sync`, `git:handoff`
 - **Arquivos possivelmente não usados:** `src/core/domain/__tests__/VoteAverages.test.ts`, `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/mongodb.test.ts`, `src/lib/__tests__/playerParser.test.ts`
 
 ```text

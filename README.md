@@ -84,25 +84,32 @@ App web para organizar peladas de futebol com sistema de notas, ranking e sortei
 | `npm run spec:status` | Visualiza o status de features, histórias e critérios de aceite |
 | `npm run spec:verify` | Executa testes e registra a prova executável de cada critério |
 | `npm run spec:audit` | Auditoria mecânica da especificação contra o código e constituição |
-| `node scripts/project-check.mjs --full` | Verificação completa de tipos, linter, segredos e consistência |
+| `npm run check` | Verificação completa de tipos, linter, segredos e consistência |
+| `npm run git:pull` | Sincroniza branch `develop2` local com o GitHub |
+| `npm run git:sync` | Busca e puxa alterações do remote (`git fetch + pull`) |
+| `npm run git:handoff` | Atualiza o snapshot de sessão |
 
 ---
 
-## Pipeline de Desenvolvimento e Qualidade
+## Pipeline de Desenvolvimento, GitFlow e Qualidade
 
-O ciclo de desenvolvimento segue guard-rails rigorosos:
+O ciclo de desenvolvimento segue o padrão oficial de **GitFlow** (documentado em [`.agents/skills/gitflow/SKILL.md`](.agents/skills/gitflow/SKILL.md)) aliado a guard-rails rigorosos de qualidade e especificação:
 
-1. **Especificação & Planejamento:**
+1. **Branching & GitFlow:**
+   - Novas funcionalidades partem de `develop2` (`feat/*`, `fix/*`, `refactor/*`) e retornam a ela via Pull Request.
+   - Commits semânticos no padrão Conventional Commits (`feat(...)`, `fix(...)`, `refactor(...)`).
+   - Integração final na `develop2` via **Squash and Merge** (1 commit atômico por PR).
+2. **Especificação & Planejamento (ONP Spec):**
    - Novas features são especificadas via `npx @onovoprogramador/onp-spec new <feature>` gerando histórias (`US-xxx`) e critérios (`AC-xxx`).
    - Cada critério vira um teste anotado (`@spec:AC-xxx`) executado pelo Vitest.
-2. **Desenvolvimento e Refatoração:**
-   - Regras de domínio e casos de uso isolados em `src/core/` (sem acoplamento com Next.js ou MongoDB).
+3. **Desenvolvimento e Refatoração:**
+   - Regras de domínio e casos de uso isolados em `src/core/` (Clean Architecture / DDD sem acoplamento com Next.js ou MongoDB).
    - Componentes React seguindo padrões de composição limpos.
-3. **Validação de Qualidade Automatizada:**
+4. **Validação de Qualidade Automatizada:**
    - `npm test` para testes unitários com Vitest.
    - `npm run spec:audit` para garantir conformidade entre código, testes e constituição.
-   - `node scripts/project-check.mjs --full` para checar tipos, segredos e vulnerabilidades.
-4. **CI/CD & Handoff:**
+   - `npm run check` para checar tipos, segredos e consistência.
+5. **CI/CD & Handoff:**
    - Pipeline automatizado no GitHub Actions (`.github/workflows/ci.yml`) validando lint, tipos, testes e spec audit a cada push/PR.
    - `npm run handoff` para atualizar o contexto em `docs/HANDOFF.md`.
 
@@ -112,6 +119,8 @@ O ciclo de desenvolvimento segue guard-rails rigorosos:
 
 - **[CONTEXT.md](CONTEXT.md)** — Visão completa do projeto, decisões de produto e design
 - **[AGENTS.md](AGENTS.md)** — Mapa do código e regras para agentes de IA
+- **[.agents/skills/gitflow/SKILL.md](.agents/skills/gitflow/SKILL.md)** — Guia oficial de GitFlow, branching e commits
+- **[docs/architecture-and-design.md](docs/architecture-and-design.md)** — Arquitetura hexagonal detalhada e diagramas de sequência
 - **[docs/BACKLOG.md](docs/BACKLOG.md)** — Backlog priorizado de funcionalidades (v1 e v2)
 - **[docs/skills/01-clean-ddd-hexagonal.md](docs/skills/01-clean-ddd-hexagonal.md)** — Registro e plano de migração para Clean Architecture / DDD
 - **[.spec/constituicao.md](.spec/constituicao.md)** — Princípios inegociáveis de engenharia e segurança
