@@ -46,11 +46,11 @@
 - `.agents/skills` é o diretório centralizado de skills compartilhadas entre Claude Code e Gemini (Antigravity).
 
 <!-- AUTO:START (gerado por scripts/project-check.mjs — não edite à mão) -->
-<!-- structure-hash: 63d5eb5974 -->
+<!-- structure-hash: 34cee5c143 -->
 ## Snapshot automático
 
 - **Scripts npm:** `dev`, `build`, `start`, `lint`, `handoff`, `seed`, `check`, `test`, `spec`, `spec:status`, `spec:verify`, `spec:audit`
-- **Arquivos possivelmente não usados:** `src/core/domain/__tests__/VoteAverages.test.ts`, `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/playerParser.test.ts`
+- **Arquivos possivelmente não usados:** `src/core/domain/__tests__/VoteAverages.test.ts`, `src/core/use-cases/__tests__/CreateRoundUseCase.test.ts`, `src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts`, `src/lib/__tests__/mongodb.test.ts`, `src/lib/__tests__/playerParser.test.ts`
 
 ```text
 src/app/admin/page.tsx
@@ -99,6 +99,7 @@ src/core/use-cases/UpdateSettingsUseCase.ts
 src/core/use-cases/__tests__/CreateRoundUseCase.test.ts
 src/core/use-cases/__tests__/SubmitVoteUseCase.test.ts
 src/data/mocks.ts
+src/lib/__tests__/mongodb.test.ts
 src/lib/__tests__/playerParser.test.ts
 src/lib/admin.ts
 src/lib/auth.ts

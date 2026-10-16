@@ -1,39 +1,40 @@
 # HANDOFF
 
 ## Contexto
-- Gerado em: 15/10/2026, 17:48:01 (2026-10-15T20:48:01.569Z)
+- Gerado em: 15/10/2026, 19:57:21 (2026-10-15T22:57:21.006Z)
 - Branch: `refactor/clean-ddd-hexagonal`
-- HEAD: `37a7f9e`
+- HEAD: `6defb19`
 
 ## Estado Atual do Git
 ### Alteracoes locais
-- D .githooks/pre-commit
--  M .gitignore
+- M .env.example
+-  M .github/workflows/ci.yml
 -  M AGENTS.md
--  M CONTEXT.md
--  M README.md
--  M docs/BACKLOG.md
--  M docs/HANDOFF.md
-- ?? .agents/
+-  M package.json
+-  M src/app/api/players/route.ts
+-  M src/app/api/settings/route.ts
+-  M src/lib/mongodb.ts
+- ?? .nvmrc
+- ?? src/lib/__tests__/mongodb.test.ts
 
 ### Staged
 - Nenhum arquivo staged
 
 ### Unstaged
-- .githooks/pre-commit
-- .gitignore
+- .env.example
+- .github/workflows/ci.yml
 - AGENTS.md
-- CONTEXT.md
-- README.md
-- docs/BACKLOG.md
-- docs/HANDOFF.md
+- package.json
+- src/app/api/players/route.ts
+- src/app/api/settings/route.ts
+- src/lib/mongodb.ts
 
 ## Commits Recentes
+- 6defb19 chore: track .agents skills, remove legacy githooks and update docs for CI (Joao Miguel, 2026-10-15)
 - 37a7f9e ci: replace symlinks with direct refs and add GitHub Actions workflow (Joao Miguel, 2026-10-15)
 - c785b4b docs: update README with hexagonal architecture, admin routes and spec commands (Joao Miguel, 2026-10-15)
 - 5dea354 docs: update backlog and session handoff (Joao Miguel, 2026-10-15)
 - 442325e chore(spec): configure onp-spec driven development with vitest (Joao Miguel, 2026-10-15)
-- 9811cc3 refactor(core): apply clean-ddd-hexagonal phase 1 to voting and domain boundaries (Joao Miguel, 2026-10-15)
 
 ## Validacao Recomendada
 - `npm run lint`

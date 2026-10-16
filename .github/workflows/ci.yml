@@ -46,3 +46,7 @@ jobs:
 
       - name: Spec-driven audit (ONP Spec)
         run: npm run spec:audit
+
+      - name: Production build
+        run: npm run build
+

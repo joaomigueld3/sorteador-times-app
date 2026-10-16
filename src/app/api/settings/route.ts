@@ -13,6 +13,8 @@ const updateSettingsSchema = z.object({
   }),
 });
 
+export const dynamic = "force-dynamic";
+
 // GET publico para carregar pesos padroes no Sorteador
 export async function GET() {
   try {
