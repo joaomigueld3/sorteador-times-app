@@ -32,3 +32,13 @@ fazer a lista de presentes com IA dentro do próprio site (https://gemini.google
 lista de jogadores ao lado dos times, drag drop para montar manual
 espaço para rolagem no mobile
 modifique o botao 'copiar times' para 'copiar com notas' e crie ao lado 'copiar sem notas'
+
+
+pagamento pela plataforma com envio do comprovante (verificacao por OCR) -> sincronizado com a planilha
+estudar melhor forma de fazer a planilha
+
+infra: arquitetura serverless
+
+qualidade e segurança: race condition, idempotencia, envs vulneraveis, SQL injection, XSS, (buscar do video do insta)
+
+padrões de código: SOLID
