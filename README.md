@@ -120,4 +120,4 @@ O ciclo de desenvolvimento segue guard-rails rigorosos:
 
 ## Licença
 
-[MIT](LICENSE)
+Proprietária — Todos os direitos reservados ([LICENSE](LICENSE)).
