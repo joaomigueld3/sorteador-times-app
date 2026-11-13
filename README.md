@@ -129,4 +129,4 @@ O ciclo de desenvolvimento segue o padrão oficial de **GitFlow** (documentado e
 
 ## Licença
 
-[MIT](LICENSE)
+Proprietária — Todos os direitos reservados ([LICENSE](LICENSE)).
